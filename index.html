@@ -1,0 +1,504 @@
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <title>Calendify | Responsive Bootstrap 4 Admin Dashboard Template</title>
+      <link rel="stylesheet" href="./css/backend-plugin.min.css">
+      <link rel="stylesheet" href="./css/backend.css">
+      <link rel="stylesheet" href="./css/all.min.css">
+      <link rel="stylesheet" href="./css/line-awesome.min.css">
+      <link rel="stylesheet" href="./css/remixicon.css">    
+      <link rel='stylesheet' href='./css/main.css' />
+      <link rel='stylesheet' href='./css/daygrid_main.css' />
+      <link rel='stylesheet' href='./css/timegrid_main.css' />
+      <link rel='stylesheet' href='./css/list_main.css' />
+  </head>
+  <body class="fixed-top-navbar top-nav">
+    <div id="loading">
+          <div id="loading-center">
+          </div>
+    </div>
+
+    <div class="wrapper">
+      <div class="iq-top-navbar">
+          <div class="container">
+              <div class="iq-navbar-custom">
+                  <div class="d-flex align-items-center justify-content-between">
+                      <div class="iq-navbar-logo d-flex align-items-center justify-content-between">
+                          <i class="ri-menu-line wrapper-menu"></i>
+                          <a href="index.html" class="header-logo">
+                              <img src="./images/logo.png" class="img-fluid rounded-normal light-logo" alt="logo">
+                              <img src="./images/logo-white.png" class="img-fluid rounded-normal darkmode-logo" alt="logo">
+                          </a>
+                      </div>
+                      <div class="iq-menu-horizontal">
+                          <nav class="iq-sidebar-menu">
+                              <div class="iq-sidebar-logo d-flex align-items-center justify-content-between">
+                                  <a href="index.html" class="header-logo">
+                                      <img src="./images/logo.png" class="img-fluid rounded-normal" alt="logo">
+                                  </a>
+                                  <div class="iq-menu-bt-sidebar">
+                                      <i class="las la-bars wrapper-menu"></i>
+                                  </div>
+                              </div>
+                              <ul id="iq-sidebar-toggle" class="iq-menu d-flex">
+                                  <li class="">
+                                      <a href="./index.html" class="">
+                                          <span>Dashboard</span>
+                                      </a>
+                                  </li>
+                                  
+                                  <li class="">
+                                      <a href="#pages" class="collapsed" data-toggle="collapse" aria-expanded="false">
+                                          <span>Extra Pages</span>
+                                          <i class="ri-arrow-right-s-line iq-arrow-right"></i>
+                                      </a>
+                                      <ul id="pages" class="iq-submenu sub-scrll collapse" data-parent="#iq-sidebar-toggle">
+                                          <li class="">
+                                              <a href="#ui" class="collapsed" data-toggle="collapse" aria-expanded="false">
+                                                  <span>UI Elements</span>
+                                                  <i class="ri-arrow-right-s-line iq-arrow-right"></i>
+                                              </a>
+                                              <ul id="ui" class="iq-submenu iq-submenu-data collapse" data-parent="#pages">
+                                                  <li class="">
+                                                      <a href="./ui-avatars.html">
+                                                          <span>Avatars</span>
+                                                      </a>
+                                                  </li>
+                                                  <li class="">
+                                                      <a href="./ui-alerts.html">
+                                                          <span>Alerts</span>
+                                                      </a>
+                                                  </li>
+                                                  
+                                              </ul>
+                                          </li>
+                                          <li class="">
+                                              <a href="#others" class="collapsed" data-toggle="collapse" aria-expanded="false">
+                                                  <span>Others</span>
+                                                  <i class="ri-arrow-right-s-line iq-arrow-right"></i>
+                                              </a>
+                                              <ul id="others" class="iq-submenu iq-submenu-data collapse" data-parent="#pages">
+                                                  <li class="">
+                                                      <a href="./pages-invoice.html">
+                                                          <span>Invoice</span>
+                                                      </a>
+                                                  </li>
+                                                  <li class="">
+                                                      <a href="./pages-subscribers.html">
+                                                          <span>Subscribers</span>
+                                                      </a>
+                                                  </li>
+                                              </ul>
+                                          </li>
+                                      </ul>
+                                  </li>
+                              </ul>
+                          </nav>
+                      </div>
+                      <nav class="navbar navbar-expand-lg navbar-light p-0">
+                          <div class="change-mode">
+                              <div class="custom-control custom-switch custom-switch-icon custom-control-indivne">
+                                  <div class="custom-switch-inner">
+                                      <p class="mb-0"> </p>
+                                      <input type="checkbox" class="custom-control-input" id="dark-mode" data-active="true">
+                                      <label class="custom-control-label" for="dark-mode" data-mode="toggle">
+                                          <span class="switch-icon-left"><i class="a-left ri-moon-clear-line"></i></span>
+                                          <span class="switch-icon-right"><i class="a-right ri-sun-line"></i></span>
+                                      </label>
+                                  </div>
+                              </div>
+                          </div>
+                          <button class="navbar-toggler" type="button" data-toggle="collapse"
+                              data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                              aria-label="Toggle navigation">
+                              <i class="ri-menu-3-line"></i>
+                          </button>
+                          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                              <ul class="navbar-nav ml-auto navbar-list align-items-center">
+                                  <li class="nav-item nav-icon dropdown ml-3">
+                                      <a href="#" class="search-toggle dropdown-toggle" id="dropdownMenuButton2" data-toggle="dropdown"
+                                          aria-haspopup="true" aria-expanded="false">
+                                          <i class="las la-envelope"></i>
+                                          <span class="badge badge-primary count-mail rounded-circle">2</span>
+                                          <span class="bg-primary"></span>
+                                      </a>
+                                      <div class="iq-sub-dropdown dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                                          <div class="card shadow-none m-0">
+                                              <div class="card-body p-0 ">
+                                                  <div class="cust-title p-3">
+                                                      <h5 class="mb-0">All Messages</h5>
+                                                  </div>
+                                                  <div class="p-2">
+                                                      <a href="#" class="iq-sub-card">
+                                                          <div class="media align-items-center cust-card p-2">
+                                                              <div class="">
+                                                                  <img class="avatar-40 rounded-small" src="./images/u-1.jpg" alt="01">
+                                                              </div>
+                                                              <div class="media-body ml-3">
+                                                                  <h6 class="mb-0">Barry Emma Watson</h6>
+                                                                  <small class="mb-0">We Want to see you On..</small>
+                                                              </div>
+                                                          </div>
+                                                      </a>
+                                                      <a href="#" class="iq-sub-card">
+                                                          <div class="media align-items-center cust-card p-2">
+                                                              <div class="">
+                                                                  <img class="avatar-40 rounded-small" src="./images/u-2.jpg" alt="02">
+                                                              </div>
+                                                              <div class="media-body ml-3">
+                                                                  <h6 class="mb-0">Lorem Ipsum Watson</h6>
+                                                                  <small class="mb-0">Can we have a Call?</small>
+                                                              </div>
+                                                          </div>
+                                                      </a>
+                                                      <a href="#" class="iq-sub-card">
+                                                          <div class="media align-items-center cust-card p-2">
+                                                              <div class="">
+                                                                  <img class="avatar-40 rounded-small" src="./images/u-3.jpg" alt="03">
+                                                              </div>
+                                                              <div class="media-body ml-3">
+                                                                  <h6 class="mb-0">Why do we use it?</h6>
+                                                                  <small class="mb-0">Thank You but now we Don't...</small>
+                                                              </div>
+                                                          </div>
+                                                      </a>
+                                                  </div>
+                                                  <a class="right-ic btn-block position-relative p-3 border-top text-center" href="#" role="button">
+                                                      View All
+                                                  </a>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </li>
+                                  <li class="nav-item nav-icon dropdown">
+                                      <a href="#" class="search-toggle dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown"
+                                          aria-haspopup="true" aria-expanded="false">
+                                          <i class="las la-bell"></i>
+                                          <span class="badge badge-primary count-mail rounded-circle">2</span>
+                                          <span class="bg-primary"></span>
+                                      </a>
+                                      <div class="iq-sub-dropdown dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                          <div class="card shadow-none m-0">
+                                              <div class="card-body p-0 ">
+                                                  <div class="cust-title p-3">
+                                                      <h5 class="mb-0">Notifications</h5>
+                                                  </div>
+                                                  <div class="p-2">
+                                                      <a href="#" class="iq-sub-card">
+                                                          <div class="media align-items-center cust-card p-2">
+                                                              <div class="">
+                                                                  <img class="avatar-40 rounded-small" src="./images/u-1.jpg" alt="01">
+                                                              </div>
+                                                              <div class="media-body ml-3">
+                                                                  <div class="d-flex align-items-center justify-content-between">
+                                                                      <h6 class="mb-0">Anne Effit</h6>
+                                                                      <small class="mb-0">02 Min Ago</small>
+                                                                  </div>
+                                                                  <small class="mb-0">Manager</small>
+                                                              </div>
+                                                          </div>
+                                                      </a>
+                                                      <a href="#" class="iq-sub-card">
+                                                          <div class="media align-items-center cust-card p-2">
+                                                              <div class="">
+                                                                  <img class="avatar-40 rounded-small" src="./images/u-2.jpg" alt="02">
+                                                              </div>
+                                                              <div class="media-body ml-3">
+                                                                  <div class="d-flex align-items-center justify-content-between">
+                                                                      <h6 class="mb-0">Eric Shun</h6>
+                                                                      <small class="mb-0">05 Min Ago</small>
+                                                                  </div>
+                                                                  <small class="mb-0">Manager</small>
+                                                              </div>
+                                                          </div>
+                                                      </a>
+                                                      <a href="#" class="iq-sub-card">
+                                                          <div class="media align-items-center cust-card p-2">
+                                                              <div class="">
+                                                                  <img class="avatar-40 rounded-small" src="./images/u-3.jpg" alt="03">
+                                                              </div>
+                                                              <div class="media-body ml-3">
+                                                                  <div class="d-flex align-items-center justify-content-between">
+                                                                      <h6 class="mb-0">Ken Tucky</h6>
+                                                                      <small class="mb-0">10 Min Ago</small>
+                                                                  </div>
+                                                                  <small class="mb-0">Employee</small>
+                                                              </div>
+                                                          </div>
+                                                      </a>
+                                                  </div>
+                                                  <a class="right-ic btn-block position-relative p-3 border-top text-center" href="#" role="button">
+                                                      See All Notification
+                                                  </a>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </li>
+                                  <li class="caption-content">
+                                      <a href="#" class="search-toggle dropdown-toggle d-flex align-items-center" id="dropdownMenuButton3" data-toggle="dropdown"
+                                          aria-haspopup="true" aria-expanded="false">
+                                          <img src="./images/01.jpg" class="avatar-40 img-fluid rounded" alt="user">
+                                          <div class="caption ml-3">
+                                              <h6 class="mb-0 line-height">Rick O'shea<i class="las la-angle-down ml-3"></i></h6>
+                                          </div>
+                                      </a>
+                                      <div class="iq-sub-dropdown dropdown-menu user-dropdown" aria-labelledby="dropdownMenuButton3">
+                                          <div class="card m-0">
+                                              <div class="card-body p-0">
+                                                  <div class="py-3">
+                                                      <a href="./user-profile.html" class="iq-sub-card">
+                                                          <div class="media align-items-center">
+                                                              <i class="ri-user-line mr-3"></i>
+                                                              <h6>Account Settings</h6>
+                                                          </div>
+                                                      </a>
+                                                      <a href="./page-calendar-connections.html" class="iq-sub-card">
+                                                          <div class="media align-items-center">
+                                                              <i class="ri-calendar-line mr-3"></i>
+                                                              <h6>Calender Connections</h6>
+                                                          </div>
+                                                      </a>
+                                                      <a href="./page-users.html" class="iq-sub-card">
+                                                          <div class="media align-items-center">
+                                                              <i class="ri-group-line mr-3"></i>
+                                                              <h6>Users</h6>
+                                                          </div>
+                                                      </a>
+                                                      <a href="./privacy-policy.html" class="iq-sub-card">
+                                                          <div class="media align-items-center">
+                                                              <i class="ri-lock-line mr-3"></i>
+                                                              <h6>Privacy & Security Settings</h6>
+                                                          </div>
+                                                      </a>
+                                                      <a href="#popup1" data-toggle="modal" data-target="#exampleModalCenter" class="iq-sub-card">
+                                                          <div class="media align-items-center">
+                                                              <i class="ri-links-line mr-3"></i>
+                                                              <h6>Share Your Link</h6>
+                                                          </div>
+                                                      </a>
+                                                  </div>
+                                                  <a class="right-ic p-3 border-top btn-block position-relative text-center" href="auth-sign-in.html" role="button">
+                                                       Logout
+                                                  </a>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </li>
+                              </ul>
+                          </div>
+                      </nav>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="content-page">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 mb-4">
+                <div class="py-4 border-bottom">
+                    <div class="form-title text-center">
+                        <h3>My Schedule</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <h4 class="mb-3">Choose A Schedule Below</h4>
+                <div class="d-flex flex-wrap align-items-center justify-content-between my-schedule mb-3">
+                   <div class="d-flex align-items-center justify-content-between"> 
+                        <div class="form-group mb-0">
+                            <select name="type" class="selectpicker form-control" data-style="py-0">
+                                <option>Working Hours</option>
+                                <option>Default Hours</option>
+                                <option>Working Hours</option>
+                                <option>Learning Hours</option>
+                            </select>
+                        </div>
+                        <div class="select-dropdown input-prepend input-append">
+                            <div class="btn-group">
+                                <label data-toggle="dropdown">
+                                <span class="dropdown-toggle search-query rounded btn bg-white btn-edit"><i class="las la-edit mr-0 text-center"></i></span><span class="search-replace"></span>
+                                <span class="caret"><!--icon--></span>
+                                </label>
+                                <ul class="dropdown-menu w-100 border-none p-3">
+                                    <li><div class="item mb-2"><i class="ri-pencil-line mr-3"></i>Edit</div></li>
+                                    <li><div class="item"><i class="ri-delete-bin-6-line mr-3"></i>Delete</div></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>  
+                    <div class="create-workform">
+                        <a href="#" data-toggle="modal" data-target="#date-event" class="btn btn-primary pr-5 position-relative">New Schedule<span class="add-btn"><i class="ri-add-line"></i></span></a>
+                    </div>                 
+                </div>
+                <h4 class="mb-3">Set Your weekly hours</h4>
+                <div class="row">
+
+                       <div class="col-lg-4 col-md-6">
+                        <div class="card card-block card-stretch card-height">
+                            <div class="card-body rounded event-detail event-detail-info">
+                                <div class="d-flex align-items-center justify-content-between mb-3">
+                                    <div>
+                                        <h1 class="text-info">18</h1>
+                                        <h5 class="text-info">Dec</h5>
+                                    </div>
+                                    <div class="d-flex align-items-center list-action">
+                                        <a class="badge mr-3" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" href="#"><i class="ri-edit-box-line"></i></a>
+                                        <a class="badge" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" href="#"><i class="ri-delete-bin-line"></i></a>
+                                    </div>
+                                </div>
+                                <h4 class="my-2">Xamin WordPress Theme Update</h4>   
+                        
+                                <p class="mb-2 text-info"><i class="las la-clock mr-3"></i>45 min</p>
+                                <p class="mb-0 text-info"><i class="las la-map-marker mr-2"></i>Av. José Pardo 513 Of. 701, Miraflores</p>
+
+                                <p class="mb-3 card-description">Estimado pacientes por favor seguir las siguientes instrucciones:
+
+                                Seleccionar día y hora más adecuado por usted.
+                                Llenar la información con sus datos para creación en el sistema. (Al llenar esta información usted acepta ser contactado por nuestro equipo para fines de atención - Ley de Protección de Datos).
+                                Esta selección - significa una "pre-reserva" de cita, misma que deberá ser cancelada hasta 2 semanas antes de su asistencia.
+                                Cancelación de Cita: En caso de no presentarse a su cita acordada, podrá reagendar sin costo una sola vez. A partir del 2do reagendamiento, se descontará S/. 100 del valor abonado.
+                                En caso de cancelación de cita/procedimiento se aplicará una penalidad de S/. 100.</p>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-8">
+                        <div class="card card-block card-stretch">
+                            <div class="card-body">
+                                <div id="calendar1" class="calendar-s"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="date-event" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="popup text-left">
+                        <h4 class="mb-3">Add Schedule</h4>
+                        <form action="/" id="submit-schedule">
+                            <div class="content create-workform row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="schedule-title">Schedule For</label>
+                                        <input class="form-control" placeholder="Enter Title" type="text" name="title" id="schedule-title" required />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="schedule-start-date">Start Date</label>
+                                        <input class="form-control basicFlatpickr date-input" placeholder="2020-06-20" type="text" name="title" id="schedule-start-date" required />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="schedule-end-date">End Date</label>
+                                        <input class="form-control basicFlatpickr date-input" placeholder="2020-06-20" type="text" name="title" id="schedule-end-date" required />
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <input class="form-control" type="color" name="title" id="schedule-color" required />
+                                    </div>
+                                </div>
+                                <div class="col-md-12 mt-4">
+                                    <div class="d-flex flex-wrap align-items-ceter justify-content-center">
+                                        <button class="btn btn-primary mr-4" data-dismiss="modal">Cancel</button>
+                                        <button class="btn btn-outline-primary" type="submit">Save</button>
+                                    </div>
+                                </div>  
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+      </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="popup text-left" id="popup">
+                <h4 class="mb-3">Add Action</h4>
+                <div class="content create-workform">
+                    <div class="form-group">
+                      <h6 class="form-label mb-3">Copy Your Link</h6>
+                      <div class="input-group">
+                        <input type="text" class="form-control" readonly value="calendly.com/rickoshea1234">
+                        <div class="input-group-append">
+                          <span class="input-group-text" id="basic-addon2"><i class="las la-link"></i></span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <h6 class="form-label mb-3">Email Your Link</h6>
+                      <div class="input-group">
+                        <input type="text" class="form-control" readonly value="calendly.com/rickoshea1234">
+                        <div class="input-group-append">
+                          <span class="input-group-text" id="basic-addon3"><i class="las la-envelope"></i></span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <h6 class="form-label mb-3">Add to Your Website</h6>
+                      <div class="input-group">
+                        <input type="text" class="form-control" readonly value="calendly.com/rickoshea1234">
+                        <div class="input-group-append">
+                          <span class="input-group-text" id="basic-addon4"><i class="las la-code"></i></span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-12 mt-3">
+                        <div class="d-flex flex-wrap align-items-ceter justify-content-center">
+                            <button type="submit" data-dismiss="modal" class="btn btn-primary mr-4">Cancel</button>
+                            <button type="submit" data-dismiss="modal" class="btn btn-outline-primary">Save</button>
+                        </div>
+                    </div>  
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Wrapper End-->
+    <footer class="iq-footer">
+        <div class="container-fluid container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <ul class="list-inline mb-0">
+                        <li class="list-inline-item"><a href="./privacy-policy.html">Privacy Policy</a></li>
+                        <li class="list-inline-item"><a href="./terms-of-service.html">Terms of Use</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-6 text-right">
+                    Copyright 
+                    <span id="copyright"> 
+                        <script>document.getElementById('copyright').appendChild(document.createTextNode(new Date().getFullYear()))</script>
+                    </span> <a href="#">Calendify</a> All Rights Reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="./js/backend-bundle.min.js"></script>
+    <script src="./js/customizer.js"></script>
+    <script src='./js/main.js'></script>
+    <script src='./js/daygrid_main.js'></script>
+    <script src='./js/timegrid_main.js'></script>
+    <script src='./js/list_main.js'></script>
+    <script src='./js/interaction_main.js'></script>
+    <script src="./js/app.js"></script>  </body>
+</html>
