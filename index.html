@@ -197,17 +197,11 @@
 <div class="content-page">
     <div class="container">
         <div class="row">
-            <div class="col-lg-12 mb-0">
-                <div class="py-4 border-bottom">
-                    <div class="form-title text-center">
-                        <h3>Consultas Presenciales <span id="mes_div"></span></h3>
-                    </div>
-                </div>
-            </div>
+            
             <div class="col-lg-12 mb-4">
                 <div class="d-flex flex-wrap align-items-center justify-content-between my-schedule mb-3">
                     <div class="d-flex align-items-center justify-content-between"> 
-                        <!--example-->
+                        <h3>Consultas Presenciales <span id="mes_div"></span></h3>
                     </div>  
                     <div class="create-workform">
                         <a href="#" data-toggle="modal" data-target="#date-event" class="btn btn-primary pr-5 position-relative">Registrar Cita<span class="add-btn"><i class="ri-add-line"></i></span></a>
@@ -248,6 +242,8 @@
                                 <div id="calendar1" class="calendar-s"></div>
                             </div>
                         </div>
+
+                        <div id="calendar-alert" class="mt-2"></div>
                     </div>
                 </div>
             </div>
@@ -324,9 +320,10 @@
                                 <div class="col-md-6 mt-0">
                                     <div class="form-group">
                                         <label class="form-label" for="schedule-start-date">Fecha Programada</label>
-                                        <input class="form-control date-input" placeholder="2025-06-20" type="date" name="fecha_cita" id="fecha_cita" required />
+                                        <input class="form-control date-input" type="date" name="fecha_cita" id="fecha_cita" required />
                                     </div>
                                 </div>
+
                                 <div class="col-md-12 mt-0">
                                     <div class="d-flex flex-wrap align-items-ceter justify-content-center">
                                         <button class="btn btn-primary mr-4" data-dismiss="modal">Cancel</button>
