@@ -507,85 +507,137 @@ Index Of Script
 
     // calender 1 js
     var calendar1;
+
     if (jQuery('#calendar1').length) {
         document.addEventListener('DOMContentLoaded', function () {
-            var calendarEl = document.getElementById('calendar1');
+            // 1) DATA ÚNICA DE EVENTOS (reutilizable)
+            const eventsData = [
+            // --- 29/09 al 25/10 ---
+            { profesional: 'Dra. Belén',        title: 'Dra. Belén',        start: '2025-09-29T08:00', end: '2025-09-29T13:30', color: '#15ca92' },
+            { profesional: 'Dra. Ma. Cristina', title: 'Dra. Ma. Cristina', start: '2025-09-29T12:45', end: '2025-09-29T16:30', color: '#007bff' },
+            { profesional: 'Dra. Belén',        title: 'Dra. Belén',        start: '2025-09-30T13:00', end: '2025-09-30T20:00', color: '#15ca92' },
+            { profesional: 'Dra. Belén',        title: 'Dra. Belén',        start: '2025-10-01T08:00', end: '2025-10-01T15:00', color: '#15ca92' },
+            { profesional: 'Dra. Ma. Cristina', title: 'Dra. Ma. Cristina', start: '2025-10-01T12:45', end: '2025-10-01T16:30', color: '#007bff' },
+            { profesional: 'Dra. Adela',        title: 'Dra. Adela',        start: '2025-10-02T08:00', end: '2025-10-02T12:00', color: '#ff6fa3' },
+            { profesional: 'Dra. Adela',        title: 'Dra. Adela',        start: '2025-10-02T13:00', end: '2025-10-02T15:15', color: '#ff6fa3' },
+            { profesional: 'Dra. Belén',        title: 'Dra. Belén',        start: '2025-10-02T13:00', end: '2025-10-02T20:00', color: '#15ca92' },
+            { profesional: 'Dra. Belén',        title: 'Dra. Belén',        start: '2025-10-03T08:00', end: '2025-10-03T14:15', color: '#15ca92' },
+            { profesional: 'Dra. Ma. Cristina', title: 'Dra. Ma. Cristina', start: '2025-10-03T08:15', end: '2025-10-03T14:15', color: '#007bff' },
+            { profesional: 'Dra. Adela',        title: 'Dra. Adela',        start: '2025-10-04T08:00', end: '2025-10-04T14:00', color: '#ff6fa3' },
+            { profesional: 'Dra. Ma. Cristina', title: 'Dra. Ma. Cristina', start: '2025-10-06T08:15', end: '2025-10-06T14:15', color: '#007bff' },
+            { profesional: 'Dra. Adela',        title: 'Dra. Adela',        start: '2025-10-07T08:00', end: '2025-10-07T12:00', color: '#ff6fa3' },
+            { profesional: 'Dra. Adela',        title: 'Dra. Adela',        start: '2025-10-07T13:00', end: '2025-10-07T15:15', color: '#ff6fa3' },
+            { title: 'FERIADO',                 start: '2025-10-08', allDay: true, color: '#ffc107' },
+            { profesional: 'Dra. Adela',        title: 'Dra. Adela',        start: '2025-10-09T08:00', end: '2025-10-09T12:45', color: '#ff6fa3' },
+            { profesional: 'Dra. Ma. Cristina', title: 'Dra. Ma. Cristina', start: '2025-10-10T08:15', end: '2025-10-10T14:15', color: '#007bff' },
+            { profesional: 'Dra. Ma. Cristina', title: 'Dra. Ma. Cristina', start: '2025-10-11T08:00', end: '2025-10-11T14:00', color: '#007bff' },
+            { profesional: 'Dra. Belén',        title: 'Dra. Belén',        start: '2025-10-13T09:00', end: '2025-10-13T13:30', color: '#15ca92' },
+            { profesional: 'Dra. Ma. Cristina', title: 'Dra. Ma. Cristina', start: '2025-10-13T12:45', end: '2025-10-13T16:30', color: '#007bff' },
+            { profesional: 'Dra. Adela',        title: 'Dra. Adela',        start: '2025-10-14T08:00', end: '2025-10-14T12:00', color: '#ff6fa3' },
+            { profesional: 'Dra. Adela',        title: 'Dra. Adela',        start: '2025-10-14T13:00', end: '2025-10-14T16:00', color: '#ff6fa3' },
+            { profesional: 'Dra. Belén',        title: 'Dra. Belén',        start: '2025-10-14T13:00', end: '2025-10-14T20:00', color: '#15ca92' },
+            { profesional: 'Dra. Ma. Cristina', title: 'Dra. Ma. Cristina', start: '2025-10-15T08:15', end: '2025-10-15T14:15', color: '#007bff' },
+            { profesional: 'Dra. Adela',        title: 'Dra. Adela',        start: '2025-10-16T08:00', end: '2025-10-16T12:45', color: '#ff6fa3' },
+            { profesional: 'Dra. Ma. Cristina', title: 'Dra. Ma. Cristina', start: '2025-10-17T08:15', end: '2025-10-17T14:15', color: '#007bff' },
+            { profesional: 'Dra. Adela',        title: 'Dra. Adela',        start: '2025-10-18T08:00', end: '2025-10-18T14:00', color: '#ff6fa3' },
+            { profesional: 'Dra. Ma. Cristina', title: 'Dra. Ma. Cristina', start: '2025-10-18T08:00', end: '2025-10-18T14:00', color: '#007bff' },
+            { profesional: 'Dra. Ma. Cristina', title: 'Dra. Ma. Cristina', start: '2025-10-20T08:15', end: '2025-10-20T14:15', color: '#007bff' },
+            { profesional: 'Dra. Adela',        title: 'Dra. Adela',        start: '2025-10-21T08:00', end: '2025-10-21T12:00', color: '#ff6fa3' },
+            { profesional: 'Dra. Adela',        title: 'Dra. Adela',        start: '2025-10-21T13:00', end: '2025-10-21T16:00', color: '#ff6fa3' },
+            { profesional: 'Dra. Belén',        title: 'Dra. Belén',        start: '2025-10-21T13:00', end: '2025-10-21T20:00', color: '#15ca92' },
+            { profesional: 'Dra. Belén',        title: 'Dra. Belén',        start: '2025-10-22T08:00', end: '2025-10-22T15:00', color: '#15ca92' },
+            { profesional: 'Dra. Ma. Cristina', title: 'Dra. Ma. Cristina', start: '2025-10-22T12:45', end: '2025-10-22T16:30', color: '#007bff' },
+            { title: 'Congreso (todas las doctoras)', start: '2025-10-23', end: '2025-10-26', allDay: true, color: '#ffc107' }
+            ];
 
+            // 2) HELPERS para selects
+            const $profSel = $('select[name="profesional"]');
+            const $horaSel = $('select[name="horario"]');
+            let dayEventsCache = []; // eventos del día seleccionado
+
+            function refreshPicker($el){ if ($el.selectpicker) $el.selectpicker('refresh'); }
+
+            function resetProfesionales() {
+            $profSel.empty().append('<option value="">Seleccione profesional..</option>');
+            refreshPicker($profSel);
+            }
+            function resetHorarios() {
+            $horaSel.empty().append('<option value="">Seleccione horario..</option>');
+            refreshPicker($horaSel);
+            }
+            function formatHM(iso) { return iso.substring(11,16); } // "HH:MM"
+
+            // 3) FULLCALENDAR
+            var calendarEl = document.getElementById('calendar1');
             calendar1 = new FullCalendar.Calendar(calendarEl, {
-                selectable: true,
-                plugins: ["timeGrid", "dayGrid", "list", "interaction"],
-                timeZone: "UTC",
-                defaultView: "dayGridMonth",
-                contentHeight: "auto",
-                eventLimit: true,
-                dayMaxEvents: 4,
-                header: {
-                    left: "prev,next today",
-                    center: "title",
-                    right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek"
-                },
-                dateClick: function (info) {
-                    $('#schedule-start-date').val(info.dateStr)
-                    $('#schedule-end-date').val(info.dateStr)
-                    $('#date-event').modal('show')
-                },
-                events: [
-                    { title: 'Dra. Belén',        start: '2025-09-29T08:00', end: '2025-09-29T13:30', color: '#15ca92' },
-                    { title: 'Dra. Ma. Cristina', start: '2025-09-29T12:45', end: '2025-09-29T16:30', color: '#007bff' },
-                    { title: 'Dra. Belén',        start: '2025-09-30T13:00', end: '2025-09-30T20:00', color: '#15ca92' },
-                    { title: 'Dra. Belén',        start: '2025-10-01T08:00', end: '2025-10-01T15:00', color: '#15ca92' },
-                    { title: 'Dra. Ma. Cristina', start: '2025-10-01T12:45', end: '2025-10-01T16:30', color: '#007bff' },
-                    { title: 'Dra. Adela',        start: '2025-10-02T08:00', end: '2025-10-02T12:00', color: '#ff6fa3' },
-                    { title: 'Dra. Adela',        start: '2025-10-02T13:00', end: '2025-10-02T15:15', color: '#ff6fa3' },
-                    { title: 'Dra. Belén',        start: '2025-10-02T13:00', end: '2025-10-02T20:00', color: '#15ca92' },
-                    { title: 'Dra. Belén', start: '2025-10-03T08:00', end: '2025-10-03T14:15', color: '#15ca92' },
-                    { title: 'Dra. Ma. Cristina', start: '2025-10-03T08:15', end: '2025-10-03T14:15', color: '#007bff' },
-                    { title: 'Dra. Adela',        start: '2025-10-04T08:00', end: '2025-10-04T14:00', color: '#ff6fa3' },
-                    { title: 'Dra. Ma. Cristina', start: '2025-10-06T08:15', end: '2025-10-06T14:15', color: '#007bff' },
-                    { title: 'Dra. Adela',        start: '2025-10-07T08:00', end: '2025-10-07T12:00', color: '#ff6fa3' },
-                    { title: 'Dra. Adela',        start: '2025-10-07T13:00', end: '2025-10-07T15:15', color: '#ff6fa3' },
-                    { title: 'FERIADO',           start: '2025-10-08', allDay: true, color: '#ffc107' },
-                    { title: 'Dra. Adela',        start: '2025-10-09T08:00', end: '2025-10-09T12:45', color: '#ff6fa3' },
-                    { title: 'Dra. Ma. Cristina', start: '2025-10-10T08:15', end: '2025-10-10T14:15', color: '#007bff' },
-                    { title: 'Dra. Ma. Cristina', start: '2025-10-11T08:00', end: '2025-10-11T14:00', color: '#007bff' },
-                    { title: 'Dra. Belén',        start: '2025-10-13T09:00', end: '2025-10-13T13:30', color: '#15ca92' },
-                    { title: 'Dra. Ma. Cristina', start: '2025-10-13T12:45', end: '2025-10-13T16:30', color: '#007bff' },
-                    { title: 'Dra. Adela',        start: '2025-10-14T08:00', end: '2025-10-14T12:00', color: '#ff6fa3' },
-                    { title: 'Dra. Adela',        start: '2025-10-14T13:00', end: '2025-10-14T16:00', color: '#ff6fa3' },
-                    { title: 'Dra. Belén',        start: '2025-10-14T13:00', end: '2025-10-14T20:00', color: '#15ca92' },
-                    { title: 'Dra. Ma. Cristina', start: '2025-10-15T08:15', end: '2025-10-15T14:15', color: '#007bff' },
-                    { title: 'Dra. Adela',        start: '2025-10-16T08:00', end: '2025-10-16T12:45', color: '#ff6fa3' },
-                    { title: 'Dra. Ma. Cristina', start: '2025-10-17T08:15', end: '2025-10-17T14:15', color: '#007bff' },
-                    { title: 'Dra. Adela',        start: '2025-10-18T08:00', end: '2025-10-18T14:00', color: '#ff6fa3' },
-                    { title: 'Dra. Ma. Cristina', start: '2025-10-18T08:00', end: '2025-10-18T14:00', color: '#007bff' },
-                    { title: 'Dra. Ma. Cristina', start: '2025-10-20T08:15', end: '2025-10-20T14:15', color: '#007bff' },
-                    { title: 'Dra. Adela',        start: '2025-10-21T08:00', end: '2025-10-21T12:00', color: '#ff6fa3' },
-                    { title: 'Dra. Adela',        start: '2025-10-21T13:00', end: '2025-10-21T16:00', color: '#ff6fa3' },
-                    { title: 'Dra. Belén',        start: '2025-10-21T13:00', end: '2025-10-21T20:00', color: '#15ca92' },
-                    { title: 'Dra. Belén',        start: '2025-10-22T08:00', end: '2025-10-22T15:00', color: '#15ca92' },
-                    { title: 'Dra. Ma. Cristina', start: '2025-10-22T12:45', end: '2025-10-22T16:30', color: '#007bff' },
-                    { title: 'Congreso (todas las doctoras)', start: '2025-10-23', end: '2025-10-26', allDay: true, color: '#ffc107' }
-                ]
+            selectable: true,
+            plugins: ["timeGrid", "dayGrid", "list", "interaction"],
+            timeZone: "UTC",
+            defaultView: "dayGridMonth",
+            contentHeight: "auto",
+            eventLimit: true,
+            dayMaxEvents: 4,
+            header: { left: "prev,next today", center: "title", right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek" },
+            dateClick: function (info) {
+                $('#fecha_cita').val(info.dateStr);
+                // filtra eventos del día (ignorando allDay/feriados)
+                const day = info.dateStr.slice(0,10);
+                dayEventsCache = eventsData.filter(e => !e.allDay && e.start.slice(0,10) === day);
+
+                // llena profesionales únicos
+                resetProfesionales(); resetHorarios();
+                const vistos = new Set();
+                dayEventsCache.forEach(e => {
+                if (!vistos.has(e.profesional)) {
+                    $profSel.append(`<option value="${e.profesional}">${e.profesional}</option>`);
+                    vistos.add(e.profesional);
+                }
+                });
+                refreshPicker($profSel);
+                $('#date-event').modal('show');
+            },
+            events: eventsData // usamos el mismo array
             });
             calendar1.render();
-        });
-        $(document).on("submit", "#submit-schedule", function (e) {
-            e.preventDefault()
-            const title = $(this).find('#schedule-title').val()
-            const startDate = moment(new Date($(this).find('#schedule-start-date').val()), 'YYYY-MM-DD').format('YYYY-MM-DD') + 'T05:30:00.000Z'
-            const endDate = moment(new Date($(this).find('#schedule-end-date').val()), 'YYYY-MM-DD').format('YYYY-MM-DD') + 'T05:30:00.000Z'
-            const color = $(this).find('#schedule-color').val()
-            console.log(startDate, endDate, color)
-            const event = {
-                title: title,
-                start: startDate || '2020-12-22T02:30:00',
-                end: endDate || '2020-12-12T14:30:00',
+
+            // 4) Cambio de profesional -> llenar horarios
+            $profSel.on('change', function () {
+            resetHorarios();
+            const pro = $(this).val();
+            if (!pro) return;
+            const slots = dayEventsCache.filter(e => e.profesional === pro);
+            if (slots.length === 0) return;
+            slots.forEach(e => {
+                const label = `${formatHM(e.start)} - ${formatHM(e.end)}`;
+                const value = `${e.start}|${e.end}`; // útil para enviarlo al backend
+                $horaSel.append(`<option value="${value}">${label}</option>`);
+            });
+            refreshPicker($horaSel);
+            });
+
+            // 5) Si agregas un nuevo evento desde el modal, también lo guardamos en eventsData
+            $(document).on("submit", "#submit-schedule", function (e) {
+            e.preventDefault();
+            const title = $(this).find('#schedule-title').val();
+            const startDate = moment(new Date($(this).find('#schedule-start-date').val()), 'YYYY-MM-DD').format('YYYY-MM-DD') + 'T05:30:00.000Z';
+            const endDate   = moment(new Date($(this).find('#schedule-end-date').val()),   'YYYY-MM-DD').format('YYYY-MM-DD') + 'T05:30:00.000Z';
+            const color = $(this).find('#schedule-color').val();
+
+            const event = { title, start: startDate || '2020-12-22T02:30:00Z', end: endDate || '2020-12-12T14:30:00Z', color: color || '#7858d7' };
+            $(this).closest('#date-event').modal('hide');
+
+            calendar1.addEvent(event);
+            // Guarda también para que aparezca en los selects siguientes
+            eventsData.push({
+                profesional: title, title,
+                start: startDate.replace('Z',''), // guardo sin Z para que formatHM funcione
+                end: endDate.replace('Z',''),
                 color: color || '#7858d7'
-            }
-            $(this).closest('#date-event').modal('hide')
-            calendar1.addEvent(event)
-        })
+            });
+            });
+        });
     }
+
 
     // Enable all tooltips
     $('[data-toggle="tooltip"]').tooltip();
