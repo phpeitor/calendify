@@ -5,7 +5,8 @@
   <head>
     <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-      <title>Calendify | Responsive Bootstrap 4 Admin Dashboard Template</title>
+      <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='75'>📅</text></svg>" />
+      <title>Calendify | Alopecia</title>
       <link rel="stylesheet" href="./css/backend-plugin.min.css">
       <link rel="stylesheet" href="./css/backend.css">
       <link rel="stylesheet" href="./css/all.min.css">
@@ -199,36 +200,17 @@
             <div class="col-lg-12 mb-0">
                 <div class="py-4 border-bottom">
                     <div class="form-title text-center">
-                        <h3>Consultas Presenciales <span id="mes_div">Septiembre 2025</span></h3>
+                        <h3>Consultas Presenciales <span id="mes_div"></span></h3>
                     </div>
                 </div>
             </div>
             <div class="col-lg-12 mb-4">
                 <div class="d-flex flex-wrap align-items-center justify-content-between my-schedule mb-3">
-                   <div class="d-flex align-items-center justify-content-between"> 
-                        <div class="form-group mb-0">
-                            <select name="type" class="selectpicker form-control" data-style="py-0">
-                                <option>Working Hours</option>
-                                <option>Default Hours</option>
-                                <option>Working Hours</option>
-                                <option>Learning Hours</option>
-                            </select>
-                        </div>
-                        <div class="select-dropdown input-prepend input-append">
-                            <div class="btn-group">
-                                <label data-toggle="dropdown">
-                                <span class="dropdown-toggle search-query rounded btn bg-white btn-edit"><i class="las la-edit mr-0 text-center"></i></span><span class="search-replace"></span>
-                                <span class="caret"><!--icon--></span>
-                                </label>
-                                <ul class="dropdown-menu w-100 border-none p-3">
-                                    <li><div class="item mb-2"><i class="ri-pencil-line mr-3"></i>Edit</div></li>
-                                    <li><div class="item"><i class="ri-delete-bin-6-line mr-3"></i>Delete</div></li>
-                                </ul>
-                            </div>
-                        </div>
+                    <div class="d-flex align-items-center justify-content-between"> 
+                        <!--example-->
                     </div>  
                     <div class="create-workform">
-                        <a href="#" data-toggle="modal" data-target="#date-event" class="btn btn-primary pr-5 position-relative">New Schedule<span class="add-btn"><i class="ri-add-line"></i></span></a>
+                        <a href="#" data-toggle="modal" data-target="#date-event" class="btn btn-primary pr-5 position-relative">Registrar Cita<span class="add-btn"><i class="ri-add-line"></i></span></a>
                     </div>                 
                 </div>
 
@@ -252,7 +234,7 @@
                                         <li>Llenar la información con sus datos para creación en el sistema. (Al llenar esta información usted acepta ser contactado por nuestro equipo para fines de atención - Ley de Protección de Datos).</li>
                                         <li>Esta selección - significa una "pre-reserva" de cita, misma que deberá ser cancelada hasta 2 semanas antes de su asistencia.</li>
                                         <li class="mb-2">Cancelación de Cita: En caso de no presentarse a su cita acordada, podrá reagendar sin costo una sola vez. A partir del 2do reagendamiento, se descontará S/. 100 del valor abonado.</li>
-                                        <small><strong>En caso de cancelación de cita/procedimiento se aplicará una penalidad de S/. 100.</strong></small>
+                                        <small><strong>En caso de cancelación de cita/procedimiento se aplicará una penalidad de S/. 100</strong></small>
                                     </ul>
                                 </p>
 
@@ -277,30 +259,46 @@
             <div class="modal-content">
                 <div class="modal-body">
                     <div class="popup text-left">
-                        <h4 class="mb-3">Add Schedule</h4>
+                        <h5 class="mb-3">Introduzca los detalles</h5>
                         <form action="/" id="submit-schedule">
                             <div class="content create-workform row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label class="form-label" for="schedule-title">Schedule For</label>
-                                        <input class="form-control" placeholder="Enter Title" type="text" name="title" id="schedule-title" required />
+                                        <input class="form-control" placeholder="Nombre Completo" type="text" name="nombre" id="nombre" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <input class="form-control" placeholder="Email" type="email" name="correo" id="correo" required />
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label" for="schedule-start-date">Start Date</label>
-                                        <input class="form-control basicFlatpickr date-input" placeholder="2020-06-20" type="text" name="title" id="schedule-start-date" required />
+                                        <input class="form-control" placeholder="D.N.I" type="text" name="dni" id="dni" required maxlength="10"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <input class="form-control" placeholder="Teléfono" type="number" name="telefono" id="telefono" required />
                                     </div>
                                 </div>
+
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label" for="schedule-end-date">End Date</label>
-                                        <input class="form-control basicFlatpickr date-input" placeholder="2020-06-20" type="text" name="title" id="schedule-end-date" required />
+                                        <input class="form-control" placeholder="Fecha Nacimiento" type="date" name="fecha_nac" id="fecha_nac" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <input class="form-control" placeholder="Dirección" type="text" name="direccion" id="direccion" required />
                                     </div>
                                 </div>
-                                <div class="col-md-12">
+
+                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <input class="form-control" type="color" name="title" id="schedule-color" required />
+                                        <label class="form-label" for="schedule-start-date">Cuéntenos algo que nos ayude a prepararnos para la reunión</label>
+                                        <textarea class="form-control" name="comentario" id="comentario" rows="3" cols="6" required></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="schedule-start-date">Fecha Programada</label>
+                                        <input class="form-control date-input" placeholder="2025-06-20" type="date" name="fecha_cita" id="fecha_cita" required />
                                     </div>
                                 </div>
                                 <div class="col-md-12 mt-4">

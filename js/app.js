@@ -530,106 +530,41 @@ Index Of Script
                     $('#date-event').modal('show')
                 },
                 events: [
-                    {
-                        title: 'Click for Google',
-                        url: 'http://google.com/',
-                        start: moment(new Date(), 'YYYY-MM-DD').add(-20, 'days').format('YYYY-MM-DD') + 'T05:30:00.000Z',
-                        color: '#4731b6'
-                    },
-                    {
-                        title: 'All Day Event',
-                        start: moment(new Date(), 'YYYY-MM-DD').add(-18, 'days').format('YYYY-MM-DD') + 'T05:30:00.000Z',
-                        color: '#465af7'
-                    },
-                    {
-                        title: 'Long Event',
-                        start: moment(new Date(), 'YYYY-MM-DD').add(-16, 'days').format('YYYY-MM-DD') + 'T05:30:00.000Z',
-                        end: moment(new Date(), 'YYYY-MM-DD').add(-13, 'days').format('YYYY-MM-DD') + 'T05:30:00.000Z',
-                        color: '#7858d7'
-                    },
-                    {
-                        groupId: '999',
-                        title: 'Repeating Event',
-                        start: moment(new Date(), 'YYYY-MM-DD').add(-14, 'days').format('YYYY-MM-DD') + 'T05:30:00.000Z',
-                        color: '#465af7'
-                    },
-                    {
-                        groupId: '999',
-                        title: 'Repeating Event',
-                        start: moment(new Date(), 'YYYY-MM-DD').add(-12, 'days').format('YYYY-MM-DD') + 'T05:30:00.000Z',
-                        color: '#5baa73'
-                    },
-                    {
-                        groupId: '999',
-                        title: 'Repeating Event',
-                        start: moment(new Date(), 'YYYY-MM-DD').add(-10, 'days').format('YYYY-MM-DD') + 'T05:30:00.000Z',
-                        color: '#01041b'
-                    },
-                    {
-                        title: 'Birthday Party',
-                        start: moment(new Date(), 'YYYY-MM-DD').add(-8, 'days').format('YYYY-MM-DD') + 'T05:30:00.000Z',
-                        color: '#4731b6'
-                    },
-                    {
-                        title: 'Meeting',
-                        start: moment(new Date(), 'YYYY-MM-DD').add(-6, 'days').format('YYYY-MM-DD') + 'T05:30:00.000Z',
-                        color: '#15ca92'
-                    },
-                    {
-                        title: 'Birthday Party',
-                        start: moment(new Date(), 'YYYY-MM-DD').add(-5, 'days').format('YYYY-MM-DD') + 'T05:30:00.000Z',
-                        color: '#f4a965'
-                    },
-                    {
-                        title: 'Birthday Party',
-                        start: moment(new Date(), 'YYYY-MM-DD').add(-2, 'days').format('YYYY-MM-DD') + 'T05:30:00.000Z',
-                        color: '#ea643f'
-                    },
-
-                    {
-                        title: 'Meeting',
-                        start: moment(new Date(), 'YYYY-MM-DD').add(0, 'days').format('YYYY-MM-DD') + 'T05:30:00.000Z',
-                        color: '#15ca92'
-                    },
-                    {
-                        title: 'Click for Google',
-                        url: 'http://google.com/',
-                        start: moment(new Date(), 'YYYY-MM-DD').add(0, 'days').format('YYYY-MM-DD') + 'T06:30:00.000Z',
-                        color: '#4731b6'
-                    },
-                    {
-                        groupId: '999',
-                        title: 'Repeating Event',
-                        start: moment(new Date(), 'YYYY-MM-DD').add(0, 'days').format('YYYY-MM-DD') + 'T07:30:00.000Z',
-                        color: '#5baa73'
-                    },
-                    {
-                        title: 'Birthday Party',
-                        start: moment(new Date(), 'YYYY-MM-DD').add(0, 'days').format('YYYY-MM-DD') + 'T08:30:00.000Z',
-                        color: '#f4a965'
-                    },
-                    {
-                        title: 'Doctor Meeting',
-                        start: moment(new Date(), 'YYYY-MM-DD').add(0, 'days').format('YYYY-MM-DD') + 'T05:30:00.000Z',
-                        color: '#f4a965'
-                    },
-                    {
-                        title: 'All Day Event',
-                        start: moment(new Date(), 'YYYY-MM-DD').add(1, 'days').format('YYYY-MM-DD') + 'T05:30:00.000Z',
-                        color: '#465af7'
-                    },
-                    {
-                        groupId: '999',
-                        title: 'Repeating Event',
-                        start: moment(new Date(), 'YYYY-MM-DD').add(8, 'days').format('YYYY-MM-DD') + 'T05:30:00.000Z',
-                        color: '#465af7'
-                    },
-                    {
-                        groupId: '999',
-                        title: 'Repeating Event',
-                        start: moment(new Date(), 'YYYY-MM-DD').add(10, 'days').format('YYYY-MM-DD') + 'T05:30:00.000Z',
-                        color: '#5baa73'
-                    }
+                    { title: 'Dra. Belén',        start: '2025-09-29T08:00', end: '2025-09-29T13:30', color: '#15ca92' },
+                    { title: 'Dra. Ma. Cristina', start: '2025-09-29T12:45', end: '2025-09-29T16:30', color: '#007bff' },
+                    { title: 'Dra. Belén',        start: '2025-09-30T13:00', end: '2025-09-30T20:00', color: '#15ca92' },
+                    { title: 'Dra. Belén',        start: '2025-10-01T08:00', end: '2025-10-01T15:00', color: '#15ca92' },
+                    { title: 'Dra. Ma. Cristina', start: '2025-10-01T12:45', end: '2025-10-01T16:30', color: '#007bff' },
+                    { title: 'Dra. Adela',        start: '2025-10-02T08:00', end: '2025-10-02T12:00', color: '#ff6fa3' },
+                    { title: 'Dra. Adela',        start: '2025-10-02T13:00', end: '2025-10-02T15:15', color: '#ff6fa3' },
+                    { title: 'Dra. Belén',        start: '2025-10-02T13:00', end: '2025-10-02T20:00', color: '#15ca92' },
+                    { title: 'Dra. Belén', start: '2025-10-03T08:00', end: '2025-10-03T14:15', color: '#15ca92' },
+                    { title: 'Dra. Ma. Cristina', start: '2025-10-03T08:15', end: '2025-10-03T14:15', color: '#007bff' },
+                    { title: 'Dra. Adela',        start: '2025-10-04T08:00', end: '2025-10-04T14:00', color: '#ff6fa3' },
+                    { title: 'Dra. Ma. Cristina', start: '2025-10-06T08:15', end: '2025-10-06T14:15', color: '#007bff' },
+                    { title: 'Dra. Adela',        start: '2025-10-07T08:00', end: '2025-10-07T12:00', color: '#ff6fa3' },
+                    { title: 'Dra. Adela',        start: '2025-10-07T13:00', end: '2025-10-07T15:15', color: '#ff6fa3' },
+                    { title: 'FERIADO',           start: '2025-10-08', allDay: true, color: '#ffc107' },
+                    { title: 'Dra. Adela',        start: '2025-10-09T08:00', end: '2025-10-09T12:45', color: '#ff6fa3' },
+                    { title: 'Dra. Ma. Cristina', start: '2025-10-10T08:15', end: '2025-10-10T14:15', color: '#007bff' },
+                    { title: 'Dra. Ma. Cristina', start: '2025-10-11T08:00', end: '2025-10-11T14:00', color: '#007bff' },
+                    { title: 'Dra. Belén',        start: '2025-10-13T09:00', end: '2025-10-13T13:30', color: '#15ca92' },
+                    { title: 'Dra. Ma. Cristina', start: '2025-10-13T12:45', end: '2025-10-13T16:30', color: '#007bff' },
+                    { title: 'Dra. Adela',        start: '2025-10-14T08:00', end: '2025-10-14T12:00', color: '#ff6fa3' },
+                    { title: 'Dra. Adela',        start: '2025-10-14T13:00', end: '2025-10-14T16:00', color: '#ff6fa3' },
+                    { title: 'Dra. Belén',        start: '2025-10-14T13:00', end: '2025-10-14T20:00', color: '#15ca92' },
+                    { title: 'Dra. Ma. Cristina', start: '2025-10-15T08:15', end: '2025-10-15T14:15', color: '#007bff' },
+                    { title: 'Dra. Adela',        start: '2025-10-16T08:00', end: '2025-10-16T12:45', color: '#ff6fa3' },
+                    { title: 'Dra. Ma. Cristina', start: '2025-10-17T08:15', end: '2025-10-17T14:15', color: '#007bff' },
+                    { title: 'Dra. Adela',        start: '2025-10-18T08:00', end: '2025-10-18T14:00', color: '#ff6fa3' },
+                    { title: 'Dra. Ma. Cristina', start: '2025-10-18T08:00', end: '2025-10-18T14:00', color: '#007bff' },
+                    { title: 'Dra. Ma. Cristina', start: '2025-10-20T08:15', end: '2025-10-20T14:15', color: '#007bff' },
+                    { title: 'Dra. Adela',        start: '2025-10-21T08:00', end: '2025-10-21T12:00', color: '#ff6fa3' },
+                    { title: 'Dra. Adela',        start: '2025-10-21T13:00', end: '2025-10-21T16:00', color: '#ff6fa3' },
+                    { title: 'Dra. Belén',        start: '2025-10-21T13:00', end: '2025-10-21T20:00', color: '#15ca92' },
+                    { title: 'Dra. Belén',        start: '2025-10-22T08:00', end: '2025-10-22T15:00', color: '#15ca92' },
+                    { title: 'Dra. Ma. Cristina', start: '2025-10-22T12:45', end: '2025-10-22T16:30', color: '#007bff' },
+                    { title: 'Congreso (todas las doctoras)', start: '2025-10-23', end: '2025-10-26', allDay: true, color: '#ffc107' }
                 ]
             });
             calendar1.render();
