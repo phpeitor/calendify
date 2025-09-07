@@ -726,11 +726,9 @@ Index Of Script
                 const comentario  = $f.find('#comentario').val();
                 const fecha_cita  = $f.find('#fecha_cita').val();
 
-                // del select de horario (value = "startISO|endISO")
                 const horarioVal  = $f.find('select[name="horario"]').val() || '';
                 const [start, end] = horarioVal.split('|');
 
-                // Validación mínima
                 if (!profesional || !nombre || !fecha_cita || !start || !end) {
                     (window.showAlert ? showAlert : alert)('Completa los campos obligatorios');
                     return;
@@ -751,9 +749,9 @@ Index Of Script
                     if (!res.ok || !json.ok) throw new Error(json.error || 'No se pudo guardar');
 
                     (window.showAlert ? showAlert : alert)('Cita guardada correctamente');
-                    // opcional: cerrar modal y resetear form
+
                     $('#date-event').modal('hide');
-                    // $f[0].reset();
+                    //$f[0].reset();
                 } catch (err) {
                     console.error(err);
                     (window.showAlert ? showAlert : alert)(`Error: ${err.message || err}`);

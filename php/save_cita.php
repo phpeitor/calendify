@@ -94,29 +94,31 @@ if (!is_array($data) || !isset($data['events']) || !is_array($data['events'])) {
   $data = ['events' => []];
 }
 
+
+$startHHMM = substr($startIso, 11, 5); 
+
 foreach ($data['events'] as $ev) {
   if (($ev['profesional'] ?? '') !== $profesional) continue;
   if (($ev['fecha_cita'] ?? '') !== $fecha_cita)   continue;
 
   $evStart = (string)($ev['start'] ?? '');
-  $evEnd   = (string)($ev['end'] ?? '');
+  if ($evStart === '') continue;
 
-  $evStartIso = (strlen($evStart) > 5 || strpos($evStart, 'T') !== false)
-    ? isoTrim($evStart)
-    : ($fecha_cita . 'T' . substr($evStart, 0, 5));
+  if (strpos($evStart, 'T') !== false || strlen($evStart) > 5) {
+    $evStartHHMM = substr($evStart, 11, 5);
+  } else {
+    $evStartHHMM = substr($evStart, 0, 5);
+  }
 
-  $evEndIso = (strlen($evEnd) > 5 || strpos($evEnd, 'T') !== false)
-    ? isoTrim($evEnd)
-    : ($fecha_cita . 'T' . substr($evEnd, 0, 5));
-
-  if (overlaps($evStartIso, $evEndIso, $startIso, $endIso)) {
+  if ($evStartHHMM === $startHHMM) {
     flock($fp, LOCK_UN);
     fclose($fp);
     http_response_code(409);
-    echo json_encode(['ok' => false, 'error' => 'Ese horario ya está reservado para este profesional.']);
+    echo json_encode(['ok' => false, 'error' => 'Ya existe una cita para este profesional a la misma hora.']);
     exit;
   }
 }
+
 
 $startHHMM = substr($startIso, 11, 5); 
 $endHHMM   = substr($endIso,   11, 5); 
