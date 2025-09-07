@@ -461,13 +461,11 @@ Index Of Script
             $(target).html(value)
         })
 
-        // Goto workflow page
         const urlParams = new URLSearchParams(window.location.search);
         const activeTab = '#' +urlParams.get('activeTab');
         if ($(activeTab).length > 0) {
             $(activeTab).tab('show')
         }
-
 
         function random(length) {
             let result = ''
@@ -545,6 +543,48 @@ Index Of Script
             function formatHM(iso) { return iso.substring(11,16); }
 
             const BLOCK_COLOR = '#ffc107';
+            const APPT_STEP_MIN = 45;
+
+            function pad2(n){ return String(n).padStart(2,'0'); }
+            function minutesFromISO(iso){ const [H,M] = iso.slice(11,16).split(':').map(Number); return H*60 + M; }
+            function hmFromMinutes(m){ const h = Math.floor(m/60), mm = m%60; return `${pad2(h)}:${pad2(mm)}`; }
+
+            function makeSlotsAligned(startISO, endISO, step=APPT_STEP_MIN){
+                const s = minutesFromISO(startISO), e = minutesFromISO(endISO);
+                if (e <= s) return [];
+                const offset = (e - s) % step;        
+                const first  = s + offset;
+                const out = [];
+                for (let t = first; t <= e; t += step) out.push(hmFromMinutes(t));
+                return out;
+            }
+
+            function fillHorarioSlotsForProfessional(pro){
+                resetHorarios();
+                if (!pro) return;
+
+                const ranges = dayEventsCache
+                    .filter(e => e.profesional === pro)
+                    .sort((a,b) => a.start.localeCompare(b.start));
+
+                const used = new Set();
+                ranges.forEach(r => {
+                    const day = r.start.slice(0,10);
+                    const slots = makeSlotsAligned(r.start, r.end, 45);
+                    slots.forEach(hhmm => {
+                    const startISO = `${day}T${hhmm}:00`;
+                    const endMin   = minutesFromISO(startISO) + 45;
+                    const endISO   = `${day}T${hmFromMinutes(endMin)}:00`;
+                    const value    = `${startISO}|${endISO}`;      
+                    if (!used.has(value)) {
+                        $horaSel.append(`<option value="${value}">${hhmm}</option>`);
+                        used.add(value);
+                    }
+                    });
+                });
+
+                refreshPicker($horaSel);
+            }
 
             function eventCoversDay(e, dateStr) {
                 const start = (e.start || '').slice(0, 10);
@@ -604,80 +644,69 @@ Index Of Script
                 const vistos = new Set();
                 dayEventsCache.forEach(e=>{
                     if (e.profesional && !vistos.has(e.profesional)){
-                    $profSel.append(`<option value="${e.profesional}">${e.profesional}</option>`);
-                    vistos.add(e.profesional);
+                        $profSel.append(`<option value="${e.profesional}">${e.profesional}</option>`);
+                        vistos.add(e.profesional);
                     }
                 });
                 refreshPicker($profSel);
             }
 
             $('#fecha_cita').on('change', function(){
-                const day = this.value.slice(0,10); // "YYYY-MM-DD"
+                const day = this.value.slice(0,10); 
                 populateSelectsForDate(day);
             });
 
 
             // ------- inicializa calendario -------
             const calendar1 = new FullCalendar.Calendar(calendarEl, {
-            selectable: true,
-            plugins: ["timeGrid", "dayGrid", "list", "interaction"],
-            timeZone: "UTC",
-            defaultView: "dayGridMonth",
-            contentHeight: "auto",
-            eventLimit: true,
-            dayMaxEvents: 4,
-            header: { left: "prev,next today", center: "title", right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek" },
+                selectable: true,
+                plugins: ["timeGrid", "dayGrid", "list", "interaction"],
+                timeZone: "UTC",
+                defaultView: "dayGridMonth",
+                contentHeight: "auto",
+                eventLimit: true,
+                dayMaxEvents: 4,
+                header: { left: "prev,next today", center: "title", right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek" },
+                dateClick: function (info) {
+                    const day = info.dateStr.slice(0,10);
+                    if (isBlockedDay(day)) return;
+                    if (isPastDay(day)) return;
 
-            dateClick: function (info) {
-                
-                const day = info.dateStr.slice(0,10);
+                    dayEventsCache = eventsData.filter(e => !e.allDay && e.start.slice(0,10) === day);
 
-                if (isBlockedDay(day)) return;
-
-                if (isPastDay(day)) return;
-
-                dayEventsCache = eventsData.filter(e => !e.allDay && e.start.slice(0,10) === day);
-
-                if (dayEventsCache.length === 0) {
-                    showAlert('Sin programación para el día: '+ day);
-                    return;
-                }
-
-                $('#fecha_cita').val(day);
-                resetProfesionales(); resetHorarios();
-                const vistos = new Set();
-                dayEventsCache.forEach(e => {
-                    if (e.profesional && !vistos.has(e.profesional)) {
-                        $profSel.append(`<option value="${e.profesional}">${e.profesional}</option>`);
-                        vistos.add(e.profesional);
+                    if (dayEventsCache.length === 0) {
+                        showAlert('Sin programación para el día: '+ day);
+                        return;
                     }
-                });
-                
-                if ($('.selectpicker').length) $('.selectpicker').selectpicker('refresh');
 
-                $('#date-event').modal('show');
-            },
+                    $('#fecha_cita').val(day);
+                    resetProfesionales(); resetHorarios();
+                    const vistos = new Set();
+                    dayEventsCache.forEach(e => {
+                        if (e.profesional && !vistos.has(e.profesional)) {
+                            $profSel.append(`<option value="${e.profesional}">${e.profesional}</option>`);
+                            vistos.add(e.profesional);
+                        }
+                    });
+                    
+                    if ($('.selectpicker').length) $('.selectpicker').selectpicker('refresh');
 
-            events: eventsData
+                    $('#date-event').modal('show');
+                },
+                events: eventsData
             });
 
             calendar1.render();
 
-            // ------- cambio de profesional -> horarios -------
-            $profSel.on('change', function () {
-                resetHorarios();
+            $('[name="profesional"]').off('change.gen45').on('change.gen45', function(){
                 const pro = $(this).val();
-                if (!pro) return;
-                const slots = dayEventsCache.filter(e => e.profesional === pro);
-                slots.forEach(e => {
-                    const label = `${formatHM(e.start)} - ${formatHM(e.end)}`;
-                    const value = `${e.start}|${e.end}`;
-                    $horaSel.append(`<option value="${value}">${label}</option>`);
-                });
-                refreshPicker($horaSel);
+                fillHorarioSlotsForProfessional(pro);
             });
 
-            // ------- agregar nuevo evento desde el modal (opcional) -------
+            $('[name="horario"]').off('change.keep').on('change.keep', function(){
+                const val = $(this).val(); 
+            });
+
             $(document).on("submit", "#submit-schedule", function (e) {
                 e.preventDefault();
                 const title = $(this).find('#schedule-title').val();
