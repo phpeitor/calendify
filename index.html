@@ -31,15 +31,16 @@
                       <div class="iq-navbar-logo d-flex align-items-center justify-content-between">
                           <i class="ri-menu-line wrapper-menu"></i>
                           <a href="index.html" class="header-logo">
-                              <img src="./images/logo.png" class="img-fluid rounded-normal light-logo" alt="logo">
-                              <img src="./images/logo-white.png" class="img-fluid rounded-normal darkmode-logo" alt="logo">
-                          </a>
+                              <img src="./images/logo.gif" class="img-fluid rounded-normal light-logo" alt="logo">
+                              <img src="./images/logo.gif" class="img-fluid rounded-normal darkmode-logo" alt="logo">
+                          </a> 
+                          <a href="#" class="mt-2 badge border border-danger text-danger">Calendify</a>
                       </div>
                       <div class="iq-menu-horizontal">
                           <nav class="iq-sidebar-menu">
                               <div class="iq-sidebar-logo d-flex align-items-center justify-content-between">
                                   <a href="index.html" class="header-logo">
-                                      <img src="./images/logo.png" class="img-fluid rounded-normal" alt="logo">
+                                      <img src="./images/logo.gif" class="img-fluid rounded-normal" alt="logo">
                                   </a>
                                   <div class="iq-menu-bt-sidebar">
                                       <i class="las la-bars wrapper-menu"></i>
@@ -85,10 +86,10 @@
                                                       <a href="#" class="iq-sub-card">
                                                           <div class="media align-items-center cust-card p-2">
                                                               <div class="">
-                                                                  <img class="avatar-40 rounded-small" src="./images/u-1.jpg" alt="01">
+                                                                  <img class="avatar-40 rounded-small" src="./images/09.jpg" alt="01">
                                                               </div>
                                                               <div class="media-body ml-3">
-                                                                  <h6 class="mb-0">Barry Emma Watson</h6>
+                                                                  <h6 class="mb-0">Dra. Belén</h6>
                                                                   <small class="mb-0">We Want to see you On..</small>
                                                               </div>
                                                           </div>
@@ -96,10 +97,10 @@
                                                       <a href="#" class="iq-sub-card">
                                                           <div class="media align-items-center cust-card p-2">
                                                               <div class="">
-                                                                  <img class="avatar-40 rounded-small" src="./images/u-2.jpg" alt="02">
+                                                                  <img class="avatar-40 rounded-small" src="./images/03.jpg" alt="02">
                                                               </div>
                                                               <div class="media-body ml-3">
-                                                                  <h6 class="mb-0">Lorem Ipsum Watson</h6>
+                                                                  <h6 class="mb-0">Dra. Ma. Cristina</h6>
                                                                   <small class="mb-0">Can we have a Call?</small>
                                                               </div>
                                                           </div>
@@ -107,10 +108,10 @@
                                                       <a href="#" class="iq-sub-card">
                                                           <div class="media align-items-center cust-card p-2">
                                                               <div class="">
-                                                                  <img class="avatar-40 rounded-small" src="./images/u-3.jpg" alt="03">
+                                                                  <img class="avatar-40 rounded-small" src="./images/05.jpg" alt="03">
                                                               </div>
                                                               <div class="media-body ml-3">
-                                                                  <h6 class="mb-0">Why do we use it?</h6>
+                                                                  <h6 class="mb-0">Dra. Adela</h6>
                                                                   <small class="mb-0">Thank You but now we Don't...</small>
                                                               </div>
                                                           </div>
@@ -198,7 +199,7 @@
     <div class="container">
         <div class="row">
             
-            <div class="col-lg-12 mb-4">
+            <div class="col-lg-12 mt-4">
                 <div class="d-flex flex-wrap align-items-center justify-content-between my-schedule mb-3">
                     <div class="d-flex align-items-center justify-content-between"> 
                         <h3>Consultas Presenciales <span id="mes_div"></span></h3>
@@ -261,7 +262,7 @@
 
                                 <div class="col-md-6 mt-0">
                                     <div class="form-group">
-                                        <select name="profesional" class="selectpicker form-control" data-style="py-0" required>
+                                        <select id="profesional" name="profesional" class="selectpicker form-control" data-style="py-0" required>
                                             <option>Seleccione profesional..</option>
                                         </select>
                                     </div>
@@ -269,7 +270,7 @@
 
                                 <div class="col-md-6 mt-0">
                                     <div class="form-group">
-                                         <select name="horario" class="selectpicker form-control" data-style="py-0" required>
+                                         <select id="horario" name="horario" class="selectpicker form-control" data-style="py-0" required>
                                             <option>Seleccione horario..</option>
                                         </select>
                                     </div>
@@ -313,7 +314,7 @@
                                 <div class="col-md-12 mt-0">
                                     <div class="form-group">
                                         <label class="form-label" for="schedule-start-date">Cuéntenos algo que nos ayude a prepararnos para la reunión</label>
-                                        <textarea class="form-control" name="comentario" id="comentario" rows="2" cols="4" required></textarea>
+                                        <textarea class="form-control" name="comentario" id="comentario" placeholder="Escribe mensaje aqui" rows="2" cols="4" required></textarea>
                                     </div>
                                 </div>
 
