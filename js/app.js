@@ -713,11 +713,51 @@ Index Of Script
                 const val = $(this).val(); 
             });
 
-            $(document).on("submit", "#submit-schedule", function (e) {
+            $(document).on("submit", "#submit-schedule", async function (e) {
                 e.preventDefault();
-                const title = $(this).find('#schedule-title').val();
-                
-                
+                const $f = $(this);
+                const profesional = $f.find('#profesional').val();
+                const nombre      = $f.find('#nombre').val();
+                const correo      = $f.find('#correo').val();
+                const dni         = $f.find('#dni').val();
+                const fecha_nac   = $f.find('#fecha_nac').val();
+                const telefono    = $f.find('#telefono').val();
+                const direccion   = $f.find('#direccion').val();
+                const comentario  = $f.find('#comentario').val();
+                const fecha_cita  = $f.find('#fecha_cita').val();
+
+                // del select de horario (value = "startISO|endISO")
+                const horarioVal  = $f.find('select[name="horario"]').val() || '';
+                const [start, end] = horarioVal.split('|');
+
+                // Validación mínima
+                if (!profesional || !nombre || !fecha_cita || !start || !end) {
+                    (window.showAlert ? showAlert : alert)('Completa los campos obligatorios');
+                    return;
+                }
+
+                const payload = {
+                    profesional, nombre, correo, dni, fecha_nac, telefono, direccion, comentario,
+                    fecha_cita, start, end
+                };
+
+                try {
+                    const res = await fetch('php/save_cita.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json; charset=UTF-8' },
+                    body: JSON.stringify(payload)
+                    });
+                    const json = await res.json();
+                    if (!res.ok || !json.ok) throw new Error(json.error || 'No se pudo guardar');
+
+                    (window.showAlert ? showAlert : alert)('Cita guardada correctamente');
+                    // opcional: cerrar modal y resetear form
+                    $('#date-event').modal('hide');
+                    // $f[0].reset();
+                } catch (err) {
+                    console.error(err);
+                    (window.showAlert ? showAlert : alert)(`Error: ${err.message || err}`);
+                }
             });
         });
     }
