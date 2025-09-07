@@ -304,7 +304,13 @@ Index Of Script
         * -----------------------------------------------------------------*/
       if (jQuery.fn.flatpickr !== undefined) {
           if (jQuery('.basicFlatpickr').length > 0) {
-              jQuery('.basicFlatpickr').flatpickr();
+              //jQuery('.basicFlatpickr').flatpickr();
+              flatpickr(".basicFlatpickr", {
+                //appendTo: document.querySelector(".modal"),
+                static: true,
+                dateFormat: "Y-m-d",    
+                maxDate: new Date().fp_incr(-6570) 
+             });
           }
 
           if (jQuery('#inputTime').length > 0) {
@@ -710,21 +716,12 @@ Index Of Script
             $(document).on("submit", "#submit-schedule", function (e) {
                 e.preventDefault();
                 const title = $(this).find('#schedule-title').val();
-                const startDate = moment(new Date($(this).find('#schedule-start-date').val()), 'YYYY-MM-DD').format('YYYY-MM-DD') + 'T05:30:00';
-                const endDate   = moment(new Date($(this).find('#schedule-end-date').val()),   'YYYY-MM-DD').format('YYYY-MM-DD') + 'T05:30:00';
-                const color = $(this).find('#schedule-color').val() || '#7858d7';
-
-                const event = { title, start: startDate, end: endDate, color };
-                $(this).closest('#date-event').modal('hide');
-
-                calendar1.addEvent(event);
-                // también lo guardamos en memoria (no persiste a disco)
-                eventsData.push({ profesional: title, title, start: startDate, end: endDate, color });
+                
+                
             });
         });
     }
 
-    // Enable all tooltips
     $('[data-toggle="tooltip"]').tooltip();
     // quill
     if (jQuery("#editor").length) {
