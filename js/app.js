@@ -751,7 +751,7 @@ Index Of Script
                     (window.showAlert ? showAlert : alert)('Cita guardada correctamente');
 
                     $('#date-event').modal('hide');
-                    //$f[0].reset();
+                    $f[0].reset();
                 } catch (err) {
                     console.error(err);
                     (window.showAlert ? showAlert : alert)(`Error: ${err.message || err}`);
