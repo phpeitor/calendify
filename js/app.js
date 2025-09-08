@@ -796,6 +796,21 @@ Index Of Script
        $(".file-upload").trigger('click');
     });
 
+
+    document.querySelectorAll('[data-open]').forEach(el => {
+        el.addEventListener('click', e => {
+        e.preventDefault(); 
+        const dlg = document.getElementById(el.getAttribute('data-open'));
+        if (dlg) dlg.showModal();
+        });
+    });
+
+    document.querySelectorAll('[data-close]').forEach(btn => {
+        btn.addEventListener('click', () => {
+        btn.closest('dialog').close();
+        });
+    });
+
     /*-------------------------------------------------
                     Wizard Form
     ------------------------------------------------*/

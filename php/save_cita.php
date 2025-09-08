@@ -114,7 +114,7 @@ foreach ($data['events'] as $ev) {
     flock($fp, LOCK_UN);
     fclose($fp);
     http_response_code(409);
-    echo json_encode(['ok' => false, 'error' => 'Ya existe una cita para este profesional a la misma hora.']);
+    echo json_encode(['ok' => false, 'error' => 'Ya existe una cita para este profesional a la misma hora']);
     exit;
   }
 }

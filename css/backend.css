@@ -21470,3 +21470,8 @@ a.back-arrow {
 @media (max-width: 480px) {
   .form-title h4 {
     font-size: 20px; } }
+
+dialog { border-radius:8px; border:1px solid rgba(0,0,0,.12); padding:18px; width:min(720px, 95%); }
+dialog .dialog-header { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:12px; }
+dialog .dialog-body { white-space:pre-wrap; line-height:1.45; }
+dialog .close { background:#ef4444; color:#fff; border:none; padding:6px 10px; border-radius:6px; cursor:pointer; }

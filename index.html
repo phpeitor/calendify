@@ -73,7 +73,7 @@
                                       <a href="#" class="search-toggle dropdown-toggle" id="dropdownMenuButton2" data-toggle="dropdown"
                                           aria-haspopup="true" aria-expanded="false">
                                           <i class="las la-envelope"></i>
-                                          <span class="badge badge-primary count-mail rounded-circle">2</span>
+                                          <span class="badge badge-primary count-mail rounded-circle">3</span>
                                           <span class="bg-primary"></span>
                                       </a>
                                       <div class="iq-sub-dropdown dropdown-menu" aria-labelledby="dropdownMenuButton2">
@@ -83,91 +83,42 @@
                                                       <h5 class="mb-0">All Messages</h5>
                                                   </div>
                                                   <div class="p-2">
-                                                      <a href="#" class="iq-sub-card">
+                                                      <a href="#" class="iq-sub-card" data-open="dlg-pena">
                                                           <div class="media align-items-center cust-card p-2">
                                                               <div class="">
                                                                   <img class="avatar-40 rounded-small" src="./images/09.jpg" alt="01">
                                                               </div>
-                                                              <div class="media-body ml-3">
+                                                              <div class="media-body ml-3"> 
                                                                   <h6 class="mb-0">Dra. Belén</h6>
-                                                                  <small class="mb-0">We Want to see you On..</small>
+                                                                  <small class="mb-0 badge badge-pill border border-success text-success">Horario⏱️</small>
                                                               </div>
                                                           </div>
                                                       </a>
-                                                      <a href="#" class="iq-sub-card">
+                                                      <a href="#" class="iq-sub-card" data-open="dlg-latorre">
                                                           <div class="media align-items-center cust-card p-2">
                                                               <div class="">
                                                                   <img class="avatar-40 rounded-small" src="./images/03.jpg" alt="02">
                                                               </div>
                                                               <div class="media-body ml-3">
                                                                   <h6 class="mb-0">Dra. Ma. Cristina</h6>
-                                                                  <small class="mb-0">Can we have a Call?</small>
+                                                                  <small class="mb-0 badge badge-pill border border-info text-info">Horario🕛</small>
                                                               </div>
                                                           </div>
                                                       </a>
-                                                      <a href="#" class="iq-sub-card">
+                                                      <a href="#" class="iq-sub-card" data-open="dlg-vargas">
                                                           <div class="media align-items-center cust-card p-2">
                                                               <div class="">
                                                                   <img class="avatar-40 rounded-small" src="./images/05.jpg" alt="03">
                                                               </div>
                                                               <div class="media-body ml-3">
                                                                   <h6 class="mb-0">Dra. Adela</h6>
-                                                                  <small class="mb-0">Thank You but now we Don't...</small>
+                                                                  <small class="mb-0 badge badge-pill border border-danger text-danger">Horario🕤</small>
                                                               </div>
                                                           </div>
                                                       </a>
                                                   </div>
                                                   <a class="right-ic btn-block position-relative p-3 border-top text-center" href="#" role="button">
                                                       View All
-                                                  </a>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </li>
-                                  <li class="nav-item nav-icon dropdown">
-                                      <a href="#" class="search-toggle dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown"
-                                          aria-haspopup="true" aria-expanded="false">
-                                          <i class="las la-bell"></i>
-                                          <span class="badge badge-primary count-mail rounded-circle">2</span>
-                                          <span class="bg-primary"></span>
-                                      </a>
-                                      <div class="iq-sub-dropdown dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                          <div class="card shadow-none m-0">
-                                              <div class="card-body p-0 ">
-                                                  <div class="cust-title p-3">
-                                                      <h5 class="mb-0">Notifications</h5>
-                                                  </div>
-                                                  <div class="p-2">
-                                                      <a href="#" class="iq-sub-card">
-                                                          <div class="media align-items-center cust-card p-2">
-                                                              <div class="">
-                                                                  <img class="avatar-40 rounded-small" src="./images/u-1.jpg" alt="01">
-                                                              </div>
-                                                              <div class="media-body ml-3">
-                                                                  <div class="d-flex align-items-center justify-content-between">
-                                                                      <h6 class="mb-0">Anne Effit</h6>
-                                                                  </div>
-                                                                  <small class="mb-0">Manager</small>
-                                                              </div>
-                                                          </div>
-                                                      </a>
-                                                      <a href="#" class="iq-sub-card">
-                                                          <div class="media align-items-center cust-card p-2">
-                                                              <div class="">
-                                                                  <img class="avatar-40 rounded-small" src="./images/u-3.jpg" alt="03">
-                                                              </div>
-                                                              <div class="media-body ml-3">
-                                                                  <div class="d-flex align-items-center justify-content-between">
-                                                                      <h6 class="mb-0">AlopecIA</h6>
-                                                                      <small class="mb-0">08:00 - 20:00</small>
-                                                                  </div>
-                                                                  <small class="mb-0">Bot</small>
-                                                              </div>
-                                                          </div>
-                                                      </a>
-                                                  </div>
-                                                  <a class="right-ic btn-block position-relative p-3 border-top text-center" href="#" role="button">
-                                                      See All Notification
                                                   </a>
                                               </div>
                                           </div>
@@ -392,6 +343,65 @@
             </div>
         </div>
     </footer>
+
+    <!-- Dialogs -->
+    <dialog id="dlg-pena">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <button type="button" class="ml-2 mb-1 close text-white" data-dismiss="toast" aria-label="Close" data-close>
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h5 class="card-title text-white">Dra. María Belén Peña</h5>
+                <blockquote class="mb-1">
+                    <ul class="font-size-8">
+                        <li>Lunes directamente por la central de whatsapp</li>
+                        <li>Viernes: 08h15 - 13h30</li>
+                        <li>Miércoles : 08h15 - 14h15</li>
+                        <li>Martes y Jueves: 13h00 - 19h00</li>
+                        <li>Jueves 18 y viernes 19 no estara disponible en la sede de Lima</li>
+                    </ul>
+                    <footer class="blockquote-footer text-white font-size-12"><cite title="Dra. Alopecia" class="text-white">Dra. Alopecia</cite></footer>
+                </blockquote>
+            </div>
+        </div>
+    </dialog>
+
+    <dialog id="dlg-latorre">
+        <div class="card text-white bg-info">
+            <div class="card-body">
+                <button type="button" class="ml-2 mb-1 close text-white" data-dismiss="toast" aria-label="Close" data-close>
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h5 class="card-title text-white">Dra. María Cristina Latorre</h5>
+                <blockquote class="mb-1">
+                    <ul class="font-size-8">
+                        <li>Lunes 01, 08, 15, 22 y 29: 12h45 - 15h45</li>
+                        <li>Miércoles 03, 10, 17 y 24: 12h45 - 15h45</li>
+                        <li>Viernes 05, 12, 19 y 26: 14h45 - 18h30</li>
+                        <li>Sábado 13 y 27: 08h15 - 12h45</li>
+                    </ul>
+                </blockquote>
+            </div>
+        </div>
+    </dialog>
+
+    <dialog id="dlg-vargas">
+        <div class="card text-white bg-warning">
+            <div class="card-body">
+                <button type="button" class="ml-2 mb-1 close text-white" data-dismiss="toast" aria-label="Close" data-close>
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h5 class="card-title text-white">Dra. Adela Vargas</h5>
+                <blockquote class="mb-1">
+                    <ul class="font-size-8">
+                        <li>Martes 02, 09, 16 y 23: 08h15 - 11h15 y 13h00 - 14h30</li>
+                        <li>Jueves 04, 18 y 25: 08h15 - 12h00</li>
+                        <li>Sábado 06, 13 y 27: 08h15 - 12h45</li>
+                    </ul>
+                </blockquote>
+            </div>
+        </div>
+    </dialog>
 
     <script src="./js/backend-bundle.min.js"></script>
     <script src="./js/customizer.js"></script>
