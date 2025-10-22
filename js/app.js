@@ -469,8 +469,6 @@
         })
     });
 
-    var calendar1;
-
     if (jQuery('#calendar1').length) {
         document.addEventListener('DOMContentLoaded', async function () {
             const calendarEl = document.getElementById('calendar1');
@@ -479,8 +477,11 @@
 
             let eventsData = [];
             let dayEventsCache = [];
+            let citasData = [];       
+            let selectedDay = null;     
 
-            // ------- carga JSON -------
+            await loadCitas(); 
+
             try {
                 const res = await fetch('./js/programacion.json', { cache: 'no-store' });
                 const json = await res.json();
@@ -493,7 +494,6 @@
                 console.error('No se pudo cargar events.json', err);
             }
 
-            // ------- helpers para selects -------
             function refreshPicker($el){ if ($el.selectpicker) $el.selectpicker('refresh'); }
 
             function resetProfesionales() {
@@ -505,8 +505,6 @@
                 $horaSel.empty().append('<option value="">Seleccione horario..</option>');
                 refreshPicker($horaSel);
             }
-
-            function formatHM(iso) { return iso.substring(11,16); }
 
             const BLOCK_COLOR = '#ffc107';
             const APPT_STEP_MIN = 45;
@@ -529,6 +527,7 @@
                 resetHorarios();
                 if (!pro) return;
 
+                const booked = bookedStartsFor(pro, selectedDay);
                 const ranges = dayEventsCache
                     .filter(e => e.profesional === pro)
                     .sort((a,b) => a.start.localeCompare(b.start));
@@ -538,14 +537,17 @@
                     const day = r.start.slice(0,10);
                     const slots = makeSlotsAligned(r.start, r.end, 45);
                     slots.forEach(hhmm => {
-                    const startISO = `${day}T${hhmm}:00`;
-                    const endMin   = minutesFromISO(startISO) + 45;
-                    const endISO   = `${day}T${hmFromMinutes(endMin)}:00`;
-                    const value    = `${startISO}|${endISO}`;      
-                    if (!used.has(value)) {
-                        $horaSel.append(`<option value="${value}">${hhmm}</option>`);
-                        used.add(value);
-                    }
+                        if (booked.has(hhmm)) return;
+
+                        const startISO = `${day}T${hhmm}:00`;
+                        const endMin   = minutesFromISO(startISO) + 45;
+                        const endISO   = `${day}T${hmFromMinutes(endMin)}:00`;
+                        const value    = `${startISO}|${endISO}`;
+
+                        if (!used.has(value)) {
+                            $horaSel.append(`<option value="${value}">${hhmm}</option>`);
+                            used.add(value);
+                        }
                     });
                 });
 
@@ -617,13 +619,35 @@
                 refreshPicker($profSel);
             }
 
+            async function loadCitas() {
+                try {
+                    const res = await fetch('./js/citas.json', { cache: 'no-store' });
+                    const json = await res.json();
+                    citasData = Array.isArray(json.events) ? json.events : [];
+                } catch (e) {
+                    console.warn('No se pudo cargar citas.json', e);
+                    citasData = [];
+                }
+            }
+
+            function bookedStartsFor(pro, dayStr) {
+                const s = new Set();
+                if (!pro || !dayStr) return s;
+                citasData.forEach(ev => {
+                    if ((ev.profesional || '') === pro && (ev.fecha_cita || '') === dayStr) {
+                    const hhmm = String(ev.start || '').slice(0, 5); 
+                    if (hhmm) s.add(hhmm);
+                    }
+                });
+                return s;
+            }
+
             $('#fecha_cita').on('change', function(){
                 const day = this.value.slice(0,10); 
+                selectedDay = day;  
                 populateSelectsForDate(day);
             });
 
-
-            // ------- inicializa calendario -------
             const calendar1 = new FullCalendar.Calendar(calendarEl, {
                 selectable: true,
                 plugins: ["timeGrid", "dayGrid", "list", "interaction"],
@@ -635,6 +659,7 @@
                 header: { left: "prev,next today", center: "title", right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek" },
                 dateClick: function (info) {
                     const day = info.dateStr.slice(0,10);
+                    selectedDay = day; 
                     if (isBlockedDay(day)) return;
                     if (isPastDay(day)) return;
 
@@ -710,8 +735,11 @@
 
                     (window.showAlert ? showAlert : alert)('Cita guardada correctamente');
 
+                    await loadCitas(); 
+                    fillHorarioSlotsForProfessional(profesional); 
+
                     $('#date-event').modal('hide');
-                    $f[0].reset();
+                    $f[0].reset();  
                 } catch (err) {
                     console.error(err);
                     (window.showAlert ? showAlert : alert)(`Error: ${err.message || err}`);
@@ -721,14 +749,12 @@
     }
 
     $('[data-toggle="tooltip"]').tooltip();
-    // quill
     if (jQuery("#editor").length) {
         new Quill('#editor', {theme: 'snow'});
     }
-    // With Tooltip
+
     if (jQuery("#quill-toolbar").length) {
         new Quill('#quill-toolbar', { modules: { toolbar: '#quill-tool' }, placeholder: 'Compose an epic...', theme: 'snow' });
-        // Can control programmatically too
         $('.ql-italic').mouseover();
         setTimeout(function() {
             $('.ql-italic').mouseout();
@@ -747,7 +773,6 @@
         }
     }
 
-
     $(".file-upload").on('change', function(){
         readURL(this);
     });
@@ -755,7 +780,6 @@
     $(".upload-button").on('click', function() {
        $(".file-upload").trigger('click');
     });
-
 
     document.querySelectorAll('[data-open]').forEach(el => {
         el.addEventListener('click', e => {

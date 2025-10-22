@@ -118,7 +118,6 @@ foreach ($data['events'] as $ev) {
   }
 }
 
-
 $startHHMM = substr($startIso, 11, 5); 
 $endHHMM   = substr($endIso,   11, 5); 
 

@@ -1,21 +1,6 @@
 {
     "events": [
         {
-            "id": "cita_68bd5491dc17e9.76451407",
-            "profesional": "Dra. Adela",
-            "nombre": "prueba",
-            "correo": "alex1991usat@gmail.com",
-            "dni": "46798772",
-            "fecha_nac": "2007-09-05",
-            "telefono": "942890820",
-            "direccion": "test",
-            "comentario": "comenta",
-            "fecha_cita": "2025-10-02",
-            "start": "09:00",
-            "end": "09:45",
-            "createdAt": "2025-09-07 04:46:57"
-        },
-        {
             "id": "cita_68f83b4303ede6.29585221",
             "profesional": "Dra. Belén",
             "nombre": "Alejandro",
@@ -29,6 +14,36 @@
             "start": "09:00",
             "end": "09:45",
             "createdAt": "2025-10-21 21:02:43"
+        },
+        {
+            "id": "cita_68f849ffb428c1.64998770",
+            "profesional": "Dra. Belén",
+            "nombre": "ALEJANDRO manuel",
+            "correo": "alex1991usat@gmail.com",
+            "dni": "46798772",
+            "fecha_nac": "2007-10-04",
+            "telefono": "942890820",
+            "direccion": "test",
+            "comentario": "aaa",
+            "fecha_cita": "2025-10-22",
+            "start": "08:15",
+            "end": "09:00",
+            "createdAt": "2025-10-21 22:05:35"
+        },
+        {
+            "id": "cita_68f84a5c822cb6.99120696",
+            "profesional": "Dra. Belén",
+            "nombre": "kkk",
+            "correo": "alex1991usat@gmail.com",
+            "dni": "",
+            "fecha_nac": "2007-10-05",
+            "telefono": "942890820",
+            "direccion": "test",
+            "comentario": ",,,",
+            "fecha_cita": "2025-10-22",
+            "start": "10:30",
+            "end": "11:15",
+            "createdAt": "2025-10-21 22:07:08"
         }
     ]
 }
