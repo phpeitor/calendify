@@ -537,7 +537,11 @@
                     const day = r.start.slice(0,10);
                     const slots = makeSlotsAligned(r.start, r.end, 45);
                     slots.forEach(hhmm => {
-                        if (booked.has(hhmm)) return;
+                       
+                        if (booked.has(hhmm)) {
+                            $horaSel.append(`<option value="" disabled>${hhmm} (ocupado)</option>`);
+                            return;
+                        }
 
                         const startISO = `${day}T${hhmm}:00`;
                         const endMin   = minutesFromISO(startISO) + 45;
@@ -577,21 +581,23 @@
                 return dateStr < todayStr;
             }
 
-            function showAlert(msg) {
-                let $c = $('#calendar-alert');
-                if (!$c.length) $c = $('<div id="calendar-alert" class="mt-2"></div>').insertBefore('#calendar1');
+            function showAlert(msg, type = 'error') {
+                alertify.set('notifier','position', 'top-right');
 
-                $c.html(`
-                    <div class="alert text-white bg-danger fade show" role="alert">
-                    <div class="iq-alert-icon"><i class="ri-information-line"></i></div>
-                    <div class="iq-alert-text">${msg}</div>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <i class="ri-close-line"></i>
-                    </button>
-                    </div>
-                `);
-
-                setTimeout(() => { $c.find('.alert').alert('close'); }, 4000);
+                switch (type) {
+                    case 'success':
+                    alertify.success(msg);
+                    break;
+                    case 'warning':
+                    alertify.warning(msg);
+                    break;
+                    case 'message':
+                    case 'info':
+                    alertify.message(msg);
+                    break;
+                    default:
+                    alertify.error(msg);
+                }
             }
 
             function populateSelectsForDate(day){
@@ -599,13 +605,13 @@
                 resetHorarios();
 
                 if (!day) return;
-                if (isBlockedDay(day)) { showAlert('Este día está bloqueado'); return; }
-                if (isPastDay(day)) { showAlert('No puedes seleccionar un día pasado'); return; }
+                if (isBlockedDay(day)) { showAlert('Este día está bloqueado', 'warning'); return; }
+                if (isPastDay(day)) { showAlert('No puedes seleccionar un día pasado', 'warning'); return; }
 
                 dayEventsCache = eventsData.filter(e => !e.allDay && e.start.slice(0,10) === day);
 
                 if (dayEventsCache.length === 0){
-                    showAlert('No hay eventos para este día');
+                    showAlert('No hay eventos para este día', 'warning');
                     return;
                 }
 
@@ -666,7 +672,7 @@
                     dayEventsCache = eventsData.filter(e => !e.allDay && e.start.slice(0,10) === day);
 
                     if (dayEventsCache.length === 0) {
-                        showAlert('Sin programación para el día: '+ day);
+                        showAlert('Sin programación para el día: '+ day, 'warning');
                         return;
                     }
 
@@ -681,7 +687,6 @@
                     });
                     
                     if ($('.selectpicker').length) $('.selectpicker').selectpicker('refresh');
-
                     $('#date-event').modal('show');
                 },
                 events: eventsData
@@ -715,7 +720,7 @@
                 const [start, end] = horarioVal.split('|');
 
                 if (!profesional || !nombre || !fecha_cita || !start || !end) {
-                    (window.showAlert ? showAlert : alert)('Completa los campos obligatorios');
+                    showAlert('Completa los campos obligatorios', 'warning');
                     return;
                 }
 
@@ -726,15 +731,13 @@
 
                 try {
                     const res = await fetch('php/save_cita.php', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json; charset=UTF-8' },
-                    body: JSON.stringify(payload)
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json; charset=UTF-8' },
+                        body: JSON.stringify(payload)
                     });
                     const json = await res.json();
                     if (!res.ok || !json.ok) throw new Error(json.error || 'No se pudo guardar');
-
-                    (window.showAlert ? showAlert : alert)('Cita guardada correctamente');
-
+                    showAlert('Cita guardada correctamente', 'success');
                     await loadCitas(); 
                     fillHorarioSlotsForProfessional(profesional); 
 
@@ -742,7 +745,7 @@
                     $f[0].reset();  
                 } catch (err) {
                     console.error(err);
-                    (window.showAlert ? showAlert : alert)(`Error: ${err.message || err}`);
+                    showAlert(`Error: ${err.message || err}`, 'error');
                 }
             });
         });
