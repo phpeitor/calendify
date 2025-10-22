@@ -5,18 +5,6 @@
 
     jQuery(document).ready(function() {
 
-        function todayLocalYYYYMMDD(){
-            const d = new Date();
-            d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
-            return d.toISOString().slice(0,10); 
-        }
-
-        const todayStr = todayLocalYYYYMMDD();
-        $('#fecha_cita').attr('min', todayStr);
-
-        const $fc = $('#fecha_cita');
-        if ($fc.val() && $fc.val().slice(0,10) < todayStr) $fc.val('');
-
         jQuery('[data-toggle="popover"]').popover();
         jQuery('[data-toggle="tooltip"]').tooltip();
 
@@ -581,11 +569,6 @@
                 );
             }
 
-            function isPastDay(dateStr) {
-                const todayStr = new Date().toISOString().slice(0,10); 
-                return dateStr < todayStr;
-            }
-
             function showAlert(msg, type = 'error') {
                 alertify.set('notifier','position', 'top-right');
 
@@ -651,6 +634,29 @@
                     }
                 });
                 return s;
+            }
+
+            function todayLocalYYYYMMDD(){
+                const d = new Date();
+                d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+                return d.toISOString().slice(0,10); 
+            }
+
+            const todayStr = todayLocalYYYYMMDD();
+            const $fc = $('#fecha_cita');
+
+            $fc.attr('min', todayStr);
+
+            $fc.on('input change blur', function () {
+                const v = (this.value || '').slice(0,10);
+                if (v && v < todayStr) {
+                    this.value = '';    
+                    showAlert('Ingrese una fecha correcta', 'warning'); 
+                }
+            });
+
+            function isPastDay(dateStr) {
+                return dateStr < todayLocalYYYYMMDD();
             }
 
             $('#fecha_cita').on('change', function(){
