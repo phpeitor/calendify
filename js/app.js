@@ -5,15 +5,20 @@
 
     jQuery(document).ready(function() {
 
-        /*---------------------------------------------------------------------
-        Tooltip
-        -----------------------------------------------------------------------*/
+        function todayLocalYYYYMMDD(){
+            const d = new Date();
+            d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+            return d.toISOString().slice(0,10); 
+        }
+
+        const todayStr = todayLocalYYYYMMDD();
+        $('#fecha_cita').attr('min', todayStr);
+
+        const $fc = $('#fecha_cita');
+        if ($fc.val() && $fc.val().slice(0,10) < todayStr) $fc.val('');
+
         jQuery('[data-toggle="popover"]').popover();
         jQuery('[data-toggle="tooltip"]').tooltip();
-
-        /*---------------------------------------------------------------------
-        Fixed Nav
-        -----------------------------------------------------------------------*/
 
         $(window).on('scroll', function () {
             if ($(window).scrollTop() > 0) {
@@ -715,7 +720,6 @@
                 const direccion   = $f.find('#direccion').val();
                 const comentario  = $f.find('#comentario').val();
                 const fecha_cita  = $f.find('#fecha_cita').val();
-
                 const horarioVal  = $f.find('select[name="horario"]').val() || '';
                 const [start, end] = horarioVal.split('|');
 
@@ -729,24 +733,42 @@
                     fecha_cita, start, end
                 };
 
-                try {
-                    const res = await fetch('php/save_cita.php', {
+                const $btn = $f.find('button[type="submit"]');
+
+                alertify.confirm('¿Desea agendar su cita?',
+                async function onOk () {
+                    const savingToast = alertify.message('Guardando…', 0) 
+                    try {
+                        $btn.prop('disabled', true);
+
+                        const res  = await fetch('php/save_cita.php', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json; charset=UTF-8' },
                         body: JSON.stringify(payload)
-                    });
-                    const json = await res.json();
-                    if (!res.ok || !json.ok) throw new Error(json.error || 'No se pudo guardar');
-                    showAlert('Cita guardada correctamente', 'success');
-                    await loadCitas(); 
-                    fillHorarioSlotsForProfessional(profesional); 
+                        });
 
-                    $('#date-event').modal('hide');
-                    $f[0].reset();  
-                } catch (err) {
-                    console.error(err);
-                    showAlert(`Error: ${err.message || err}`, 'error');
+                        const json = await res.json();
+                        if (!res.ok || !json.ok) throw new Error(json.error || 'No se pudo guardar');
+
+                        savingToast.dismiss();   
+                        showAlert('Cita guardada correctamente', 'success');
+                        await loadCitas();
+                        fillHorarioSlotsForProfessional(profesional);
+                        $('#date-event').modal('hide');
+                        $f[0].reset();
+                    } catch (err) {
+                        savingToast.dismiss();    
+                        showAlert(`Error: ${err.message || err}`, 'error');
+                    } finally {
+                        $btn.prop('disabled', false);
+                    }
+                },
+                function onCancel () { 
+                    showAlert('Operación cancelada', 'message');
                 }
+                ).set('title', 'Confirmación de cita')
+                .set('labels', { ok: 'Aceptar', cancel: 'Cancelar' })
+                .set('closable', false);
             });
         });
     }
