@@ -14,6 +14,21 @@
             "start": "09:00",
             "end": "09:45",
             "createdAt": "2025-09-07 04:46:57"
+        },
+        {
+            "id": "cita_68f83b4303ede6.29585221",
+            "profesional": "Dra. Belén",
+            "nombre": "Alejandro",
+            "correo": "alex1991usat@gmail.com",
+            "dni": "46798772",
+            "fecha_nac": "1991-10-03",
+            "telefono": "942890820",
+            "direccion": "test direccion",
+            "comentario": "todo ok",
+            "fecha_cita": "2025-10-22",
+            "start": "09:00",
+            "end": "09:45",
+            "createdAt": "2025-10-21 21:02:43"
         }
     ]
 }

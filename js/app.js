@@ -1,45 +1,5 @@
-/*
-Template: Calendify - Responsive Bootstrap 4 Admin Dashboard Template
-Author: iqonicthemes.in
-Design and Developed by: iqonicthemes.in
-NOTE: This file contains the styling for responsive Template.
-*/
-
-/*----------------------------------------------
-Index Of Script
-------------------------------------------------
-
-:: Tooltip
-:: Fixed Nav
-:: Ripple Effect
-:: Sidebar Widget
-:: FullScreen
-:: Page Loader
-:: Counter
-:: Progress Bar
-:: Page Menu
-:: Close  navbar Toggle
-:: user toggle
-:: Data tables
-:: Form Validation
-:: Active Class for Pricing Table
-:: Flatpicker
-:: Scrollbar
-:: checkout
-:: Datatables
-:: image-upload
-:: video
-:: Button
-:: Pricing tab
-:: Wizard Form
-
-------------------------------------------------
-Index Of Script
-----------------------------------------------*/
 
 (function(jQuery) {
-
-
 
     "use strict";
 

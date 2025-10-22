@@ -49,7 +49,6 @@ $telefono    = getv($in, 'telefono');
 $direccion   = getv($in, 'direccion');
 $comentario  = getv($in, 'comentario');
 $fecha_cita  = getv($in, 'fecha_cita');
-
 $startIso = isoTrim(getv($in, 'start'));
 $endIso   = isoTrim(getv($in, 'end'));
 $horario  = getv($in, 'horario');
