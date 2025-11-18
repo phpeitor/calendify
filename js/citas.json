@@ -1,5 +1,19 @@
 {
     "events": [
-        
+        {
+            "id": "cita_68f9b33df0dbf3.31893004",
+            "profesional": "Dra. Belén",
+            "nombre": "ALEJANDRO",
+            "correo": "alex1991usat@gmail.com",
+            "dni": "12345678",
+            "fecha_nac": "2007-10-03",
+            "telefono": "987654321",
+            "direccion": "test",
+            "comentario": "prueba",
+            "fecha_cita": "2025-10-22",
+            "start": "09:00",
+            "end": "09:45",
+            "createdAt": "2025-10-22 23:46:53"
+        }
     ]
 }
