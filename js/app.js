@@ -478,11 +478,42 @@
             try {
                 const res = await fetch('./js/programacion.json', { cache: 'no-store' });
                 const json = await res.json();
-                eventsData = (json.events || []).map(e => {
+                const explicitEvents = (json.events || []).map(e => {
                     const out = { ...e };
                     if (!out.title && out.profesional) out.title = out.profesional;
                     return out;
                 });
+
+                const holidayDates = new Set(
+                    explicitEvents
+                        .filter(e => e.allDay || e.title === 'FERIADO')
+                        .map(e => (e.start || '').slice(0, 10))
+                        .filter(Boolean)
+                );
+
+                let generatedEvents = [];
+                if (json.dailySchedule) {
+                    const { profesional, title, startDate, endDate, startTime, endTime, color } = json.dailySchedule;
+                    if (profesional && startDate && endDate && startTime && endTime) {
+                        const start = new Date(`${startDate}T00:00:00`);
+                        const end = new Date(`${endDate}T00:00:00`);
+                        const pad = n => String(n).padStart(2, '0');
+
+                        for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+                            const dateStr = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+                            if (holidayDates.has(dateStr)) continue;
+                            generatedEvents.push({
+                                profesional,
+                                title: title || profesional,
+                                start: `${dateStr}T${startTime}`,
+                                end: `${dateStr}T${endTime}`,
+                                color: color || '#17a2b8'
+                            });
+                        }
+                    }
+                }
+
+                eventsData = [...generatedEvents, ...explicitEvents];
             } catch (err) {
                 console.error('No se pudo cargar events.json', err);
             }
