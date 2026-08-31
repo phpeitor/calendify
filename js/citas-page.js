@@ -80,10 +80,10 @@ document.addEventListener('DOMContentLoaded', async function () {
           <td>${getEstadoBadge(cita.estado)}</td>
           <td>
             <div class="d-flex align-items-center list-action">
-              <button type="button" class="badge bg-success-light mr-2" data-action="confirmar" data-id="${cita.id || ''}" title="Confirmar" aria-label="Confirmar cita" ${(cita.estado === 'Confirmado' || cita.estado === 'Anulado' || cita.estado === 'Cancelado') ? 'disabled' : ''}>
+              <button type="button" class="badge bg-success-light mr-2" data-action="confirmar" data-id="${cita.id || ''}" title="Confirmar" data-toggle="tooltip" data-placement="top" aria-label="Confirmar cita" ${(cita.estado === 'Confirmado' || cita.estado === 'Anulado' || cita.estado === 'Cancelado') ? 'disabled' : ''}>
                 <i class="ri-check-line" aria-hidden="true"></i>
               </button>
-              <button type="button" class="badge bg-danger-light mr-2" data-action="anular" data-id="${cita.id || ''}" title="Anular" aria-label="Anular cita" ${(cita.estado === 'Confirmado' || cita.estado === 'Anulado' || cita.estado === 'Cancelado') ? 'disabled' : ''}>
+              <button type="button" class="badge bg-danger-light mr-2" data-action="anular" data-id="${cita.id || ''}" title="Anular" data-toggle="tooltip" data-placement="top" aria-label="Anular cita" ${(cita.estado === 'Confirmado' || cita.estado === 'Anulado' || cita.estado === 'Cancelado') ? 'disabled' : ''}>
                 <i class="ri-close-line" aria-hidden="true"></i>
               </button>
             </div>
@@ -100,6 +100,10 @@ document.addEventListener('DOMContentLoaded', async function () {
         updateCitaEstado(id, action === 'confirmar' ? 'Confirmado' : 'Anulado');
       });
     });
+
+    if (window.jQuery && $.fn.tooltip) {
+      $('[data-toggle="tooltip"]').tooltip();
+    }
 
     if (window.jQuery && $.fn.DataTable) {
       $('#citas-datatable').DataTable({
