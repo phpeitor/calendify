@@ -50,6 +50,7 @@ $telefono    = getv($in, 'telefono');
 $direccion   = getv($in, 'direccion');
 $comentario  = getv($in, 'comentario');
 $fecha_cita  = getv($in, 'fecha_cita');
+$estado      = getv($in, 'estado');
 $startIso = isoTrim(getv($in, 'start'));
 $endIso   = isoTrim(getv($in, 'end'));
 $horario  = getv($in, 'horario');
@@ -124,6 +125,7 @@ $endHHMM   = substr($endIso,   11, 5);
 
 $now = new DateTime('now', new DateTimeZone('America/Lima'));
 $createdAt = $now->format('Y-m-d H:i:s');
+$estadoFinal = $estado !== '' ? $estado : 'Enviado';
 
 $cita = [
   'id'          => uniqid('cita_', true),
@@ -137,6 +139,7 @@ $cita = [
   'fecha_cita'  => $fecha_cita,
   'start'       => $startHHMM,
   'end'         => $endHHMM,
+  'estado'      => $estadoFinal,
   'createdAt'   => $createdAt
 ];
 

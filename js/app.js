@@ -947,7 +947,7 @@
 
                 const payload = {
                     profesional, nombre, correo, dni, telefono, direccion, comentario,
-                    fecha_cita, start, end
+                    fecha_cita, start, end, estado: 'Enviado'
                 };
 
                 const $btn = $f.find('button[type="submit"]');

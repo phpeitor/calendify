@@ -8,6 +8,37 @@ document.addEventListener('DOMContentLoaded', async function () {
     return `./images/${num}.jpg`;
   }
 
+  function getEstadoBadge(estado) {
+    const value = (estado || 'Enviado').toString();
+    const map = {
+      Enviado: 'bg-secondary',
+      Confirmado: 'bg-success',
+      Cancelado: 'bg-danger'
+    };
+    return `<span class="badge ${map[value] || 'bg-secondary'}">${value}</span>`;
+  }
+
+  async function updateCitaEstado(id, nuevoEstado) {
+    try {
+      const response = await fetch('./php/update_estado_cita.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json; charset=UTF-8' },
+        body: JSON.stringify({ id, estado: nuevoEstado })
+      });
+
+      const result = await response.json();
+      if (!response.ok || !result.ok) {
+        throw new Error(result.error || 'No se pudo actualizar la cita');
+      }
+
+      alertify.success(`Cita ${nuevoEstado.toLowerCase()} correctamente`);
+      window.location.reload();
+    } catch (error) {
+      console.error(error);
+      alertify.error(error.message || 'Error al actualizar la cita');
+    }
+  }
+
   try {
     const res = await fetch('./js/citas.json', { cache: 'no-store' });
     const json = await res.json();
@@ -16,7 +47,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     if (!citas.length) {
       body.innerHTML = `
         <tr>
-          <td colspan="9" class="text-center py-4">No hay citas registradas.</td>
+          <td colspan="10" class="text-center py-4">No hay citas registradas.</td>
         </tr>
       `;
       return;
@@ -34,24 +65,24 @@ document.addEventListener('DOMContentLoaded', async function () {
         <td>${cita.fecha_cita || '-'}</td>
         <td>${(cita.start || '') + (cita.end ? ' - ' + cita.end : '') || '-'}</td>
         <td>${cita.direccion || '-'}</td>
+        <td>${getEstadoBadge(cita.estado)}</td>
         <td>
           <div class="d-flex align-items-center list-action">
-            <a class="badge bg-warning-light mr-2" data-toggle="tooltip" data-placement="top" title="Rating" href="#"><i class="far fa-star"></i></a>
-            <a class="badge bg-success-light mr-2" data-toggle="tooltip" data-placement="top" title="Ver" href="#"><i class="lar la-eye"></i></a>
-            <div class="badge bg-primary-light" data-toggle="tooltip" data-placement="top" title="Acción">
-              <div class="dropdown">
-                <div class="text-primary dropdown-toggle action-item" id="moreOptions${Math.random().toString(16).slice(2)}" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false"></div>
-                <div class="dropdown-menu" aria-labelledby="moreOptions${Math.random().toString(16).slice(2)}">
-                  <a class="dropdown-item" href="#">Edit</a>
-                  <a class="dropdown-item" href="#">Delete</a>
-                  <a class="dropdown-item" href="#">Hide from Contacts</a>
-                </div>
-              </div>
-            </div>
+            <button type="button" class="btn btn-sm btn-success mr-2" data-action="confirmar" data-id="${cita.id || ''}">Confirmar</button>
+            <button type="button" class="btn btn-sm btn-danger" data-action="cancelar" data-id="${cita.id || ''}">Cancelar</button>
           </div>
         </td>
       </tr>
     `).join('');
+
+    document.querySelectorAll('[data-action]').forEach((btn) => {
+      btn.addEventListener('click', function () {
+        const id = this.getAttribute('data-id');
+        const action = this.getAttribute('data-action');
+        if (!id) return;
+        updateCitaEstado(id, action === 'confirmar' ? 'Confirmado' : 'Cancelado');
+      });
+    });
 
     if (window.jQuery && $.fn.DataTable) {
       if ($.fn.dataTable.isDataTable('#citas-datatable')) {
