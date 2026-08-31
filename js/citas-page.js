@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     const map = {
       Enviado: 'bg-secondary',
       Confirmado: 'bg-success',
+      Anulado: 'bg-danger',
       Cancelado: 'bg-danger'
     };
     return `<span class="badge ${map[value] || 'bg-secondary'}">${value}</span>`;
@@ -31,7 +32,8 @@ document.addEventListener('DOMContentLoaded', async function () {
         throw new Error(result.error || 'No se pudo actualizar la cita');
       }
 
-      alertify.success(`Cita ${nuevoEstado.toLowerCase()} correctamente`);
+      const estadoMensaje = nuevoEstado === 'Confirmado' ? 'confirmada' : 'anulada';
+      alertify.success(`Cita ${estadoMensaje} correctamente`);
       window.location.reload();
     } catch (error) {
       console.error(error);
@@ -68,8 +70,12 @@ document.addEventListener('DOMContentLoaded', async function () {
         <td>${getEstadoBadge(cita.estado)}</td>
         <td>
           <div class="d-flex align-items-center list-action">
-            <button type="button" class="btn btn-sm btn-success mr-2" data-action="confirmar" data-id="${cita.id || ''}">Confirmar</button>
-            <button type="button" class="btn btn-sm btn-danger" data-action="cancelar" data-id="${cita.id || ''}">Cancelar</button>
+            <button type="button" class="btn btn-sm btn-success mr-2" data-action="confirmar" data-id="${cita.id || ''}" title="Confirmar" aria-label="Confirmar cita" ${(cita.estado === 'Confirmado' || cita.estado === 'Anulado' || cita.estado === 'Cancelado') ? 'disabled' : ''}>
+              <i class="ri-check-line" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="btn btn-sm btn-danger" data-action="anular" data-id="${cita.id || ''}" title="Anular" aria-label="Anular cita" ${(cita.estado === 'Confirmado' || cita.estado === 'Anulado' || cita.estado === 'Cancelado') ? 'disabled' : ''}>
+              <i class="ri-close-line" aria-hidden="true"></i>
+            </button>
           </div>
         </td>
       </tr>
@@ -80,7 +86,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         const id = this.getAttribute('data-id');
         const action = this.getAttribute('data-action');
         if (!id) return;
-        updateCitaEstado(id, action === 'confirmar' ? 'Confirmado' : 'Cancelado');
+        updateCitaEstado(id, action === 'confirmar' ? 'Confirmado' : 'Anulado');
       });
     });
 

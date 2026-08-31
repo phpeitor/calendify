@@ -24,7 +24,7 @@ if ($id === '') {
   exit;
 }
 
-$allowed = ['Enviado', 'Confirmado', 'Cancelado'];
+$allowed = ['Enviado', 'Confirmado', 'Anulado'];
 if (!in_array($estado, $allowed, true)) {
   http_response_code(400);
   echo json_encode(['ok' => false, 'error' => 'Estado inválido']);

@@ -1,0 +1,19 @@
+{
+    "events": [
+        {
+            "id": "cita_6a95dd4090fea6.53158062",
+            "profesional": "Dr. Carlos Wiesse Crespo",
+            "nombre": "MONTALVAN BRAVO ALEJANDRO MANUEL",
+            "correo": "alex1991usat@gmail.com",
+            "dni": "46798772",
+            "telefono": "987654321",
+            "direccion": "test2",
+            "comentario": "asd",
+            "fecha_cita": "2026-08-31",
+            "start": "17:30",
+            "end": "18:15",
+            "estado": "Confirmado",
+            "createdAt": "2026-08-31 15:00:00"
+        }
+    ]
+}
