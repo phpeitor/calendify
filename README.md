@@ -7,10 +7,6 @@
   <img src="https://cdn.dribbble.com/userupload/12985227/file/original-5a3bf8e49bf410f5e3a847d8ac725fc7.jpg" alt="Instagram" width="600">
 </a>
 
-## Descripción
-
-Calendify es una aplicación web para gestionar citas y agenda de profesionales, enfocada en agendamiento presencial con validaciones de horarios, consulta de DNI y almacenamiento persistente en JSON.
-
 ## Funcionalidades
 
 - Agenda visual mensual con eventos y horarios
@@ -96,13 +92,3 @@ Las citas se manejan en `js/citas.json` y se guardan desde `php/save_cita.php`. 
 - Este proyecto está pensado como una solución ligera, sin framework, para ambientes de hosting simple o Apache local.
 - Para producción se recomienda reforzar validaciones del lado del servidor, auditoría de datos y almacenamiento persistente robusto.
 - La parte visual usa estilos y componentes predefinidos dentro del proyecto, con modularización progresiva del frontend.
-
-## Licencia
-
-Proyecto de uso interno y demostración. Ajustar según el criterio del equipo o propietario del negocio.
-
-## Contacto
-
-- Autor: [amvsoft.tech](https://www.instagram.com/amvsoft.tech/)
-- LinkedIn: [drphp](https://www.linkedin.com/in/drphp/)
-- GitHub: [phpeitor](https://github.com/phpeitor)
