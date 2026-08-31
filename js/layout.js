@@ -31,6 +31,11 @@ async function loadLayoutFragments() {
     if (footerContainer) footerContainer.innerHTML = footerHtml;
     if (dialogsContainer) dialogsContainer.innerHTML = dialogsHtml;
 
+    const yearNode = document.querySelector('[data-current-year]');
+    if (yearNode) {
+      yearNode.textContent = new Date().getFullYear();
+    }
+
     bindDialogTriggers();
   } catch (error) {
     console.error('No se pudieron cargar los fragmentos de layout:', error);

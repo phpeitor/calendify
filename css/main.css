@@ -1,4 +1,61 @@
-@charset "UTF-8";
+.wiesse-card {
+  max-width: 360px;
+  margin: 0 auto;
+}
+
+.wiesse-logo-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.wiesse-image-frame {
+  position: relative;
+  width: min(100%, 220px);
+  padding: 10px 12px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(255, 214, 110, 0.30), rgba(255, 255, 255, 0.04));
+  box-shadow: 0 0 18px rgba(255, 196, 0, 0.12);
+}
+
+.wiesse-image-frame img {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  filter: drop-shadow(0 10px 16px rgba(196, 135, 0, 0.18)) brightness(1.02);
+}
+
+.wiesse-brand {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  text-align: center;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #c98a00;
+}
+
+.wiesse-meta {
+  text-align: left;
+}
+
+.wiesse-meta p {
+  margin-bottom: 0.5rem;
+}
+
+@media (min-width: 1300px) {
+  .iq-top-navbar .iq-navbar-custom .wrapper-menu {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
 .fc {
   direction: ltr;
   text-align: left;
