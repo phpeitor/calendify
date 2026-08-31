@@ -557,11 +557,17 @@
                     .sort((a,b) => a.start.localeCompare(b.start));
 
                 const used = new Set();
+                const todayOnly = shouldBlockBeforeEleven(selectedDay || '');
                 ranges.forEach(r => {
                     const day = r.start.slice(0,10);
                     const slots = makeSlotsAligned(r.start, r.end, 45);
                     slots.forEach(hhmm => {
-                       
+                        const slotMinutes = Number(hhmm.split(':')[0]) * 60 + Number(hhmm.split(':')[1]);
+
+                        if (todayOnly && slotMinutes < (11 * 60)) {
+                            return;
+                        }
+
                         if (booked.has(hhmm)) {
                             $horaSel.append(`<option value="" disabled>${hhmm} (ocupado)</option>`);
                             return;
@@ -671,6 +677,15 @@
                 const d = new Date();
                 d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
                 return d.toISOString().slice(0,10); 
+            }
+
+            function localMinutesNow() {
+                const now = new Date();
+                return now.getHours() * 60 + now.getMinutes();
+            }
+
+            function shouldBlockBeforeEleven(dateStr) {
+                return dateStr === todayLocalYYYYMMDD() && localMinutesNow() >= (11 * 60);
             }
 
             const todayStr = todayLocalYYYYMMDD();
@@ -846,6 +861,11 @@
 
                 if (!profesional || !nombre || !fecha_cita || !start || !end) {
                     showAlert('Completa los campos obligatorios', 'warning');
+                    return;
+                }
+
+                if (fecha_cita === todayLocalYYYYMMDD() && Number(start.slice(11, 13)) < 11) {
+                    showAlert('No puedes registrar una cita antes de las 11:00 de hoy', 'warning');
                     return;
                 }
 
