@@ -675,6 +675,91 @@
 
             const todayStr = todayLocalYYYYMMDD();
             const $fc = $('#fecha_cita');
+            const $dniInput = $('#dni');
+            const $nombreInput = $('#nombre');
+            const API_DNI_URL = window.API_DNI_URL || 'https://api.apis.net.pe/v1/dni?numero=';
+            const API_DNI_URL_2 = window.API_DNI_URL_2 || 'https://panuts.com/wp-json/pvm/v1/documents/check?type=dni&val=';
+
+            function buildNombreFromDni(data) {
+                const candidates = [
+                    data?.nombres,
+                    data?.nombre,
+                    data?.name,
+                    data?.names,
+                    data?.full_name,
+                    data?.persona?.nombres,
+                    data?.persona?.nombre,
+                    Array.isArray(data?.nombres_completos) ? data.nombres_completos.join(' ') : ''
+                ].filter(Boolean);
+
+                const nombres = candidates.find(v => typeof v === 'string' && v.trim()) || '';
+                const apellidoPaterno = [
+                    data?.apellidoPaterno,
+                    data?.ap_paterno,
+                    data?.last_name,
+                    data?.apellido_paterno,
+                    data?.persona?.apellidoPaterno,
+                    data?.persona?.apellido_paterno
+                ].find(v => typeof v === 'string' && v.trim()) || '';
+                const apellidoMaterno = [
+                    data?.apellidoMaterno,
+                    data?.ap_materno,
+                    data?.mother_last_name,
+                    data?.apellido_materno,
+                    data?.persona?.apellidoMaterno,
+                    data?.persona?.apellido_materno
+                ].find(v => typeof v === 'string' && v.trim()) || '';
+
+                const full = [nombres.trim(), `${apellidoPaterno} ${apellidoMaterno}`.trim()].filter(Boolean).join(' ');
+                return full || (typeof data?.nombre_completo === 'string' ? data.nombre_completo.trim() : '');
+            }
+
+            async function consultarDni(dni) {
+                if (!/^\d{8}$/.test(String(dni))) return;
+
+                const endpoints = [
+                    {
+                        url: `${API_DNI_URL}${dni}`,
+                        options: { headers: { Accept: 'application/json' } }
+                    },
+                    {
+                        url: `${API_DNI_URL_2}${dni}`,
+                        options: { headers: { Accept: 'application/json' } }
+                    }
+                ];
+
+                for (const endpoint of endpoints) {
+                    try {
+                        const res = await fetch(endpoint.url, endpoint.options);
+                        if (!res.ok) continue;
+                        const data = await res.json();
+                        const nombreCompleto = buildNombreFromDni(data);
+                        if (nombreCompleto) {
+                            $nombreInput.val(nombreCompleto);
+                            return;
+                        }
+                    } catch (err) {
+                        console.warn('Consulta de DNI fallida:', err);
+                    }
+                }
+
+                $nombreInput.val('');
+                showAlert('No se pudo obtener el nombre con ese DNI', 'warning');
+            }
+
+            $dniInput.on('input', function () {
+                const raw = (this.value || '').replace(/\D/g, '').slice(0, 8);
+                this.value = raw;
+
+                if (raw.length !== 8) {
+                    $nombreInput.val('');
+                    return;
+                }
+
+                const dni = raw;
+                clearTimeout(window.__dniLookupTimer);
+                window.__dniLookupTimer = setTimeout(() => consultarDni(dni), 500);
+            });
 
             $fc.attr('min', todayStr);
 
