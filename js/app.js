@@ -470,15 +470,15 @@
 
             let eventsData = [];
             let dayEventsCache = [];
-            let citasData = [];       
-            let selectedDay = null;     
+            let citasData = [];
+            let selectedDay = null;
+            let programacionData = null;
+            let calendar1 = null;
 
-            await loadCitas(); 
+            function rebuildCalendarEvents() {
+                if (!programacionData) return;
 
-            try {
-                const res = await fetch('./js/programacion.json', { cache: 'no-store' });
-                const json = await res.json();
-                const explicitEvents = (json.events || []).map(e => {
+                const explicitEvents = (programacionData.events || []).map(e => {
                     const out = { ...e };
                     if (!out.title && out.profesional) out.title = out.profesional;
                     return out;
@@ -508,8 +508,8 @@
                 );
 
                 let generatedEvents = [];
-                if (json.dailySchedule) {
-                    const { profesional, title, startDate, endDate, startTime, endTime, color } = json.dailySchedule;
+                if (programacionData.dailySchedule) {
+                    const { profesional, title, startDate, endDate, startTime, endTime, color } = programacionData.dailySchedule;
                     if (profesional && startDate && endDate && startTime && endTime) {
                         const start = new Date(`${startDate}T00:00:00`);
                         const end = new Date(`${endDate}T00:00:00`);
@@ -530,6 +530,20 @@
                 }
 
                 eventsData = [...generatedEvents, ...explicitEvents, ...citaEvents];
+
+                if (calendar1) {
+                    calendar1.removeAllEvents();
+                    calendar1.addEventSource(eventsData);
+                }
+            }
+
+            await loadCitas();
+
+            try {
+                const res = await fetch('./js/programacion.json', { cache: 'no-store' });
+                const json = await res.json();
+                programacionData = json;
+                rebuildCalendarEvents();
             } catch (err) {
                 console.error('No se pudo cargar events.json', err);
             }
@@ -573,14 +587,17 @@
                     .sort((a,b) => a.start.localeCompare(b.start));
 
                 const used = new Set();
-                const todayOnly = shouldBlockBeforeEleven(selectedDay || '');
+                const minAllowed = minAllowedMinutesForToday(selectedDay || '');
                 ranges.forEach(r => {
                     const day = r.start.slice(0,10);
                     const slots = makeSlotsAligned(r.start, r.end, 45);
                     slots.forEach(hhmm => {
+                        if (used.has(hhmm)) return;
+                        used.add(hhmm);
+
                         const slotMinutes = Number(hhmm.split(':')[0]) * 60 + Number(hhmm.split(':')[1]);
 
-                        if (todayOnly && slotMinutes < (11 * 60)) {
+                        if (selectedDay === todayLocalYYYYMMDD() && slotMinutes < minAllowed) {
                             return;
                         }
 
@@ -664,6 +681,16 @@
                     }
                 });
                 refreshPicker($profSel);
+
+                const firstProfessional = $profSel.find('option').filter(function () {
+                    return $(this).val() && $(this).val() !== '';
+                }).first().val();
+
+                if (firstProfessional) {
+                    $profSel.val(firstProfessional);
+                    refreshPicker($profSel);
+                    fillHorarioSlotsForProfessional(firstProfessional);
+                }
             }
 
             async function loadCitas() {
@@ -671,9 +698,11 @@
                     const res = await fetch('./js/citas.json', { cache: 'no-store' });
                     const json = await res.json();
                     citasData = Array.isArray(json.events) ? json.events : [];
+                    rebuildCalendarEvents();
                 } catch (e) {
                     console.warn('No se pudo cargar citas.json', e);
                     citasData = [];
+                    rebuildCalendarEvents();
                 }
             }
 
@@ -700,8 +729,9 @@
                 return now.getHours() * 60 + now.getMinutes();
             }
 
-            function shouldBlockBeforeEleven(dateStr) {
-                return dateStr === todayLocalYYYYMMDD() && localMinutesNow() >= (11 * 60);
+            function minAllowedMinutesForToday(dateStr) {
+                if (dateStr !== todayLocalYYYYMMDD()) return 11 * 60;
+                return Math.max(11 * 60, localMinutesNow());
             }
 
             const todayStr = todayLocalYYYYMMDD();
@@ -806,13 +836,28 @@
                 return dateStr < todayLocalYYYYMMDD();
             }
 
+            function forceLoadDateOptions(day) {
+                const safeDay = (day || '').slice(0, 10) || todayStr;
+                $('#fecha_cita').val(safeDay);
+                selectedDay = safeDay;
+                populateSelectsForDate(safeDay);
+            }
+
             $('#fecha_cita').on('change', function(){
                 const day = this.value.slice(0,10); 
                 selectedDay = day;  
                 populateSelectsForDate(day);
             });
 
-            const calendar1 = new FullCalendar.Calendar(calendarEl, {
+            $('#date-event').on('show.bs.modal', function () {
+                forceLoadDateOptions($('#fecha_cita').val());
+            });
+
+            $('[data-target="#date-event"]').on('click', function () {
+                forceLoadDateOptions($('#fecha_cita').val());
+            });
+
+            calendar1 = new FullCalendar.Calendar(calendarEl, {
                 selectable: true,
                 plugins: ["timeGrid", "dayGrid", "list", "interaction"],
                 timeZone: "UTC",
@@ -845,6 +890,16 @@
                     });
                     
                     if ($('.selectpicker').length) $('.selectpicker').selectpicker('refresh');
+
+                    const firstProfessional = $profSel.find('option').filter(function () {
+                        return $(this).val() && $(this).val() !== '';
+                    }).first().val();
+
+                    if (firstProfessional) {
+                        $profSel.val(firstProfessional);
+                        if ($('.selectpicker').length) $('.selectpicker').selectpicker('refresh');
+                        fillHorarioSlotsForProfessional(firstProfessional);
+                    }
                     $('#date-event').modal('show');
                 },
                 events: eventsData
@@ -880,9 +935,14 @@
                     return;
                 }
 
-                if (fecha_cita === todayLocalYYYYMMDD() && Number(start.slice(11, 13)) < 11) {
-                    showAlert('No puedes registrar una cita antes de las 11:00 de hoy', 'warning');
-                    return;
+                if (fecha_cita === todayLocalYYYYMMDD()) {
+                    const minAllowed = Math.max(11 * 60, localMinutesNow());
+                    const startMinutes = Number(start.slice(11, 13)) * 60 + Number(start.slice(14, 16));
+
+                    if (startMinutes < minAllowed) {
+                        showAlert(`No puedes registrar una cita antes de las ${hmFromMinutes(minAllowed)} de hoy`, 'warning');
+                        return;
+                    }
                 }
 
                 const payload = {
@@ -907,10 +967,15 @@
                         const json = await res.json();
                         if (!res.ok || !json.ok) throw new Error(json.error || 'No se pudo guardar');
 
-                        savingToast.dismiss();   
+                        savingToast.dismiss();
                         showAlert('Cita guardada correctamente', 'success');
                         await loadCitas();
-                        fillHorarioSlotsForProfessional(profesional);
+                        if (selectedDay) {
+                            populateSelectsForDate(selectedDay);
+                        }
+                        if (calendar1) {
+                            calendar1.refetchEvents();
+                        }
                         $('#date-event').modal('hide');
                         $f[0].reset();
                     } catch (err) {
