@@ -484,6 +484,22 @@
                     return out;
                 });
 
+                const citaEvents = (citasData || []).map(ev => {
+                    const fecha = (ev.fecha_cita || '').slice(0, 10);
+                    const startHH = String(ev.start || '').slice(0, 5);
+                    const endHH = String(ev.end || '').slice(0, 5);
+                    if (!fecha || !startHH || !endHH) return null;
+                    return {
+                        profesional: ev.profesional,
+                        title: `${ev.nombre || 'Cita'} • ${ev.profesional || 'Profesional'}`,
+                        start: `${fecha}T${startHH}:00`,
+                        end: `${fecha}T${endHH}:00`,
+                        color: '#28a745',
+                        textColor: '#ffffff',
+                        allDay: false
+                    };
+                }).filter(Boolean);
+
                 const holidayDates = new Set(
                     explicitEvents
                         .filter(e => e.allDay || e.title === 'FERIADO')
@@ -513,7 +529,7 @@
                     }
                 }
 
-                eventsData = [...generatedEvents, ...explicitEvents];
+                eventsData = [...generatedEvents, ...explicitEvents, ...citaEvents];
             } catch (err) {
                 console.error('No se pudo cargar events.json', err);
             }
