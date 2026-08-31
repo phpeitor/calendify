@@ -1,152 +1,145 @@
-# Roles de Agentes
+# Roles de Agentes — Calendify
 
-Guia de trabajo para la landing conmemorativa de Santa Rosa de Lima. Cada agente tiene un foco claro para mantener una experiencia visual solemne, calida y ligera, y para que los cambios sean faciles de revisar.
+Guia de trabajo para el proyecto Calendify, un sistema de citas y programación de turnos para clínica/tricología. El objetivo es mantener una app ligera y funcional, con agenda por profesional, selección de horario y guardado de citas en JSON/ PHP.
 
 ## Contexto del proyecto
 
-- Sitio estatico servido desde Apache; la entrada es `index.html`.
-- La escena principal combina `resources/video.mp4`, logotipos e ilustraciones SVG.
-- `js/script.js` selecciona un logo al azar y genera rosas o corazones decorativos con jQuery.
-- `css/style.css` controla la composicion, el texto, los brillos y las animaciones.
-- `resources/` contiene el video, logos y variantes `rose*.svg` y `heart*.svg`.
+- El proyecto es un sitio estático servido desde Apache con `index.html` como entrada principal.
+- La lógica principal vive en `js/app.js` y usa FullCalendar para mostrar el calendario.
+- La programación base se define en `js/programacion.json` y puede estar generada dinámicamente por horario recurrente + feriados.
+- Las citas reservadas se guardan en `js/citas.json` desde `php/save_cita.php`.
+- Hay variables de entorno en `.env` para endpoints externos, como DNI/RUC y APIs complementarias.
+- El proyecto no requiere Composer para tareas simples; es suficiente un loader PHP ligero para leer `.env`.
 
 ## Principios compartidos
 
-- Preservar el caracter conmemorativo y la referencia explicita a Santa Rosa de Lima.
-- Mantener el proyecto ligero: HTML, CSS y JavaScript sin frameworks nuevos salvo necesidad justificada.
-- Separar estructura (`index.html`), presentacion (`css/style.css`), comportamiento (`js/script.js`) y recursos (`resources/`).
-- Priorizar accesibilidad, contraste, rendimiento y funcionamiento en pantallas pequenas.
-- No sustituir cambios existentes de otro agente; revisar el diff antes de tocar archivos relacionados.
+- Mantener el flujo de agenda y citas claro, legible y compatible con Apache.
+- Preferir archivos separados: HTML, CSS, JS y PHP con responsabilidades definidas.
+- No duplicar configuración ni endpoints; centralizar valores del entorno en `.env` y un loader PHP reutilizable.
+- Respetar la lógica actual de programación por profesional, feriados y disponibilidad por horario.
+- Revisar el impacto antes de tocar archivos que afecten calendario, input de DNI o guardado de citas.
 
-## Agent Rosa SVG
+## Agent Programación / Calendario
 
-Responsable de ilustraciones, logotipos y uso correcto de SVG.
-
-Trabaja en:
-
-- `index.html` cuando se integren imagenes o iconos SVG.
-- `resources/*.svg`.
-- `js/script.js` solo cuando cambie la seleccion o insercion de assets SVG.
-
-Debe:
-
-- Mantener proporciones, viewBox y legibilidad de los logotipos.
-- Usar `alt` descriptivo en imagenes informativas y `aria-hidden="true"` en decoracion.
-- Verificar que los nombres `rose1.svg` a `rose5.svg` y `heart1.svg` a `heart5.svg` sigan coincidiendo con el codigo.
-- Comprobar que los SVG funcionen desde Apache y no dependan de rutas absolutas.
-
-No debe:
-
-- Incrustar SVG largo dentro de `script.js`.
-- Cambiar colores o formas con CSS sin coordinar con Agent Lima CSS.
-
-## Agent Isabel Tipografia
-
-Responsable de tipografia, jerarquia textual y legibilidad.
+Responsable de la agenda del calendario, feriados, profesionales y rango horario.
 
 Trabaja en:
 
-- `index.html` para la carga de fuentes y metadatos relacionados.
-- `css/style.css` para familias, tamanos, pesos y espaciado.
+- `js/programacion.json`
+- `js/app.js` cuando se modifica la generación de eventos o filtros del calendario
+- `php/save_cita.php` si afecta la validación de disponibilidad
 
 Debe:
 
-- Preservar `Dancing Script` como recurso expresivo cuando corresponda y definir un fallback legible.
-- Mantener el texto principal en espanol y revisar que no se corte en mobile.
-- Revisar contraste y tamano minimo del titulo sobre el video.
-- Evitar depender de una fuente remota sin un fallback funcional.
+- Mantener el horario base por profesional configurado de forma reutilizable.
+- Excluir feriados según el calendario oficial peruano y dejar solo esos eventos como específicos.
+- Mantener la lógica de bloqueo de días y disponibilidad por profesional.
+- Garantizar que `09:00` a `19:00` o el horario definido se repita sin escribir un evento por cada día manualmente.
 
 No debe:
 
-- Convertir texto informativo en una imagen o SVG.
-- Usar tipografia decorativa para controles o contenido que requiera lectura rapida.
+- Generar horarios duplicados por cada cambio de frontend.
+- Hardcodear fechas o profesionales sin mantener el patrón del JSON.
 
-## Agent Lima CSS
+## Agent Citas / Reservas
 
-Responsable de estilos, composicion, responsive y sistema visual.
+Responsable del flujo de reserva, validación de formulario y persistencia.
 
 Trabaja en:
 
-- `css/style.css`.
+- `php/save_cita.php`
+- `js/app.js` en el submit del formulario
+- `js/citas.json` como almacenamiento local del proyecto
 
 Debe:
 
-- Mantener estilos en CSS, no en HTML ni JS.
-- Preferir selectores claros y acotados, variables para valores repetidos y un enfoque mobile-first.
-- Asegurar que el video no oculte el contenido y que los elementos centrales mantengan dimensiones estables.
-- Respetar `prefers-reduced-motion` y evitar `!important` salvo una necesidad concreta.
-- Revisar la landing en mobile y desktop despues de cambios grandes.
+- Validar profesional, horario, fecha, DNI y nombre antes de guardar.
+- Mantener el guardado en JSON con estructura estable.
+- Verificar disponibilidad evitando duplicados del mismo horario para el mismo profesional.
+- Reutilizar la misma estructura de respuesta JSON para frontend y alertas.
 
 No debe:
 
-- Cambiar markup o rutas de assets sin coordinar con Agent Rosa SVG.
-- Introducir animaciones costosas o estilos que dificulten la lectura del titulo.
+- Guardar citas sin validar datos mínimos.
+- Añadir lógica de negocio fuera de `php/save_cita.php` si no es necesario.
 
-## Agent Milagros Motion
+## Agent Frontend UI
 
-Responsable de animaciones, efectos y ritmo visual.
+Responsable de la capa visual del calendario y formulario de cita.
 
 Trabaja en:
 
-- `css/style.css` para keyframes, transiciones y efectos de fondo.
-- `js/script.js` para la aparicion y limpieza de elementos decorativos.
+- `index.html`
+- `css/` para layout y estilos
+- `js/app.js` para interacción con DOM y FullCalendar
 
 Debe:
 
-- Priorizar `transform` y `opacity` para animaciones eficientes.
-- Mantener el brillo, flotacion y movimiento de rosas/corazones sutiles y coherentes con la escena.
-- Respetar `prefers-reduced-motion`, incluyendo los intervalos que agregan decoracion.
-- Evitar acumulacion de nodos y comprobar que `deletes()` siga limpiando los elementos generados.
+- Mantener un formulario claro, accesible y consistente con la marca.
+- La carga del calendario y la selección de fechas deben ser intuitivas.
+- Los inputs de DNI, nombre y horarios deben funcionar sin romper la lógica de reserva.
+- Respetar el diseño existente y evitar frameworks nuevos.
 
 No debe:
 
-- Crear efectos que compitan con el mensaje central o bloqueen la interaccion.
-- Referenciar APIs o librerias de animacion que no existan en el proyecto.
+- Mezclar JS de negocio con estilos inline.
+- Modificar la estructura del calendario sin revisar la lógica de horario y disponibilidad.
 
-## Agent Oliva JS
+## Agent Integraciones / APIs
 
-Responsable de comportamiento, eventos y generacion dinamica.
+Responsable de integraciones externas y configuración de entorno.
 
 Trabaja en:
 
-- `js/script.js`.
+- `.env`
+- `php/env.php` o helper de entorno
+- `js/app.js` si se consumen endpoints del navegador
+- `php/` cuando se necesite consultar APIs desde backend
 
 Debe:
 
-- Mantener JavaScript pequeno y compatible con la carga actual de jQuery.
-- Mantener separadas la seleccion del logo, la generacion de decoracion y la limpieza de nodos.
-- Validar con `node --check js/script.js` despues de cambios.
-- Comprobar que las rutas relativas funcionen al servir el proyecto desde Apache.
+- Usar variables desde `.env` cuando existan; evitar duplicar URLs o credenciales.
+- Cargar valores del entorno con un helper PHP ligero, sin Composer si no hace falta.
+- Mantener fallbacks para APIs alternas, por ejemplo DNI con `API_DNI_URL` y `API_DNI_URL_2`.
+- Documentar cualquier endpoint nuevo y su estructura esperada.
 
 No debe:
 
-- Guardar HTML o SVG extenso en constantes si puede reutilizar assets de `resources/`.
-- Introducir frameworks, carga de templates o dependencias nuevas sin necesidad real.
+- Repetir constantes de URLs en varios archivos.
+- Instalar paquetes de Composer para casos simples si no es necesario.
 
-## Agent Monasterio Docs
+## Agent Docs / Configuración
 
-Responsable de documentacion, reglas y contexto para IA y desarrolladores.
+Responsable de la documentación del proyecto y del contexto IA.
 
 Trabaja en:
 
-- `README.md`.
-- `ia-context/`.
+- `README.md`
+- `.ia-context/`
+- `.env` si se requiere documentar variables
 
 Debe:
 
-- Mantener instrucciones accionables y alineadas con la estructura real del repositorio.
-- Documentar cambios de arquitectura, dependencias, atribuciones de assets y despliegue en Apache.
-- Corregir referencias obsoletas cuando cambie el flujo de la landing.
-- Mantener la documentacion breve y evitar repetir reglas ya definidas.
+- Mantener la documentación alineada con la estructura real del proyecto.
+- Explicar cuándo requiere Composer y cuándo no.
+- Registrar convenciones de variables, endpoints y flujo de citas.
+- Mantener cambios breves y accionables.
 
 No debe:
 
-- Cambiar codigo de produccion durante una tarea solo documental, salvo que el usuario lo pida.
+- Documentar rutas hipotéticas o archivos inexistentes.
+- Cambiar la lógica del producto mientras actualiza documentación.
 
 ## Flujo recomendado
 
-1. Identificar el archivo propietario del comportamiento antes de editar.
-2. Coordinar cambios de markup, assets, estilos y movimiento con los agentes responsables.
-3. Ejecutar `node --check js/script.js` si se toca JavaScript.
-4. Revisar la landing en Chrome o Edge, en desktop y en anchos moviles comunes.
-5. Confirmar que no haya errores de rutas, desbordes, contraste insuficiente ni acumulacion de elementos decorativos.
+1. Identificar el archivo propietario del cambio antes de editar.
+2. Mantener separación entre calendario, formulario y guardado.
+3. Cuando haya variables en `.env`, cargarlas con un helper reutilizable y no duplicarlas en el código.
+4. Ejecutar validaciones simples: `php -l php/save_cita.php` y `php -l php/env.php` cuando se modifique PHP.
+5. Verificar que la disponibilidad del calendario y el guardado de citas sigan funcionando correctamente.
+
+## Reglas de entorno
+
+- El proyecto puede funcionar sin Composer para la carga de `.env`.
+- No es necesario instalar dependencias si solo se requiere leer un archivo `.env` y exponer variables por PHP.
+- Si más adelante se agregan librerías reales, entonces sí podría evaluarse Composer, pero no es un requisito inicial.

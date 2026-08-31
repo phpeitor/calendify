@@ -1,92 +1,83 @@
-# Reglas de Desarrollo Frontend — Flag Day 🇵🇪
+# Reglas de Desarrollo Frontend — Calendify
 
 ## Contexto
-- **Proyecto**: Landing conmemorativa por el Día Santa Rosa de Lima
-- **Objetivo**: mantener consistencia, accesibilidad y rendimiento en la entrega frontend.
+- **Proyecto**: sistema de citas y programación para clínica / consultorio de tricología.
+- **Objetivo**: mantener un calendario funcional, un formulario de reserva y una experiencia simple para pacientes.
 
 ## Estructura de proyecto
-- **Carpetas**: Mantener la siguiente estructura mínima:
-  - `index.html`
-  - `css/` — hojas de estilo (por ejemplo `style.css`)
-  - `js/` — scripts (por ejemplo `script.js`)
-  - `templates/` — parciales HTML/SVG cargados por JavaScript
-  - `resources/` — imágenes, fuentes y assets optimizados
-- **Regla**: no mezclar CSS ni JS en archivos HTML; usar archivos dedicados en `css/` y `js/`.
-- **Templates**: mantener el SVG principal dividido en `templates/fusion-app/`; no volver a concentrarlo en `script.js` ni en un unico `fusion-app.html` gigante.
-- **Orden de carga**: registrar cada parcial nuevo en `templateParts` dentro de `js/script.js`, respetando el orden visual del SVG.
+- **Carpetas**:
+  - `index.html` — pantalla principal del calendario y formulario de citas.
+  - `css/` — estilos del backend y layout visual.
+  - `js/` — scripts de calendario, reglas, datos y lógica de interacción.
+  - `php/` — backend ligero para guardar citas y cargar configuración.
+  - `images/` y `fonts/` — assets estáticos.
+- **Regla**: HTML, CSS, JS y PHP deben mantenerse separados por responsabilidad.
+- **Datos**: `js/programacion.json` define la programación base y `js/citas.json` guarda las citas generadas.
+- **Entorno**: `.env` almacena endpoints y valores reutilizables para APIs externas.
 
 ## HTML
-- **Idioma**: usar `lang="es"` en la etiqueta `<html>`.
-- **Semántica**: usar etiquetas HTML5 (`header`, `main`, `section`, `footer`).
-- **Meta**: incluir `viewport`, `charset` y meta description apropiada.
-- **Accesibilidad**: todos los botones y controles deben ser accesibles por teclado y tener `aria-*` cuando corresponda.
+- **Idioma**: usar `lang="es"` cuando corresponda.
+- **Semántica**: usar formularios y secciones con estructura clara.
+- **Inputs**: DNI, nombre, email, teléfono, dirección y comentario deben ser consistentes y requeridos según el flujo.
+- **Accesibilidad**: placeholder y labels claros; mantener inputs navegables por teclado.
 
 ## CSS
-- **Metodología**: seguir una convención clara (BEM, utility-first o CSS modular simple).
-- **Variables**: usar CSS variables para colores y espaciados.
-- **Especificidad**: evitar selectores muy específicos; preferir clases.
-- **Responsive**: mobile-first; usar `min-width` en breakpoints.
-- **Prefijo**: evitar `!important` salvo caso extremo.
+- **Metodología**: CSS modular, clases claras y no mezclar estilos con JS.
+- **Variables**: usar variables para colores, radios y espaciado si aplica.
+- **Responsive**: adaptar la vista a desktop y mobile; el calendario debe mantener legibilidad.
+- **Evitar**: `!important` a menos que sea indispensable.
 
 ## JavaScript
-- **Vanilla**: preferir JavaScript ligero sin frameworks adicionales a menos que sea necesario.
-- **Modularidad**: organizar código en funciones pequeñas y reutilizables.
-- **Carga de templates**: `script.js` debe encargarse de cargar y ensamblar parciales, no de almacenar grandes strings de HTML/SVG.
-- **Eventos**: delegar eventos cuando aplique para mejorar rendimiento.
-- **Degradado**: implementar fallbacks si una API no está disponible.
+- **Vanilla**: preferir JavaScript simple y compatible con jQuery/FullCalendar ya usado.
+- **Modularidad**: separar lógica de calendario, validación y reserva de citas.
+- **Eventos**: usar delegación para formularios, cambios de horario y selección de fecha.
+- **Fallbacks**: si una API falla, usar una alternativa; ejemplo DNI con `API_DNI_URL` y `API_DNI_URL_2`.
+
+## PHP
+- **Backend ligero**: `php/save_cita.php` guarda citas usando JSON.
+- **Variables de entorno**: no duplicar URLs ni endpoints; cargar valores desde `.env` mediante `php/env.php`.
+- **Sin Composer por defecto**: no es necesario para este proyecto mientras solo se requiera leer un `.env` y usarlo en PHP.
+- **Persistencia**: mantener `js/citas.json` con formato JSON válido y serialización segura.
+
+## Entorno y configuración
+- **Archivo `.env`**: almacenar endpoints y valores compartidos.
+- **Loader**: usar `php/env.php` para parsear `.env` con `putenv`, `$_ENV` y `$_SERVER` sin dependencias.
+- **Ejemplo**:
+  - `API_DNI_URL`
+  - `API_DNI_URL_2`
+  - `API_RUC_URL`
+  - `API_RUC_URL_2`
+- **Regla**: si existe una variable en `.env`, debe usarse y no repetirse en el código.
 
 ## Accesibilidad (A11y)
-- **Contraste**: asegurar ratio de contraste WCAG AA (mejor AAA) entre texto y fondo.
-- **Texto alternativo**: todas las imágenes informativas deben tener `alt` descriptivo.
-- **Skip link**: ofrecer un enlace de "saltar al contenido" para navegación con teclado.
-- **Animaciones**: respetar `prefers-reduced-motion`.
-
-## Imágenes y assets
-- **Optimización**: comprimir y exportar imágenes en WebP/AVIF cuando sea posible.
-- **Dimensiones**: especificar `width` y `height` o usar `aspect-ratio` para evitar CLS.
-- **Sprites / SVG**: uso preferente de SVG para iconos.
-- **Origen**: verificar licencias y añadir atribución en `README.md` si corresponde.
+- **Contraste**: garantizar legibilidad adecuada entre texto y fondo.
+- **Formulario**: cada campo debe ser claro y validado antes de guardar.
+- **Navegación**: mantener interacción por teclado y soporte para alertas simples.
 
 ## Rendimiento
-- **Carga crítica**: inyectar estilos críticos si aplica y posponer el resto con `media` o carga asíncrona.
-- **Minificación**: minificar CSS/JS para producción.
-- **Cache**: configurar headers de cache en servidor (Apache) para assets estáticos.
-- **Evitar bloqueos**: cargar scripts no críticos con `defer` o `async` según corresponda.
-
-## Animaciones y efectos
-- **Eficiencia**: animar transform/opacity para aprovechar GPU.
-- **Preferencias usuario**: respetar `prefers-reduced-motion`.
-- **Sutileza**: evitar animaciones distractoras en contenido central.
-
-## Herramientas, linters y formato
-- **Format**: usar Prettier para formato consistente (opcionalmente como hook `pre-commit`).
-- **Lint**: configurar ESLint (si JS moderno) y stylelint para CSS.
-- **Validación**: validar HTML con el validador W3C antes de release.
-
-## Control de versiones y commits
-- **Branching**: ramas `main` (producción), `dev` (desarrollo) y ramas feature/bugfix.
-- **Commits**: mensajes descriptivos; seguir convención `tipo: descripción` (ej. `feat: añadir header responsivo`).
-
-## Testing y QA
-- **Cross-browser**: probar en Chrome, Firefox, Edge y móviles (Android/iOS).
-- **Responsive**: verificar en anchos comunes (360px, 375px, 768px, 1024px).
+- **Carga**: mantener assets ligeros y evitar dependencias innecesarias.
+- **Calendario**: no saturar con muchos eventos redundantes; usar programación base + feriados excluyentes.
+- **Cache**: cuando sea posible, usar cache del navegador para assets estáticos.
 
 ## Seguridad y privacidad
-- **No exponer**: no subir llaves, contraseñas o tokens al repositorio.
-- **Analítica**: avisar sobre cualquier tracker/analytics en el README y respetar la privacidad.
+- **No exponer secretos**: no subir tokens ni credenciales al repositorio.
+- **Datos sensibles**: DNI, nombre y teléfono deben manejarse con cuidado y validación.
+- **Límites**: no usar APIs externas sin revisar cumplimiento y respuesta esperada.
 
 ## Despliegue
-- **Servidor**: el proyecto es estático — desplegar en Apache (ajustar `DocumentRoot`).
-- **Headers**: configurar `Content-Security-Policy` y `X-Content-Type-Options` según sea necesario.
+- **Servidor**: Apache / PHP local o servidor web estático + PHP habilitado.
+- **Ruta**: servir la aplicación desde la raíz del proyecto y mantener rutas relativas en HTML y JS.
+- **Configuración**: si se usa PHP para env, asegurar que `php` esté habilitado en el servidor.
 
-## Contribuciones
-- **PRs**: abrir Pull Requests pequeños y descriptivos.
-- **Revisiones**: al menos una revisión de código antes del merge a `main`.
+## Testing y QA
+- **Validación**: comprobar `php -l php/save_cita.php` y `php -l php/env.php` tras cambios PHP.
+- **Checklist**: verificar formulario, selección de nombre por DNI, citas y pantalla del calendario.
 
-## Recursos y referencias
-- **Accesibilidad**: https://www.w3.org/WAI/standards-guidelines/wcag/
-- **Performance**: https://web.dev/fast/
+## Reglas de contribución
+- **Cambios pequeños y específicos**.
+- **No introducir frameworks nuevos** sin necesidad real.
+- **Documentar** cualquier cambio de configuración o endpoint nuevo.
 
----
-
-_Footer_: Si quieres, puedo añadir configuraciones base de `prettier`, `eslint` y `stylelint`, o preparar un pequeño flujo de despliegue para Apache.
+## Recomendación
+- Para este proyecto, Composer no es necesario al inicio.
+- Un loader PHP pequeño es suficiente para resolver `.env` y reutilizar variables sin repetir URLs en varios archivos.
