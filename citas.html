@@ -26,38 +26,44 @@
     <div class="wrapper">
         <div id="header-container"></div>
         <div class="content-page">
-            <div class="container-fluid container">
+            <div class="container">
                 <div class="row">
-                    <div class="col-lg-12">
-                        <div class="card card-block card-stretch card-height">
-                        <div class="card-header d-flex justify-content-between">
-                            <div class="iq-header-title">
-                                <h4 class="card-title mb-0">Mis Citas</h4>
-                            </div>
-                            <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#addContact">Add New</a>
+                    <div class="col-lg-12 mt-4">
+                        
+                        <div class="d-flex flex-wrap align-items-center justify-content-between my-schedule mb-3">
+                            <div class="d-flex align-items-center justify-content-between"> 
+                                <h3>Mis Citas</h3>
+                            </div>  
+                            <div class="create-workform">
+                                <a href="index.html" data-toggle="modal" data-target="#date-event" class="btn btn-primary pr-5 position-relative">Registrar<span class="add-btn"><i class="ri-add-line"></i></span></a>
+                            </div>                 
                         </div>
-                        <div class="card-body">
-                            <div class="table-responsive data-table">
-                                <div class="table-responsive data-table">
-                                    <table class="table" id="citas-datatable" style="width: 100%;">
-                                        <thead>
-                                            <tr>
-                                                <th>Profile</th>
-                                                <th>Profesional</th>
-                                                <th>Paciente</th>
-                                                <th>DNI</th>
-                                                <th>Teléfono</th>
-                                                <th>Fecha</th>
-                                                <th>Horario</th>
-                                                <th>Dirección</th>
-                                                <th>Acción</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="citas-table-body"></tbody>
-                                    </table>
+
+                        <div class="row">
+                            <div class="card card-block card-stretch card-height">
+                                <div class="card-body">
+                                    <div class="table-responsive data-table">
+                                        <div class="table-responsive data-table">
+                                            <table class="table" id="citas-datatable" style="width: 100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Profile</th>
+                                                        <th>Profesional</th>
+                                                        <th>Paciente</th>
+                                                        <th>DNI</th>
+                                                        <th>Teléfono</th>
+                                                        <th>Fecha</th>
+                                                        <th>Horario</th>
+                                                        <th>Dirección</th>
+                                                        <th>Acción</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="citas-table-body"></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         </div>
                     </div>
                 </div>
