@@ -122,13 +122,13 @@
 
                                         <div class="col-md-6 mt-0">
                                             <div class="form-group">
-                                                <input class="form-control" placeholder="Email" type="email" name="correo" id="correo" required />
+                                                <input class="form-control" placeholder="Email" type="email" name="correo" id="correo" required pattern="^[^\s@]+@[^\s@]+\.com$" />
                                             </div>
                                         </div>
 
                                         <div class="col-md-6 mt-0">
                                             <div class="form-group">
-                                                <input class="form-control" placeholder="Teléfono" type="number" name="telefono" id="telefono" required />
+                                                <input class="form-control" placeholder="Teléfono" type="tel" name="telefono" id="telefono" required maxlength="9" inputmode="numeric" pattern="9[0-9]{8}" />
                                             </div>
                                         </div>
 

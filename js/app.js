@@ -916,9 +916,46 @@
                 const val = $(this).val(); 
             });
 
+            $(document).off('input.validation change.validation', '#submit-schedule :input')
+                .on('input.validation change.validation', '#submit-schedule :input', function () {
+                    if (this.checkValidity() && String($(this).val() || '').trim()) {
+                        $(this).removeClass('is-invalid');
+                    }
+                });
+
             $(document).on("submit", "#submit-schedule", async function (e) {
                 e.preventDefault();
                 const $f = $(this);
+                const form = $f[0];
+                const $requiredFields = $f.find(':input[required]');
+                const emailPattern = /^[^\s@]+@[^\s@]+\.com$/;
+                const phonePattern = /^9\d{8}$/;
+
+                $requiredFields.removeClass('is-invalid');
+                const invalidFields = [];
+                $requiredFields.each(function () {
+                    const value = $(this).val();
+                    if (!String(value || '').trim()) {
+                        invalidFields.push(this);
+                    }
+                });
+
+                const correoValue = String($f.find('#correo').val() || '').trim();
+                const telefonoValue = String($f.find('#telefono').val() || '').replace(/\D/g, '');
+                if (correoValue && !emailPattern.test(correoValue)) {
+                    invalidFields.push($f.find('#correo')[0]);
+                }
+                if (telefonoValue && !phonePattern.test(telefonoValue)) {
+                    invalidFields.push($f.find('#telefono')[0]);
+                }
+
+                [...new Set(invalidFields)].forEach((field) => $(field).addClass('is-invalid'));
+                if (invalidFields.length || !form.checkValidity()) {
+                    $f.addClass('was-validated');
+                    showAlert('Completa los campos y verifica el teléfono y correo', 'warning');
+                    return;
+                }
+
                 const profesional = $f.find('#profesional').val();
                 const nombre      = $f.find('#nombre').val();
                 const correo      = $f.find('#correo').val();
@@ -929,11 +966,6 @@
                 const fecha_cita  = $f.find('#fecha_cita').val();
                 const horarioVal  = $f.find('select[name="horario"]').val() || '';
                 const [start, end] = horarioVal.split('|');
-
-                if (!profesional || !nombre || !fecha_cita || !start || !end) {
-                    showAlert('Completa los campos obligatorios', 'warning');
-                    return;
-                }
 
                 if (fecha_cita === todayLocalYYYYMMDD()) {
                     const minAllowed = Math.max(11 * 60, localMinutesNow());
