@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='75'>📅</text></svg>" />
+    <title>Calendify | Citas</title>
+    <link rel="stylesheet" href="./css/backend-plugin.min.css">
+    <link rel="stylesheet" href="./css/backend.css">
+    <link rel="stylesheet" href="./css/all.min.css">
+    <link rel="stylesheet" href="./css/line-awesome.min.css">
+    <link rel="stylesheet" href="./css/remixicon.css">    
+    <link rel='stylesheet' href='./css/main.css' />
+    <link rel='stylesheet' href='./css/daygrid_main.css' />
+    <link rel='stylesheet' href='./css/timegrid_main.css' />
+    <link rel='stylesheet' href='./css/list_main.css' />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css">
+  </head>
+  <body class="fixed-top-navbar top-nav">
+    <div id="loading">
+          <div id="loading-center">
+          </div>
+    </div>
+
+    <div class="wrapper">
+        <div id="header-container"></div>
+        
+        <div class="content-page">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card card-block card-stretch">                    
+                            <div class="card-body">
+                                <div class="d-flex flex-wrap align-items-center justify-content-between">
+                                    <h6 class="mb-3 mb-md-0">Documento Nacional Identidad</h6>
+                                    <input type="text" class="form-control api-password" value="" id="dni-search" maxlength="10" inputmode="numeric" placeholder="48118043" aria-label="Buscar por DNI">  
+                                    <div class="media flex-wrap api-link">
+                                        <button type="button" class="btn btn-outline-primary mr-4" id="dni-search-button"><i class="las la-search pr-2" aria-hidden="true"></i>Buscar</button>
+                                    </div>                         
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="users-results" class="row w-100"></div>
+                    <div class="col-12">
+                        <nav aria-label="Paginación de resultados">
+                            <ul id="users-pagination" class="pagination justify-content-center"></ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div id="footer-container"></div>
+<div id="dialogs-container"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
+<script src="./js/backend-bundle.min.js"></script>
+<script src="./js/customizer.js"></script>
+<script src='./js/main.js'></script>
+<script src='./js/daygrid_main.js'></script>
+<script src='./js/timegrid_main.js'></script>
+<script src='./js/list_main.js'></script>
+<script src='./js/interaction_main.js'></script>
+
+<script src="./js/layout.js"></script>
+<script src="./js/app.js"></script>
+<script src="./js/users-page.js"></script>
+</body>
+</html>

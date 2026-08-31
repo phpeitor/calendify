@@ -48,6 +48,28 @@
   margin-bottom: 0.5rem;
 }
 
+.users-status {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  border-radius: 0.25rem;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.users-status-confirmado {
+  background-color: #28a745;
+}
+
+.users-status-anulado {
+  background-color: #dc3545;
+}
+
+.users-status-enviado {
+  background-color: #6c757d;
+}
+
 @media (min-width: 1300px) {
   .iq-top-navbar .iq-navbar-custom .wrapper-menu {
     display: inline-flex !important;
