@@ -837,7 +837,6 @@
                 const nombre      = $f.find('#nombre').val();
                 const correo      = $f.find('#correo').val();
                 const dni         = $f.find('#dni').val();
-                const fecha_nac   = $f.find('#fecha_nac').val();
                 const telefono    = $f.find('#telefono').val();
                 const direccion   = $f.find('#direccion').val();
                 const comentario  = $f.find('#comentario').val();
@@ -851,7 +850,7 @@
                 }
 
                 const payload = {
-                    profesional, nombre, correo, dni, fecha_nac, telefono, direccion, comentario,
+                    profesional, nombre, correo, dni, telefono, direccion, comentario,
                     fecha_cita, start, end
                 };
 

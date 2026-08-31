@@ -1,0 +1,18 @@
+{
+    "events": [
+        {
+            "id": "cita_6a95a9657376e0.63905212",
+            "profesional": "Dr. Carlos Wiesse Crespo",
+            "nombre": "MONTALVAN BRAVO ALEJANDRO MANUEL",
+            "correo": "alex1991usat@gmail.com",
+            "dni": "46798772",
+            "telefono": "987654321",
+            "direccion": "test",
+            "comentario": "pension de alimentos",
+            "fecha_cita": "2026-08-31",
+            "start": "09:15",
+            "end": "10:00",
+            "createdAt": "2026-08-31 11:18:45"
+        }
+    ]
+}

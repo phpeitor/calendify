@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 
+require_once __DIR__ . '/env.php';
+
 date_default_timezone_set('America/Lima');
 
 header('Content-Type: application/json; charset=utf-8');
@@ -44,7 +46,6 @@ $profesional = getv($in, 'profesional');
 $nombre      = getv($in, 'nombre');
 $correo      = getv($in, 'correo');
 $dni         = getv($in, 'dni');
-$fecha_nac   = getv($in, 'fecha_nac');
 $telefono    = getv($in, 'telefono');
 $direccion   = getv($in, 'direccion');
 $comentario  = getv($in, 'comentario');
@@ -130,13 +131,12 @@ $cita = [
   'nombre'      => $nombre,
   'correo'      => $correo,
   'dni'         => $dni,
-  'fecha_nac'   => $fecha_nac,
   'telefono'    => $telefono,
   'direccion'   => $direccion,
   'comentario'  => $comentario,
-  'fecha_cita'  => $fecha_cita, 
-  'start'       => $startHHMM, 
-  'end'         => $endHHMM,    
+  'fecha_cita'  => $fecha_cita,
+  'start'       => $startHHMM,
+  'end'         => $endHHMM,
   'createdAt'   => $createdAt
 ];
 
