@@ -14,6 +14,36 @@
             "end": "18:15",
             "estado": "Confirmado",
             "createdAt": "2026-08-31 15:00:00"
+        },
+        {
+            "id": "cita_6a95e59f5dbfa9.04381830",
+            "profesional": "Dr. Carlos Wiesse Crespo",
+            "nombre": "MONTALVAN BRAVO ALEJANDRO MANUEL",
+            "correo": "alex1991usat@gmail.com",
+            "dni": "46798772",
+            "telefono": "98765432",
+            "direccion": "test",
+            "comentario": "aaaaa",
+            "fecha_cita": "2026-08-31",
+            "start": "16:00",
+            "end": "16:45",
+            "estado": "Enviado",
+            "createdAt": "2026-08-31 15:35:43"
+        },
+        {
+            "id": "cita_6a95e5aee78698.56698042",
+            "profesional": "Dr. Carlos Wiesse Crespo",
+            "nombre": "MONTALVAN BRAVO ALEJANDRO MANUEL",
+            "correo": "alex1991usat@gmail.com",
+            "dni": "46798772",
+            "telefono": "98765432",
+            "direccion": "ddddddd",
+            "comentario": "sddfdf",
+            "fecha_cita": "2026-09-01",
+            "start": "11:30",
+            "end": "12:15",
+            "estado": "Enviado",
+            "createdAt": "2026-08-31 15:35:58"
         }
     ]
 }
