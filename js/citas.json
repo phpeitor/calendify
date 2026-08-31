@@ -27,7 +27,7 @@
             "fecha_cita": "2026-08-31",
             "start": "16:00",
             "end": "16:45",
-            "estado": "Enviado",
+            "estado": "Confirmado",
             "createdAt": "2026-08-31 15:35:43"
         },
         {
@@ -74,6 +74,21 @@
             "end": "17:30",
             "estado": "Enviado",
             "createdAt": "2026-08-31 15:57:07"
+        },
+        {
+            "id": "cita_6a95eb0e1fd489.15076412",
+            "profesional": "Dr. Carlos Wiesse Crespo",
+            "nombre": "ESPINO LOZANO MAYRA MELISSA",
+            "correo": "alex1991usat@gmail.com",
+            "dni": "46798775",
+            "telefono": "987665789",
+            "direccion": "test2",
+            "comentario": "sdsdsdsd",
+            "fecha_cita": "2026-08-31",
+            "start": "19:00",
+            "end": "19:45",
+            "estado": "Enviado",
+            "createdAt": "2026-08-31 15:58:54"
         }
     ]
 }

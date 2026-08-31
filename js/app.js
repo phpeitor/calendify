@@ -907,6 +907,10 @@
 
             calendar1.render();
 
+            if (new URLSearchParams(window.location.search).get('open') === 'appointment') {
+                $('#date-event').modal('show');
+            }
+
             $('[name="profesional"]').off('change.gen45').on('change.gen45', function(){
                 const pro = $(this).val();
                 fillHorarioSlotsForProfessional(pro);
@@ -920,6 +924,7 @@
                 .on('input.validation change.validation', '#submit-schedule :input', function () {
                     if (this.checkValidity() && String($(this).val() || '').trim()) {
                         $(this).removeClass('is-invalid');
+                        $(this).closest('.bootstrap-select').removeClass('is-invalid');
                     }
                 });
 
@@ -949,7 +954,10 @@
                     invalidFields.push($f.find('#telefono')[0]);
                 }
 
-                [...new Set(invalidFields)].forEach((field) => $(field).addClass('is-invalid'));
+                [...new Set(invalidFields)].forEach((field) => {
+                    $(field).addClass('is-invalid');
+                    $(field).closest('.bootstrap-select').addClass('is-invalid');
+                });
                 if (invalidFields.length || !form.checkValidity()) {
                     $f.addClass('was-validated');
                     showAlert('Completa los campos y verifica el teléfono y correo', 'warning');

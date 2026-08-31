@@ -70,6 +70,12 @@
   background-color: #6c757d;
 }
 
+#submit-schedule .form-control.is-invalid,
+#submit-schedule .bootstrap-select.is-invalid .dropdown-toggle {
+  border-color: #dc3545 !important;
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.15) !important;
+}
+
 @media (min-width: 1300px) {
   .iq-top-navbar .iq-navbar-custom .wrapper-menu {
     display: inline-flex !important;
