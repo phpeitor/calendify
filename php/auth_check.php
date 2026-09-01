@@ -20,5 +20,6 @@ if (!$authenticated) {
 echo json_encode([
   'ok' => true,
   'authenticated' => $authenticated,
-  'expiresAt' => $authenticated ? $expiresAt : null
+  'expiresAt' => $authenticated ? $expiresAt : null,
+  'user' => $authenticated ? ($_SESSION['calendify_user'] ?? '') : null
 ]);

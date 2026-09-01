@@ -16050,17 +16050,19 @@ const au = "State Machine 1",
 			RiveComponent: Xt
 		} = ei.useRive({
 			src: "./resources/login.riv",
+			artboard: "Harold",
 			stateMachines: au,
 			autoplay: !0,
+			autoBind: !0,
 			layout: new ei.Layout({
-				fit: ei.Fit.Cover,
+				fit: ei.Fit.Contain,
 				alignment: ei.Alignment.Center
 			}),
 			...rt
 		}), [B, Mt] = hl.useState(""), [Ht, Nt] = hl.useState(""), [Ct, at] = hl.useState(0), [Y, vt] = hl.useState(Hd), [_showReq, _setShowReq] = hl.useState(!1), [isChecking, setIsChecking] = hl.useState(!1), it = hl.useRef(null), ne = hl.useRef(!1), ce = hl.useRef(!1), eyeTrack = ei.useStateMachineInput(I, au, "eye_track"), isFocus = ei.useStateMachineInput(I, au, "isFocus"), isPassword = ei.useStateMachineInput(I, au, "isPassword"), loginSuccess = ei.useStateMachineInput(I, au, "login_success"), loginFail = ei.useStateMachineInput(I, au, "login_fail"), happyInput = ei.useStateMachineInput(I, au, "Happy"), angryInput = ei.useStateMachineInput(I, au, "Angry");
 		const setBooleanInput = (input, value) => {
 			if (!input) return;
-			if (input.type === "Boolean") {
+			if (input.type === "Boolean" || Object.prototype.hasOwnProperty.call(input, "value")) {
 				input.value = !!value;
 				return
 			}
@@ -16084,6 +16086,29 @@ const au = "State Machine 1",
 			setBooleanInput(happyInput, isHappy);
 			setBooleanInput(angryInput, isAngry)
 		};
+		const getRecaptchaToken = () => new Promise(resolve => {
+			let attempts = 0;
+			const run = () => {
+				attempts += 1;
+				if (!window.RECAPTCHA_SITE_KEY) {
+					resolve("");
+					return
+				}
+				if (!window.grecaptcha) {
+					if (attempts < 30) setTimeout(run, 100);
+					else resolve("");
+					return
+				}
+				try {
+					window.grecaptcha.ready(() => {
+						window.grecaptcha.execute(window.RECAPTCHA_SITE_KEY, { action: "login" }).then(resolve).catch(() => resolve(""))
+					})
+				} catch (Dt) {
+					resolve("")
+				}
+			};
+			run()
+		});
 		hl.useEffect(() => {
 			it?.current && !Ct && at(it.current.offsetWidth / 100)
 		}, [it]);
@@ -16148,11 +16173,12 @@ const au = "State Machine 1",
 				setBooleanInput(isPassword, !0);
 
 				try {
+					const recaptchaToken = await getRecaptchaToken();
 					const response = await fetch("./php/auth_login.php", {
 						method: "POST",
 						credentials: "same-origin",
 						headers: { "Content-Type": "application/json; charset=UTF-8" },
-						body: JSON.stringify({ usuario, password })
+						body: JSON.stringify({ usuario, password, recaptchaToken })
 					});
 					const result = await response.json();
 					if (!response.ok || !result.ok) throw new Error(result.error || "Login invalido");
