@@ -16078,6 +16078,11 @@ const au = "State Machine 1",
 			if (!input || input.type !== "Trigger" || typeof input.fire != "function") return;
 			requestAnimationFrame(() => input.fire())
 		};
+		const playAnimation = name => {
+			try {
+				if (I && typeof I.play == "function") I.play(name)
+			} catch (Dt) {}
+		};
 		hl.useEffect(() => {
 			it?.current && !Ct && at(it.current.offsetWidth / 100)
 		}, [it]);
@@ -16127,41 +16132,48 @@ const au = "State Machine 1",
 				e.preventDefault();
 
 				const usuario = B.trim();
-				const password = Ht.trim();
-				const validDemoUser = "demo@demo.com";
-				const validDemoPass = "demo123";
+				const password = Ht;
 
 				if (!usuario || !password) {
 					_setShowReq(!0);
+					playAnimation("Angry");
 					fireTrigger(loginFail);
 					return;
 				}
 				_setShowReq(!1);
 
-				if (usuario === validDemoUser && password === validDemoPass) {
-					vt("Ingresando...");
-					setIsChecking(!0);
-					setBooleanInput(isPassword, !0);
-					setTimeout(() => Sm(loginSuccess), 250);
+				vt("Ingresando...");
+				setIsChecking(!0);
+				setBooleanInput(isPassword, !0);
+
+				try {
+					const response = await fetch("./php/auth_login.php", {
+						method: "POST",
+						credentials: "same-origin",
+						headers: { "Content-Type": "application/json; charset=UTF-8" },
+						body: JSON.stringify({ usuario, password })
+					});
+					const result = await response.json();
+					if (!response.ok || !result.ok) throw new Error(result.error || "Login invalido");
+
+					playAnimation("Happy");
+					Sm(loginSuccess);
+					setTimeout(() => {
+						const params = new URLSearchParams(window.location.search);
+						window.location.href = params.get("redirect") || "./citas.html";
+					}, 1200);
+				} catch (Dt) {
+					playAnimation("Angry");
+					xm(loginFail, !0);
+					if (window.alertify) alertify.error(Dt.message || "Credenciales incorrectas");
 					setTimeout(() => {
 						setIsChecking(!1);
 						setBooleanInput(isPassword, !1);
 						setBooleanInput(isFocus, !1);
 						vt(Hd);
-					}, 1600);
-					return;
+					}, 1500);
 				}
-
-				vt("Error");
-				setIsChecking(!0);
-				setBooleanInput(isPassword, !0);
-				setTimeout(() => xm(loginFail, !0), 200);
-				setTimeout(() => {
-					setIsChecking(!1);
-					setBooleanInput(isPassword, !1);
-					setBooleanInput(isFocus, !1);
-					vt(Hd);
-				}, 1500);
+				return;
 			};
 
 		return Rn.jsx("div", {
@@ -16202,6 +16214,7 @@ const au = "State Machine 1",
 								maxLength: 12,
 								value: Ht,
 								onFocus: () => {
+									playAnimation("Idle");
 									setBooleanInput(isPassword, !0);
 									setBooleanInput(isFocus, !1);
 								},
@@ -16211,6 +16224,7 @@ const au = "State Machine 1",
 								},
 								onChange: Dt => {
 									Nt(Dt.target.value);
+									playAnimation("Idle");
 									setBooleanInput(isPassword, !!Dt.target.value.trim().length);
 									setNumberInput(eyeTrack, Dt.target.value.trim().length)
 								}
