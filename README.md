@@ -7,12 +7,6 @@
   <img src="https://cdn.dribbble.com/userupload/12985227/file/original-5a3bf8e49bf410f5e3a847d8ac725fc7.jpg" alt="Instagram" width="600">
 </a>
 
-## Descripción
-
-Calendify es una aplicación web ligera para gestionar citas médicas desde un entorno Apache/PHP sin framework backend pesado. La aplicación combina una agenda visual, registro de citas, administración de estados, autenticación por sesión y persistencia simple en archivos JSON.
-
-El proyecto está pensado para despliegues pequeños, demos funcionales o instalaciones internas donde se prioriza simplicidad operativa sobre infraestructura compleja.
-
 ## Funcionalidades
 
 - Calendario visual con disponibilidad por profesional.
