@@ -16057,7 +16057,7 @@ const au = "State Machine 1",
 				alignment: ei.Alignment.Center
 			}),
 			...rt
-		}), [B, Mt] = hl.useState(""), [Ht, Nt] = hl.useState(""), [Ct, at] = hl.useState(0), [Y, vt] = hl.useState(Hd), [_showReq, _setShowReq] = hl.useState(!1), [isChecking, setIsChecking] = hl.useState(!1), it = hl.useRef(null), ne = hl.useRef(!1), ce = hl.useRef(!1), eyeTrack = ei.useStateMachineInput(I, au, "eye_track"), isFocus = ei.useStateMachineInput(I, au, "isFocus"), isPassword = ei.useStateMachineInput(I, au, "isPassword"), loginSuccess = ei.useStateMachineInput(I, au, "login_success"), loginFail = ei.useStateMachineInput(I, au, "login_fail");
+		}), [B, Mt] = hl.useState(""), [Ht, Nt] = hl.useState(""), [Ct, at] = hl.useState(0), [Y, vt] = hl.useState(Hd), [_showReq, _setShowReq] = hl.useState(!1), [isChecking, setIsChecking] = hl.useState(!1), it = hl.useRef(null), ne = hl.useRef(!1), ce = hl.useRef(!1), eyeTrack = ei.useStateMachineInput(I, au, "eye_track"), isFocus = ei.useStateMachineInput(I, au, "isFocus"), isPassword = ei.useStateMachineInput(I, au, "isPassword"), loginSuccess = ei.useStateMachineInput(I, au, "login_success"), loginFail = ei.useStateMachineInput(I, au, "login_fail"), happyInput = ei.useStateMachineInput(I, au, "Happy"), angryInput = ei.useStateMachineInput(I, au, "Angry");
 		const setBooleanInput = (input, value) => {
 			if (!input) return;
 			if (input.type === "Boolean") {
@@ -16079,9 +16079,10 @@ const au = "State Machine 1",
 			requestAnimationFrame(() => input.fire())
 		};
 		const playAnimation = name => {
-			try {
-				if (I && typeof I.play == "function") I.play(name)
-			} catch (Dt) {}
+			const isHappy = name === "Happy";
+			const isAngry = name === "Angry";
+			setBooleanInput(happyInput, isHappy);
+			setBooleanInput(angryInput, isAngry)
 		};
 		hl.useEffect(() => {
 			it?.current && !Ct && at(it.current.offsetWidth / 100)

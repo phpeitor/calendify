@@ -15,6 +15,26 @@ function bindDialogTriggers() {
   });
 }
 
+function bindLogout() {
+  document.querySelectorAll('.btn_logout').forEach((btn) => {
+    btn.onclick = async function (e) {
+      e.preventDefault();
+
+      try {
+        await fetch('./php/auth_logout.php', {
+          method: 'POST',
+          cache: 'no-store',
+          credentials: 'same-origin'
+        });
+      } catch (error) {
+        console.error('No se pudo cerrar sesion:', error);
+      }
+
+      window.location.replace('./login.html');
+    };
+  });
+}
+
 async function loadLayoutFragments() {
   try {
     const [headerHtml, footerHtml, dialogsHtml] = await Promise.all([
@@ -37,6 +57,7 @@ async function loadLayoutFragments() {
     }
 
     bindDialogTriggers();
+    bindLogout();
   } catch (error) {
     console.error('No se pudieron cargar los fragmentos de layout:', error);
   }
