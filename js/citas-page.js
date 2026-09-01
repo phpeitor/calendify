@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     if (!citas.length) {
       body.innerHTML = `
         <tr>
-          <td colspan="10" class="text-center py-4">No hay citas para el rango seleccionado.</td>
+          <td colspan="11" class="text-center py-4">No hay citas para el rango seleccionado.</td>
         </tr>
       `;
     } else {
@@ -77,6 +77,7 @@ document.addEventListener('DOMContentLoaded', async function () {
           <td>${cita.fecha_cita || '-'}</td>
           <td>${(cita.start || '') + (cita.end ? ' - ' + cita.end : '') || '-'}</td>
           <td>${cita.direccion || '-'}</td>
+          <td>${cita.comentario || '-'}</td>
           <td>${getEstadoBadge(cita.estado)}</td>
           <td>
             <div class="d-flex align-items-center list-action">
@@ -171,7 +172,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     console.error('No se pudieron cargar las citas:', error);
     body.innerHTML = `
       <tr>
-        <td colspan="10" class="text-center py-4 text-danger">No se pudo cargar la información.</td>
+        <td colspan="11" class="text-center py-4 text-danger">No se pudo cargar la información.</td>
       </tr>
     `;
   }
