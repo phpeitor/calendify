@@ -12,4 +12,19 @@
     cursor: not-allowed;
 }
 
+.rive-wrapper {
+    display: block;
+    line-height: 0;
+    margin-bottom: 0 !important;
+}
+
+.rive-container {
+    display: block;
+    margin-bottom: 0 !important;
+}
+
+.form-container {
+    margin-top: 0 !important;
+}
+
 .grecaptcha-badge { visibility: visible !important; opacity: 1 !important; display: block !important; bottom: 12px !important; right: 12px !important; z-index: 9999 !important; }

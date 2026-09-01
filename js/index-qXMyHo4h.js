@@ -16055,19 +16055,21 @@ const au = "State Machine 1",
 			autoplay: !0,
 			autoBind: !0,
 			layout: new ei.Layout({
-				fit: ei.Fit.Contain,
+				fit: ei.Fit.Cover,
 				alignment: ei.Alignment.Center
 			}),
 			...rt
 		}), [B, Mt] = hl.useState(""), [Ht, Nt] = hl.useState(""), [Ct, at] = hl.useState(0), [Y, vt] = hl.useState(Hd), [_showReq, _setShowReq] = hl.useState(!1), [isChecking, setIsChecking] = hl.useState(!1), it = hl.useRef(null), ne = hl.useRef(!1), ce = hl.useRef(!1), eyeTrack = ei.useStateMachineInput(I, au, "eye_track"), isFocus = ei.useStateMachineInput(I, au, "isFocus"), isPassword = ei.useStateMachineInput(I, au, "isPassword"), loginSuccess = ei.useStateMachineInput(I, au, "login_success"), loginFail = ei.useStateMachineInput(I, au, "login_fail"), happyInput = ei.useStateMachineInput(I, au, "Happy"), angryInput = ei.useStateMachineInput(I, au, "Angry");
 		const setBooleanInput = (input, value) => {
 			if (!input) return;
-			if (input.type === "Boolean" || Object.prototype.hasOwnProperty.call(input, "value")) {
-				input.value = !!value;
-				return
-			}
-			if (input.type === "Trigger" && !!value) {
-				requestAnimationFrame(() => input.fire && input.fire())
+			try {
+				if ("value" in input) {
+					input.value = !!value;
+					return
+				}
+			} catch (Dt) {}
+			if (typeof input.fire == "function" && !!value) {
+				requestAnimationFrame(() => input.fire())
 			}
 		};
 		const setNumberInput = (input, value) => {
@@ -16083,8 +16085,10 @@ const au = "State Machine 1",
 		const playAnimation = name => {
 			const isHappy = name === "Happy";
 			const isAngry = name === "Angry";
-			setBooleanInput(happyInput, isHappy);
-			setBooleanInput(angryInput, isAngry)
+			requestAnimationFrame(() => {
+				setBooleanInput(happyInput, isHappy);
+				setBooleanInput(angryInput, isAngry)
+			})
 		};
 		const getRecaptchaToken = () => new Promise(resolve => {
 			let attempts = 0;
@@ -16163,7 +16167,6 @@ const au = "State Machine 1",
 				if (!usuario || !password) {
 					_setShowReq(!0);
 					playAnimation("Angry");
-					fireTrigger(loginFail);
 					return;
 				}
 				_setShowReq(!1);
@@ -16184,14 +16187,12 @@ const au = "State Machine 1",
 					if (!response.ok || !result.ok) throw new Error(result.error || "Login invalido");
 
 					playAnimation("Happy");
-					Sm(loginSuccess);
 					setTimeout(() => {
 						const params = new URLSearchParams(window.location.search);
 						window.location.href = params.get("redirect") || "./citas.html";
 					}, 1200);
 				} catch (Dt) {
 					playAnimation("Angry");
-					xm(loginFail, !0);
 					if (window.alertify) alertify.error(Dt.message || "Credenciales incorrectas");
 					setTimeout(() => {
 						setIsChecking(!1);
