@@ -72,7 +72,7 @@
             "fecha_cita": "2026-08-31",
             "start": "16:45",
             "end": "17:30",
-            "estado": "Enviado",
+            "estado": "Confirmado",
             "createdAt": "2026-08-31 15:57:07"
         },
         {
@@ -87,8 +87,23 @@
             "fecha_cita": "2026-08-31",
             "start": "19:00",
             "end": "19:45",
-            "estado": "Enviado",
+            "estado": "Anulado",
             "createdAt": "2026-08-31 15:58:54"
+        },
+        {
+            "id": "cita_6a9616c8724878.80342153",
+            "profesional": "Dr. Carlos Wiesse Crespo",
+            "nombre": "MONTALVAN BRAVO ALEJANDRO MANUEL",
+            "correo": "alex1991usat@gmail.com",
+            "dni": "46798772",
+            "telefono": "987665789",
+            "direccion": "Calle Angelica Palma 128 San Miguel",
+            "comentario": "aaaaaaaaaaaaaaaaaaaa bbbbbbbbbbbbbbb ccccccccccccccccccccccccccccc cddddddddddddddddd",
+            "fecha_cita": "2026-08-31",
+            "start": "19:45",
+            "end": "20:30",
+            "estado": "Enviado",
+            "createdAt": "2026-08-31 19:05:28"
         }
     ]
 }

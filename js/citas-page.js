@@ -9,8 +9,16 @@ document.addEventListener('DOMContentLoaded', async function () {
     return `./images/${num}.jpg`;
   }
 
-  function getEstadoBadge(estado) {
-    const value = (estado || 'Enviado').toString();
+  function escapeHtml(value) {
+    return String(value == null ? '' : value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  function getEstadoBadge(estado) {    const value = (estado || 'Enviado').toString();
     const map = {
       Enviado: 'bg-secondary',
       Confirmado: 'bg-success',
@@ -77,7 +85,7 @@ document.addEventListener('DOMContentLoaded', async function () {
           <td>${cita.fecha_cita || '-'}</td>
           <td>${(cita.start || '') + (cita.end ? ' - ' + cita.end : '') || '-'}</td>
           <td>${cita.direccion || '-'}</td>
-          <td>${cita.comentario || '-'}</td>
+          <td><span class="comentario-col" data-toggle="tooltip" data-placement="top" title="${escapeHtml(cita.comentario || '')}" style="display:inline-block; max-width:200px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; vertical-align:middle;">${cita.comentario || '-'}</span></td>
           <td>${getEstadoBadge(cita.estado)}</td>
           <td>
             <div class="d-flex align-items-center list-action">
@@ -98,7 +106,16 @@ document.addEventListener('DOMContentLoaded', async function () {
         const id = this.getAttribute('data-id');
         const action = this.getAttribute('data-action');
         if (!id) return;
-        updateCitaEstado(id, action === 'confirmar' ? 'Confirmado' : 'Anulado');
+        const esConfirmar = action === 'confirmar';
+        const title = esConfirmar ? 'Confirmar cita' : 'Anular cita';
+        const message = esConfirmar
+          ? '¿Estás seguro de que deseas confirmar esta cita?'
+          : '¿Estás seguro de que deseas anular esta cita?';
+        const next = esConfirmar ? 'Confirmado' : 'Anulado';
+        alertify.confirm(title, message,
+          function () { updateCitaEstado(id, next); },
+          function () {}
+        ).set('labels', { ok: 'Sí, continuar', cancel: 'Cancelar' });
       });
     });
 
