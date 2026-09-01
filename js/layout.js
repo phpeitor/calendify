@@ -44,6 +44,19 @@ function escapeHtml(value) {
     .replace(/'/g, '&#039;');
 }
 
+function isPublicIndexPage() {
+  const page = window.location.pathname.split('/').pop() || 'index.html';
+  return page === '' || page === 'index.html';
+}
+
+function hideSessionMenuOnPublicPage() {
+  if (!isPublicIndexPage()) return;
+
+  document.querySelectorAll('.caption-content').forEach((node) => {
+    node.remove();
+  });
+}
+
 async function loadSessionUser() {
   const userNode = document.querySelector('.nom_user');
   if (!userNode) return;
@@ -84,6 +97,7 @@ async function loadLayoutFragments() {
     }
 
     bindDialogTriggers();
+    hideSessionMenuOnPublicPage();
     bindLogout();
     loadSessionUser();
   } catch (error) {
