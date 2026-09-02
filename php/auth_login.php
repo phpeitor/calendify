@@ -62,8 +62,19 @@ if ($recaptchaSecret !== '') {
   $verificationData = json_decode($verification ?: '', true);
 
   if (!is_array($verificationData) || empty($verificationData['success'])) {
+    $codes = [];
+    if (is_array($verificationData) && isset($verificationData['error-codes']) && is_array($verificationData['error-codes'])) {
+      $codes = $verificationData['error-codes'];
+    }
+
     http_response_code(400);
-    echo json_encode(['ok' => false, 'error' => 'reCAPTCHA invalido ❌']);
+    echo json_encode([
+      'ok' => false,
+      'error' => 'reCAPTCHA invalido',
+      'recaptchaErrors' => $codes,
+      'recaptchaHostname' => is_array($verificationData) ? ($verificationData['hostname'] ?? null) : null,
+      'recaptchaAction' => is_array($verificationData) ? ($verificationData['action'] ?? null) : null
+    ]);
     exit;
   }
 }
