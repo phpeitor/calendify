@@ -25,10 +25,15 @@
 })();
 // Init reCAPTCHA loader and alertify positioning without inline scripts in views
 (function(){
-	const initRecaptcha = () => {
+	const initRecaptcha = async () => {
 		try {
 			const root = document.getElementById('root');
-			const siteKey = (root && root.dataset ? (root.dataset.recaptchaSiteKey || root.getAttribute('data-recaptcha-site-key') || '') : '') || (window.APP_CONFIG && window.APP_CONFIG.RECAPTCHA_SITE_KEY ? window.APP_CONFIG.RECAPTCHA_SITE_KEY : '');
+			let siteKey = (root && root.dataset ? (root.dataset.recaptchaSiteKey || root.getAttribute('data-recaptcha-site-key') || '') : '') || (window.APP_CONFIG && window.APP_CONFIG.RECAPTCHA_SITE_KEY ? window.APP_CONFIG.RECAPTCHA_SITE_KEY : '');
+			if (!siteKey) {
+				const configResponse = await fetch('./php/app_config.php', { cache: 'no-store' });
+				const config = await configResponse.json();
+				siteKey = config.RECAPTCHA_SITE_KEY || '';
+			}
 			console.debug('reCAPTCHA: siteKey from DOM', siteKey);
 			if (siteKey) {
 				window.RECAPTCHA_SITE_KEY = siteKey;

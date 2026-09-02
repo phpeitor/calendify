@@ -70,7 +70,7 @@ if ($recaptchaSecret !== '') {
 
 if (!hash_equals($validUser, $usuario) || !hash_equals($validPass, $password)) {
   http_response_code(401);
-  echo json_encode(['ok' => false, 'error' => 'Credenciales incorrectas']);
+  echo json_encode(['ok' => false, 'error' => 'Credenciales incorrectas ❗']);
   exit;
 }
 
