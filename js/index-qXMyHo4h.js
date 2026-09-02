@@ -16189,16 +16189,17 @@ const au = "State Machine 1",
 						body: JSON.stringify({ usuario, password, recaptchaToken })
 					});
 					const result = await response.json();
-					if (!response.ok || !result.ok) throw new Error(result.error || "Login invalido");
+					if (!response.ok || !result.ok) throw new Error(result.error || "Login invalido 😵");
 
 					playAnimation("Happy");
+					if (window.alertify) alertify.success("✅ Redirigiendo al sistema...");
 					setTimeout(() => {
 						const params = new URLSearchParams(window.location.search);
 						window.location.href = params.get("redirect") || "./citas.html";
-					}, 1200);
+					}, 2500);
 				} catch (Dt) {
 					playAnimation("Angry");
-					if (window.alertify) alertify.error(Dt.message || "Credenciales incorrectas");
+					if (window.alertify) alertify.error(Dt.message || "Credenciales incorrectas ❌");
 					setTimeout(() => {
 						setIsChecking(!1);
 						setBooleanInput(isPassword, !1);
