@@ -39,6 +39,65 @@ if ($validUser === '' || $validPass === '') {
   exit;
 }
 
+function verifyRecaptchaToken(string $secret, string $token): array
+{
+  $payload = http_build_query([
+    'secret' => $secret,
+    'response' => $token,
+    'remoteip' => $_SERVER['REMOTE_ADDR'] ?? ''
+  ]);
+
+  if (function_exists('curl_init')) {
+    $ch = curl_init('https://www.google.com/recaptcha/api/siteverify');
+    curl_setopt_array($ch, [
+      CURLOPT_POST => true,
+      CURLOPT_POSTFIELDS => $payload,
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_TIMEOUT => 15,
+      CURLOPT_SSL_VERIFYPEER => true,
+      CURLOPT_HTTPHEADER => ['Content-Type: application/x-www-form-urlencoded']
+    ]);
+
+    $body = curl_exec($ch);
+    $curlError = curl_error($ch);
+    $httpCode = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+
+    if ($body !== false && $httpCode >= 200 && $httpCode < 300) {
+      $data = json_decode($body, true);
+      return is_array($data) ? $data : ['success' => false, 'error-codes' => ['invalid-json-response']];
+    }
+
+    return [
+      'success' => false,
+      'error-codes' => ['server-verification-request-failed'],
+      'server-error' => $curlError ?: "HTTP {$httpCode}"
+    ];
+  }
+
+  $context = stream_context_create([
+    'http' => [
+      'method' => 'POST',
+      'header' => "Content-Type: application/x-www-form-urlencoded\r\n",
+      'content' => $payload,
+      'timeout' => 15
+    ]
+  ]);
+  $body = @file_get_contents('https://www.google.com/recaptcha/api/siteverify', false, $context);
+
+  if ($body === false) {
+    $lastError = error_get_last();
+    return [
+      'success' => false,
+      'error-codes' => ['server-verification-request-failed'],
+      'server-error' => $lastError['message'] ?? null
+    ];
+  }
+
+  $data = json_decode($body, true);
+  return is_array($data) ? $data : ['success' => false, 'error-codes' => ['invalid-json-response']];
+}
+
 if ($recaptchaSecret !== '') {
   if ($recaptchaToken === '') {
     http_response_code(400);
@@ -46,20 +105,7 @@ if ($recaptchaSecret !== '') {
     exit;
   }
 
-  $context = stream_context_create([
-    'http' => [
-      'method' => 'POST',
-      'header' => "Content-Type: application/x-www-form-urlencoded\r\n",
-      'content' => http_build_query([
-        'secret' => $recaptchaSecret,
-        'response' => $recaptchaToken,
-        'remoteip' => $_SERVER['REMOTE_ADDR'] ?? ''
-      ]),
-      'timeout' => 10
-    ]
-  ]);
-  $verification = file_get_contents('https://www.google.com/recaptcha/api/siteverify', false, $context);
-  $verificationData = json_decode($verification ?: '', true);
+  $verificationData = verifyRecaptchaToken($recaptchaSecret, $recaptchaToken);
 
   if (!is_array($verificationData) || empty($verificationData['success'])) {
     $codes = [];
@@ -72,6 +118,7 @@ if ($recaptchaSecret !== '') {
       'ok' => false,
       'error' => 'reCAPTCHA invalido',
       'recaptchaErrors' => $codes,
+      'detail' => is_array($verificationData) ? ($verificationData['server-error'] ?? null) : null,
       'recaptchaHostname' => is_array($verificationData) ? ($verificationData['hostname'] ?? null) : null,
       'recaptchaAction' => is_array($verificationData) ? ($verificationData['action'] ?? null) : null
     ]);
