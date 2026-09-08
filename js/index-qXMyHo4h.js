@@ -38,7 +38,7 @@
 			if (siteKey) {
 				window.RECAPTCHA_SITE_KEY = siteKey;
 				const scr = document.createElement('script');
-				scr.src = 'https://www.google.com/recaptcha/enterprise.js?render=' + encodeURIComponent(siteKey);
+				scr.src = 'https://www.google.com/recaptcha/api.js?render=' + encodeURIComponent(siteKey);
 				scr.async = true;
 				scr.defer = true;
 				scr.onload = function(){
@@ -16109,9 +16109,8 @@ const au = "State Machine 1",
 					return
 				}
 				try {
-					const captcha = window.grecaptcha.enterprise || window.grecaptcha;
-					captcha.ready(() => {
-						captcha.execute(window.RECAPTCHA_SITE_KEY, { action: "login" }).then(resolve).catch(() => resolve(""))
+					window.grecaptcha.ready(() => {
+						window.grecaptcha.execute(window.RECAPTCHA_SITE_KEY, { action: "login" }).then(resolve).catch(() => resolve(""))
 					})
 				} catch (Dt) {
 					resolve("")
@@ -16190,7 +16189,10 @@ const au = "State Machine 1",
 						body: JSON.stringify({ usuario, password, recaptchaToken })
 					});
 					const result = await response.json();
-					if (!response.ok || !result.ok) throw new Error(result.error || "Login invalido 😵");
+					if (!response.ok || !result.ok) {
+						const details = Array.isArray(result.recaptchaErrors) ? ` (${result.recaptchaErrors.join(", ")})` : "";
+						throw new Error((result.error || "Login invalido 😵") + details + (result.detail ? `: ${result.detail}` : ""));
+					}
 
 					playAnimation("Happy");
 					if (window.alertify) alertify.success("✅ Redirigiendo al sistema...");
