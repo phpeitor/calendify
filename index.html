@@ -88,11 +88,11 @@
                     <div class="modal-content">
                         <div class="modal-body">
                             <div class="popup text-left">
-                                <h5 class="mb-3">Introduzca los detalles</h5>
+                                <h5 class="mb-3">Registrar datos para la cita</h5>
                                 <form action="/" id="submit-schedule" novalidate>
                                     <div class="content create-workform row">
 
-                                        <div class="col-md-6 mt-0">
+                                        <div class="col-md-12 mt-0">
                                             <div class="form-group">
                                                 <select id="profesional" name="profesional" class="selectpicker form-control" data-style="py-0" required>
                                                     <option value="">Seleccione profesional..</option>
@@ -102,8 +102,16 @@
 
                                         <div class="col-md-6 mt-0">
                                             <div class="form-group">
+                                                <label class="form-label" for="schedule-start-date">Fecha Programada</label>
+                                                <input class="form-control date-input" type="date" name="fecha_cita" id="fecha_cita" required />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6 mt-0">
+                                            <div class="form-group">
+                                                <label class="form-label" for="schedule-start-date">Horario</label>
                                                 <select id="horario" name="horario" class="selectpicker form-control" data-style="py-0" required>
-                                                    <option value="">Seleccione horario..</option>
+                                                    <option value="">Seleccione...</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -142,13 +150,6 @@
                                             <div class="form-group">
                                                 <label class="form-label" for="schedule-start-date">Cuéntenos algo que nos ayude a prepararnos para la reunión</label>
                                                 <textarea class="form-control" name="comentario" id="comentario" placeholder="Escribe mensaje aqui" rows="2" cols="4" required></textarea>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6 mt-0">
-                                            <div class="form-group">
-                                                <label class="form-label" for="schedule-start-date">Fecha Programada</label>
-                                                <input class="form-control date-input" type="date" name="fecha_cita" id="fecha_cita" required />
                                             </div>
                                         </div>
 

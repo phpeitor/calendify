@@ -551,12 +551,12 @@
             function refreshPicker($el){ if ($el.selectpicker) $el.selectpicker('refresh'); }
 
             function resetProfesionales() {
-                $profSel.empty().append('<option value="">Seleccione profesional..</option>');
+                $profSel.empty().append('<option value="">Seleccione Profesional</option>');
                 refreshPicker($profSel);
             }
 
             function resetHorarios() {
-                $horaSel.empty().append('<option value="">Seleccione horario..</option>');
+                $horaSel.empty().append('<option value="">Seleccione...</option>');
                 refreshPicker($horaSel);
             }
 
