@@ -1,40 +1,44 @@
 document.addEventListener('DOMContentLoaded', function () {
   const form = document.getElementById('volunteers-filter');
-  const sinceInput = document.getElementById('volunteers-since');
-  const untilInput = document.getElementById('volunteers-until');
-  const limitInput = document.getElementById('volunteers-limit');
+  const dateRange = document.getElementById('volunteers-date-range');
   const table = document.getElementById('volunteers-datatable');
   const head = document.getElementById('volunteers-table-head');
   const body = document.getElementById('volunteers-table-body');
 
-  if (!form || !sinceInput || !untilInput || !limitInput || !table || !head || !body) return;
+  if (!form || !dateRange || !table || !head || !body) return;
 
-  const preferredColumns = [
-    'id', 'name', 'nombre', 'email', 'correo', 'phone', 'telefono', 'dni', 'created_at', 'createdAt', 'date', 'fecha'
+  const VOLUNTEERS_LIMIT = 100;
+
+  const columns = [
+    { key: 'id', label: 'Id' },
+    { key: 'email', label: 'Email' },
+    { key: 'telefono', label: 'Teléfono' },
+    { key: 'dni', label: 'DNI' },
+    { key: 'created_at', label: 'Fecha Registro' },
+    { key: 'fecha_nacimiento', label: 'Fecha Nacimiento' },
+    { key: 'nombres', label: 'Nombres' },
+    { key: 'apellidos', label: 'Apellidos' },
+    { key: 'comentario', label: 'Comentario' }
   ];
 
   function pad(value) {
     return String(value).padStart(2, '0');
   }
 
-  function toLocalInputValue(date) {
+  function toDateString(date) {
     return [
       date.getFullYear(),
       pad(date.getMonth() + 1),
       pad(date.getDate())
-    ].join('-') + 'T' + [pad(date.getHours()), pad(date.getMinutes())].join(':');
+    ].join('-');
   }
 
-  function toIsoWithOffset(value) {
-    const date = new Date(value);
-    const offset = -date.getTimezoneOffset();
-    const sign = offset >= 0 ? '+' : '-';
-    const abs = Math.abs(offset);
-    return [
-      date.getFullYear(),
-      pad(date.getMonth() + 1),
-      pad(date.getDate())
-    ].join('-') + 'T' + [pad(date.getHours()), pad(date.getMinutes()), pad(date.getSeconds())].join(':') + sign + pad(Math.floor(abs / 60)) + ':' + pad(abs % 60);
+  function toUtcRangeStart(dateStr) {
+    return `${dateStr}T00:00:00+00:00`;
+  }
+
+  function toUtcRangeEnd(dateStr) {
+    return `${dateStr}T00:00:00+00:00`;
   }
 
   function escapeHtml(value) {
@@ -53,18 +57,6 @@ document.addEventListener('DOMContentLoaded', function () {
     if (Array.isArray(data?.items)) return data.items;
     if (Array.isArray(data?.results)) return data.results;
     return [];
-  }
-
-  function getColumns(rows) {
-    const discovered = Array.from(rows.reduce((keys, row) => {
-      if (row && typeof row === 'object' && !Array.isArray(row)) {
-        Object.keys(row).forEach((key) => keys.add(key));
-      }
-      return keys;
-    }, new Set()));
-
-    const ordered = preferredColumns.filter((key) => discovered.includes(key));
-    return [...ordered, ...discovered.filter((key) => !ordered.includes(key))];
   }
 
   function renderEmpty(message) {
@@ -86,12 +78,11 @@ document.addEventListener('DOMContentLoaded', function () {
       return;
     }
 
-    const columns = getColumns(rows);
-    head.innerHTML = columns.map((column) => `<th>${escapeHtml(column)}</th>`).join('');
+    head.innerHTML = columns.map((column) => `<th>${escapeHtml(column.label)}</th>`).join('');
     body.innerHTML = rows.map((row) => `
       <tr>
         ${columns.map((column) => {
-          const value = row?.[column];
+          const value = row?.[column.key];
           const text = typeof value === 'object' && value !== null ? JSON.stringify(value) : value;
           return `<td>${escapeHtml(text || '-')}</td>`;
         }).join('')}
@@ -123,19 +114,28 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   async function loadVolunteers() {
-    const since = sinceInput.value;
-    const until = untilInput.value;
-    const limit = Math.max(1, Math.min(Number(limitInput.value) || 100, 500));
+    let since = '';
+    let until = '';
+
+    if (window.jQuery && $.fn.daterangepicker && $(dateRange).data('daterangepicker')) {
+      const picker = $(dateRange).data('daterangepicker');
+      since = picker.startDate.format('YYYY-MM-DD');
+      until = picker.endDate.clone().add(1, 'day').format('YYYY-MM-DD');
+    } else {
+      const parts = (dateRange.value || '').split(' - ');
+      since = parts[0] || '';
+      until = parts[1] || '';
+    }
 
     if (!since || !until) {
-      alertify.warning('Seleccione fecha desde y hasta');
+      alertify.warning('Seleccione un rango de fechas');
       return;
     }
 
     const params = new URLSearchParams({
-      since: toIsoWithOffset(since),
-      until: toIsoWithOffset(until),
-      limit: String(limit)
+      since: toUtcRangeStart(since),
+      until: toUtcRangeEnd(until),
+      limit: String(VOLUNTEERS_LIMIT)
     });
 
     renderEmpty('Cargando voluntarios...');
@@ -161,8 +161,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const defaultSince = new Date('2026-09-16T00:00:00');
   const defaultUntil = new Date('2026-09-17T00:00:00');
-  sinceInput.value = toLocalInputValue(defaultSince);
-  untilInput.value = toLocalInputValue(defaultUntil);
+
+  if (window.jQuery && $.fn.daterangepicker && window.moment) {
+    $(dateRange).daterangepicker({
+      startDate: moment(toDateString(defaultSince), 'YYYY-MM-DD'),
+      endDate: moment(toDateString(defaultUntil), 'YYYY-MM-DD'),
+      autoUpdateInput: true,
+      locale: {
+        format: 'YYYY-MM-DD',
+        applyLabel: 'Aplicar',
+        cancelLabel: 'Limpiar',
+        fromLabel: 'Desde',
+        toLabel: 'Hasta',
+        customRangeLabel: 'Personalizado',
+        daysOfWeek: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        firstDay: 1
+      }
+    }, function () {
+      loadVolunteers();
+    });
+  } else {
+    dateRange.value = `${toDateString(defaultSince)} - ${toDateString(defaultUntil)}`;
+  }
 
   form.addEventListener('submit', function (event) {
     event.preventDefault();

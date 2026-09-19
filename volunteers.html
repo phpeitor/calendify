@@ -39,19 +39,16 @@
               <div class="card card-block card-stretch mb-3">
                 <div class="card-body">
                   <form id="volunteers-filter" class="row align-items-end">
-                    <div class="col-md-4 mb-3 mb-md-0">
-                      <label for="volunteers-since">Desde</label>
-                      <input type="datetime-local" id="volunteers-since" class="form-control" required>
+                    <div class="col-md-6 col-lg-4 mb-3 mb-md-0">
+                      <label for="volunteers-date-range">Buscar por fecha</label>
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text"><i class="ri-calendar-line" aria-hidden="true"></i></span>
+                        </div>
+                        <input type="text" id="volunteers-date-range" class="form-control" aria-label="Rango de fechas de voluntarios" required>
+                      </div>
                     </div>
-                    <div class="col-md-4 mb-3 mb-md-0">
-                      <label for="volunteers-until">Hasta</label>
-                      <input type="datetime-local" id="volunteers-until" class="form-control" required>
-                    </div>
-                    <div class="col-md-2 mb-3 mb-md-0">
-                      <label for="volunteers-limit">Limite</label>
-                      <input type="number" id="volunteers-limit" class="form-control" value="100" min="1" max="500">
-                    </div>
-                    <div class="col-md-2">
+                    <div class="col-md-2 mt-3 mt-md-0">
                       <button type="submit" class="btn btn-primary btn-block">
                         <i class="las la-search pr-2" aria-hidden="true"></i>Buscar
                       </button>
