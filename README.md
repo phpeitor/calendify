@@ -14,7 +14,7 @@
 - Validación de campos obligatorios, correo, teléfono, fecha y horario.
 - Control de horarios ocupados para evitar duplicados por profesional.
 - Consulta de DNI usando endpoints configurables desde `.env`.
-- Persistencia de citas en `js/citas.json`.
+- Persistencia de citas en `data/citas.json`, servida por `php/get_data.php`.
 - Tabla administrativa de citas con DataTables.
 - Cambio de estado de citas: `Enviado`, `Confirmado`, `Anulado`.
 - Confirmación modal para acciones sensibles.
@@ -32,11 +32,11 @@ Calendify usa una arquitectura simple basada en archivos estáticos, JavaScript 
 Navegador
   -> HTML estático
   -> JS de página
-  -> JSON local para datos operativos
+  -> php/get_data.php -> JSON en data/ (acceso directo bloqueado)
   -> PHP para escritura, autenticación y sesión
 ```
 
-La aplicación no usa base de datos. Las citas se guardan directamente en `js/citas.json`, por lo que el servidor web debe tener permisos de escritura sobre ese archivo.
+La aplicación no usa base de datos. Las citas se guardan directamente en `data/citas.json`, por lo que el servidor web debe tener permisos de escritura sobre ese archivo. El directorio `data/` tiene un `.htaccess` que devuelve `403` a cualquier acceso directo: los JSON se leen únicamente a través de `php/get_data.php`.
 
 ## Estructura
 
@@ -47,6 +47,7 @@ calendify/
 ├── citas.html                  # Listado privado de citas
 ├── phones.html                 # Página privada de teléfonos
 ├── users.html                  # Página privada de usuarios
+├── volunteers.html             # Página privada de voluntarios
 ├── css/
 │   ├── backend.css
 │   ├── backend-plugin.min.css
@@ -59,8 +60,14 @@ calendify/
 │   ├── index-qXMyHo4h.js       # Bundle del login/Rive
 │   ├── layout.js               # Carga de header/footer/dialogs y logout
 │   ├── login-redirect.js       # Redirección si ya existe sesión
-│   ├── citas.json              # Persistencia de citas
-│   └── programacion.json       # Programación base del calendario
+│   ├── phones-page.js          # Agrupación de teléfonos por DNI
+│   ├── users-page.js           # Búsqueda de usuarios por DNI
+│   ├── volunteers-page.js      # Tabla y filtro de voluntarios
+│   └── .htaccess               # Bloquea cualquier *.json dentro de js/
+├── data/
+│   ├── citas.json              # Persistencia de citas (403 directo)
+│   ├── programacion.json       # Programación base del calendario
+│   └── .htaccess               # Deniega todo acceso HTTP al directorio
 ├── layout/
 │   ├── header.html
 │   ├── footer.html
@@ -70,6 +77,7 @@ calendify/
 │   ├── auth_login.php
 │   ├── auth_logout.php
 │   ├── env.php
+│   ├── get_data.php            # Lectura de JSON con sesión/saneo
 │   ├── save_cita.php
 │   └── update_estado_cita.php
 ├── resources/
@@ -85,7 +93,8 @@ calendify/
 - Apache, Nginx o servidor local equivalente.
 - PHP 7.4 o superior.
 - Navegador moderno con soporte para módulos JavaScript.
-- Permisos de escritura sobre `js/citas.json` si se registran o actualizan citas.
+- Permisos de escritura sobre `data/citas.json` si se registran o actualizan citas.
+- `mod_rewrite` habilitado en Apache para que los `.htaccess` bloqueen el acceso directo a `data/` y `js/*.json`.
 
 ## Configuración
 
@@ -146,6 +155,7 @@ Páginas privadas:
 - `citas.html`
 - `phones.html`
 - `users.html`
+- `volunteers.html`
 
 Página pública:
 
@@ -175,13 +185,20 @@ Estados esperados:
 
 ## Datos
 
+Los JSON viven en `data/` y no se pueden abrir por URL (`403`). Se sirven con `php/get_data.php?file=<nombre>`:
+
+- Con sesión activa: devuelve el JSON completo.
+- Sin sesión: `citas` se devuelve saneado, solo con `profesional`, `fecha_cita`, `start`, `end` y `estado` (sin DNI, teléfono, correo, nombre, dirección, comentario ni `createdAt`).
+- `programacion` se devuelve completo (no contiene datos personales).
+- `file` fuera de `citas` / `programacion` responde `400`.
+
 ### Programación
 
-La programación base se define en `js/programacion.json`. Desde ahí se generan rangos de disponibilidad por profesional y se excluyen fechas bloqueadas o feriados configurados.
+La programación base se define en `data/programacion.json`. Desde ahí se generan rangos de disponibilidad por profesional y se excluyen fechas bloqueadas o feriados configurados.
 
 ### Citas
 
-Las citas se persisten en `js/citas.json` bajo la clave `events`.
+Las citas se persisten en `data/citas.json` bajo la clave `events`.
 
 Campos principales:
 
@@ -202,8 +219,9 @@ Campos principales:
 ## Endpoints PHP
 
 ```text
+GET  php/get_data.php?file=citas|programacion
 POST php/save_cita.php
-POST php/update_estado_cita.php
+POST php/update_estado_cita.php   (requiere sesión)
 POST php/auth_login.php
 GET  php/auth_check.php
 POST php/auth_logout.php
@@ -216,13 +234,16 @@ Los endpoints responden JSON y usan códigos HTTP convencionales para errores de
 - No exponer `.env` públicamente en producción.
 - Cambiar `PASSWORD_LOGIN` antes de desplegar.
 - Usar HTTPS si se despliega fuera de un entorno local.
+- Subir los `.htaccess` de `data/` y `js/`; `.gitignore` tiene las excepciones `!data/.htaccess` y `!js/.htaccess`.
+- Verificar tras desplegar que `data/citas.json` y `js/citas.json` respondan `403`.
+- `php/update_estado_cita.php` exige sesión: sin ella responde `401`.
 - Migrar persistencia JSON a base de datos si habrá múltiples usuarios concurrentes.
 - Validar permisos de escritura de forma explícita en el servidor.
 - Evitar servir backups o archivos temporales dentro del `DocumentRoot`.
 
 ## Mantenimiento
 
-- Mantener `js/citas.json` respaldado si se usa como fuente de datos real.
+- Mantener `data/citas.json` respaldado si se usa como fuente de datos real.
 - Revisar que `resources/login.riv` conserve los nombres de artboard, state machine e inputs si se reemplaza el asset.
 - Si se modifica el bundle del login, actualizar el query string en `login.html` para evitar caché del navegador.
 - Validar sintaxis PHP con `php -l archivo.php` después de tocar endpoints.
