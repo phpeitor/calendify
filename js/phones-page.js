@@ -73,8 +73,8 @@ document.addEventListener('DOMContentLoaded', async function () {
   }
 
   try {
-    const response = await fetch('./js/citas.json', { cache: 'no-store' });
-    if (!response.ok) throw new Error('No se pudo cargar citas.json');
+    const response = await fetch('./php/get_data.php?file=citas', { cache: 'no-store' });
+    if (!response.ok) throw new Error('No se pudo cargar citas');
     const json = await response.json();
     const citas = Array.isArray(json.events) ? json.events : [];
     render(groupByDni(citas));

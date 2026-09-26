@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
   exit;
 }
 
-$DATA_PATH = __DIR__ . '/../js/citas.json';
+$DATA_PATH = __DIR__ . '/../data/citas.json';
 
 function getv(array $arr, string $k, string $def=''): string {
   return isset($arr[$k]) ? trim((string)$arr[$k]) : $def;

@@ -540,12 +540,12 @@
             await loadCitas();
 
             try {
-                const res = await fetch('./js/programacion.json', { cache: 'no-store' });
+                const res = await fetch('./php/get_data.php?file=programacion', { cache: 'no-store' });
                 const json = await res.json();
                 programacionData = json;
                 rebuildCalendarEvents();
             } catch (err) {
-                console.error('No se pudo cargar events.json', err);
+                console.error('No se pudo cargar programacion', err);
             }
 
             function refreshPicker($el){ if ($el.selectpicker) $el.selectpicker('refresh'); }
@@ -695,12 +695,12 @@
 
             async function loadCitas() {
                 try {
-                    const res = await fetch('./js/citas.json', { cache: 'no-store' });
+                    const res = await fetch('./php/get_data.php?file=citas', { cache: 'no-store' });
                     const json = await res.json();
                     citasData = Array.isArray(json.events) ? json.events : [];
                     rebuildCalendarEvents();
                 } catch (e) {
-                    console.warn('No se pudo cargar citas.json', e);
+                    console.warn('No se pudo cargar citas', e);
                     citasData = [];
                     rebuildCalendarEvents();
                 }

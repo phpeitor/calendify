@@ -9,6 +9,15 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
   exit;
 }
 
+session_start();
+
+$expiresAt = (int)($_SESSION['calendify_expires_at'] ?? 0);
+if (empty($_SESSION['calendify_auth']) || $expiresAt <= time()) {
+  http_response_code(401);
+  echo json_encode(['ok' => false, 'error' => 'Sesión requerida']);
+  exit;
+}
+
 $raw = file_get_contents('php://input');
 $in = json_decode($raw ?: '', true);
 if (!is_array($in)) {
@@ -31,7 +40,7 @@ if (!in_array($estado, $allowed, true)) {
   exit;
 }
 
-$dataFile = __DIR__ . '/../js/citas.json';
+$dataFile = __DIR__ . '/../data/citas.json';
 
 if (!file_exists($dataFile)) {
   http_response_code(404);

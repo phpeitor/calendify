@@ -16,3 +16,6 @@ yarn-error.log
 composer.phar
 .cache/
 .htaccess
+!data/.htaccess
+!js/.htaccess
+*.zip

@@ -155,7 +155,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   }
 
   try {
-    const res = await fetch('./js/citas.json', { cache: 'no-store' });
+    const res = await fetch('./php/get_data.php?file=citas', { cache: 'no-store' });
     const json = await res.json();
     const citas = Array.isArray(json.events) ? json.events : [];
 
