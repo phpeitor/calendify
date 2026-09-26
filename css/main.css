@@ -1136,3 +1136,30 @@ Lots taken from Flatly (MIT): https://bootswatch.com/4/flatly/bootstrap.css
     /* don't display any button-related controls */
   }
 }
+
+/* Menu activo segun la pagina abierta */
+.iq-menu-horizontal .iq-sidebar-menu .iq-menu > li.active > a {
+  color: #465af7;
+  font-weight: 700;
+}
+
+.iq-menu-horizontal .iq-sidebar-menu .iq-menu > li.active > a span {
+  color: inherit;
+}
+
+@media (min-width: 1300px) {
+  .iq-menu-horizontal .iq-sidebar-menu .iq-menu > li.active > a::after {
+    content: "";
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    bottom: 10px;
+    height: 3px;
+    border-radius: 3px;
+    background: #465af7;
+  }
+}
+
+.dark .iq-menu-horizontal .iq-sidebar-menu .iq-menu > li.active > a {
+  color: #465af7;
+}

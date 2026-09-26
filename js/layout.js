@@ -49,6 +49,19 @@ function isPublicIndexPage() {
   return page === '' || page === 'index.html';
 }
 
+function markActiveMenuItem() {
+  const current = (window.location.pathname.split('/').pop() || 'index.html').split('?')[0].split('#')[0].toLowerCase();
+
+  document.querySelectorAll('#iq-sidebar-toggle > li').forEach((item) => {
+    const link = item.querySelector('a[href]');
+    const target = link ? (link.getAttribute('href') || '').split('?')[0].split('#')[0].split('/').pop().toLowerCase() : '';
+    const isActive = !!target && (target === current || (!current && target === 'index.html'));
+
+    item.classList.toggle('active', isActive);
+    item.classList.toggle('active-menu', isActive);
+  });
+}
+
 function hideSessionMenuOnPublicPage() {
   if (!isPublicIndexPage()) return;
 
@@ -97,6 +110,7 @@ async function loadLayoutFragments() {
     }
 
     bindDialogTriggers();
+    markActiveMenuItem();
     hideSessionMenuOnPublicPage();
     bindLogout();
     loadSessionUser();
