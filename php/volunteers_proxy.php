@@ -6,7 +6,7 @@ header('Content-Type: application/json; charset=utf-8');
 require __DIR__ . '/env.php';
 
 $apiKey = (string)($_ENV['VOLUNTEERS_API_KEY'] ?? '');
-$apiUrl = (string)($_ENV['VOLUNTEERS_API_URL'] ?? 'http://127.0.0.1/wiesse-law/.redesign/api/volunteers.php');
+$apiUrl = (string)($_ENV['VOLUNTEERS_API_URL'] ?? 'https://wiesse.metadatape.com/api/volunteers.php');
 
 if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
   http_response_code(405);
