@@ -159,8 +159,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  const defaultSince = new Date('2026-09-16T00:00:00');
-  const defaultUntil = new Date('2026-09-17T00:00:00');
+  const defaultUntil = new Date();
+  defaultUntil.setHours(0, 0, 0, 0);
+
+  const defaultSince = new Date(defaultUntil);
+  defaultSince.setDate(defaultSince.getDate() - 30);
 
   if (window.jQuery && $.fn.daterangepicker && window.moment) {
     $(dateRange).daterangepicker({
